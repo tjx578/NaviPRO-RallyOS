@@ -1,0 +1,32 @@
+audit_id: LRM-REA-2026-10-20
+source_repository: tjx578/leaflet-routing-machine-rally
+source_commit: 8dc939a314425684883dc6f016b3aa9d04c8b7ca
+default_branch: master
+original_upstream: perliedman/leaflet-routing-machine
+upstream_head_at_audit: 8dc939a314425684883dc6f016b3aa9d04c8b7ca
+comparison:
+  status: identical
+  ahead_by: 0
+  behind_by: 0
+npm_name: leaflet-routing-machine
+npm_version_in_repo: 3.3.0
+license:
+  repo_metadata: NOASSERTION
+  package_json: ISC
+  license_md: ISC
+  obligation: Retain license/copyright notices if any source reused
+source_status: GITHUB_CONNECTOR_VERIFIED
+source_implementation: GENERIC_LEAFLET_ROUTING_UI_NOT_RALLY_SPECIFIC
+support_risk:
+  repo_readme: Maintainer describes project as barely maintained
+  npm_test: package.json npm test deliberately exits code 1
+  dependency: Browserify/older npm deps; production compatibility not verified
+related_osrm_frontend:
+  repository: tjx578/osrm-frontend-rally-maps
+  lrm_dependency: 3.2.12
+  compatibility: NO_UPGRADE_WITHOUT_BROWSER_TESTS
+local_integration: CLEAN_ROOM_ADAPTER_AND_CONTRACTS_NO_UPSTREAM_CODE_IMPORTED
+notes:
+- LRM is a UI plugin. Route algorithms/road graph reside in OSRM or another routing
+  backend.
+- No direct source code reuse or browser bundling performed in this REA.

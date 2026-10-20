@@ -576,6 +576,42 @@ tools:
   authority: READ
   side_effect: NONE
   tool: navipro.routing.frontend.session.plan
+- operation_id: getLrmUiCapabilities
+  method: GET
+  path: /routing-ui/lrm/capabilities
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.ui.lrm.capabilities.get
+- operation_id: planLrmReviewSession
+  method: POST
+  path: /routing-ui/lrm/sessions/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.routing.ui.lrm.session.plan
+- operation_id: proposeLrmShapingPoint
+  method: POST
+  path: /routing-ui/lrm/shaping-points/propose
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.routing.ui.lrm.shaping.propose
+- operation_id: previewLrmItinerary
+  method: POST
+  path: /routing-ui/lrm/itineraries/preview
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.ui.lrm.itinerary.preview
 blocked_operations:
 - operation_id: healthCheck
   method: GET
@@ -658,3 +694,11 @@ blocked_operations:
   - REVIEW
   authority: NAVIGATOR_ONLY
   side_effect: AUTHORITY_MUTATION
+- operation_id: previewLrmAlternativeSelection
+  method: POST
+  path: /routing-ui/lrm/alternatives/preview
+  modes:
+  - PREP
+  - REVIEW
+  authority: UI_ONLY
+  side_effect: NONE

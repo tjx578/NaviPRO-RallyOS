@@ -2,7 +2,7 @@ openapi: 3.1.0
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: NaviPRO RallyOS Unified API
-  version: 0.5.0-vnext-osrm-rea
+  version: 0.6.0-vnext-lrm-rea
   description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver
     LIVE runtime consumes confirmed offline packages and does not depend on this API. Spatial Intelligence REA baseline
     adds Kepler-grade PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA
@@ -10,6 +10,8 @@ info:
     StreetComplete REA adds clean-room, PREP/REVIEW-only field-survey contracts; observational data is not OSM-tag
     editing, verified road truth, or route authority. OSRM REA adds PREP/REVIEW-only routing candidate, directed
     graph, matrix and map-matching planning contracts. OSRM Trip/TSP explicitly excluded from official route sequence.
+    Leaflet Routing Machine REA adds UI review proposal-only contracts; LRM is a presentation/control library, not
+    a trusted routing algorithm or authority. UI-only alternative selection is not an MCP action.
 servers:
 - url: https://api.navipro.local/vnext
   description: Placeholder target; replace per deployment
@@ -34,6 +36,8 @@ tags:
   description: Quest-inspired offline survey planning and staging (no direct OSM publish)
 - name: RoutingGraph
   description: OSRM graph and candidate only; never confirms roadbook official route
+- name: RoutingUI
+  description: LRM-inspired Route Editor UI plans; proposed changes do not change source order/confirm route
 paths:
   /health:
     get:
@@ -3546,6 +3550,204 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+  /routing-ui/lrm/capabilities:
+    get:
+      operationId: getLrmUiCapabilities
+      summary: Inspect Leaflet Routing Machine review UI capabilities
+      tags:
+      - RoutingUI
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
+        ACL; LIVE prohibited.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.ui.lrm.capabilities.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: Review-only plan or report, endpoint implementation pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LRMCapabilitiesResult'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Revision, graph or official source order conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing-ui/lrm/sessions/plan:
+    post:
+      operationId: planLrmReviewSession
+      summary: Build locked source-order route review session plan
+      tags:
+      - RoutingUI
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
+        ACL; LIVE prohibited.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.ui.lrm.session.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LRMReviewPlanRequest'
+      responses:
+        '200':
+          description: Review-only plan or report, endpoint implementation pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LRMReviewPlanResult'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Revision, graph or official source order conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing-ui/lrm/shaping-points/propose:
+    post:
+      operationId: proposeLrmShapingPoint
+      summary: Plan separate shaping-point proposal without altering official anchors
+      tags:
+      - RoutingUI
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
+        ACL; LIVE prohibited.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.ui.lrm.shaping.propose
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LRMReviewPlanRequest'
+      responses:
+        '200':
+          description: Review-only plan or report, endpoint implementation pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LRMReviewPlanResult'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Revision, graph or official source order conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing-ui/lrm/itineraries/preview:
+    post:
+      operationId: previewLrmItinerary
+      summary: Preview non-authoritative maneuver instructions for candidate
+      tags:
+      - RoutingUI
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
+        ACL; LIVE prohibited.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.ui.lrm.itinerary.preview
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LRMItineraryPreviewRequest'
+      responses:
+        '200':
+          description: Review-only plan or report, endpoint implementation pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LRMItineraryPreviewResult'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Revision, graph or official source order conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing-ui/lrm/alternatives/preview:
+    post:
+      operationId: previewLrmAlternativeSelection
+      summary: Local UI alternative selection only; not an agent action
+      tags:
+      - RoutingUI
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
+        ACL; LIVE prohibited.
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: UI_ONLY
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LRMAlternativePreviewRequest'
+      responses:
+        '200':
+          description: Review-only plan or report, endpoint implementation pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LRMReviewPlanResult'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Revision, graph or official source order conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 components:
   securitySchemes:
     bearerAuth:
@@ -6062,6 +6264,252 @@ components:
           items:
             type: string
         warnings:
+          type: array
+          items:
+            type: string
+    LRMSourceAnchorIds:
+      type: array
+      minItems: 2
+      maxItems: 100
+      uniqueItems: true
+      items:
+        type: string
+        minLength: 1
+        maxLength: 180
+    LRMShapingProposal:
+      type: object
+      additionalProperties: false
+      required:
+      - after_anchor_id
+      - lat_e7
+      - lon_e7
+      - reason
+      - authority
+      - status
+      properties:
+        after_anchor_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+        lat_e7:
+          type: integer
+          minimum: -900000000
+          maximum: 900000000
+        lon_e7:
+          type: integer
+          minimum: -1800000000
+          maximum: 1800000000
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 180
+        authority:
+          type: string
+          const: AGENT_PROPOSE
+        status:
+          type: string
+          const: DRAFT_PROPOSAL
+    LRMReviewPlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_revision_id
+      - graph_dataset_id
+      - profile_digest
+      - official_anchor_ids
+      properties:
+        mode: &id011
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        route_revision_id: &id012
+          type: string
+          minLength: 1
+          maxLength: 180
+        graph_dataset_id: &id013
+          type: string
+          minLength: 1
+          maxLength: 180
+        profile_digest: &id014
+          type: string
+          minLength: 1
+          maxLength: 180
+        official_anchor_ids: &id015
+          $ref: '#/components/schemas/LRMSourceAnchorIds'
+        selected_candidate_id: &id016
+          type:
+          - string
+          - 'null'
+        proposed_shaping_points: &id017
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/LRMShapingProposal'
+      description: Strict proposal-only request; backend must compare against trusted snapshot and reject unrecognized
+        fields. Client cannot submit route_authority/approval fields.
+    LRMReviewPlanResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_revision_id
+      - graph_dataset_id
+      - profile_digest
+      - official_anchor_ids
+      - status
+      - route_authority
+      - warning
+      properties:
+        mode: *id011
+        route_revision_id: *id012
+        graph_dataset_id: *id013
+        profile_digest: *id014
+        official_anchor_ids: *id015
+        selected_candidate_id: *id016
+        proposed_shaping_points: *id017
+        status:
+          type: string
+          const: PROPOSAL_ONLY
+        route_authority:
+          type: boolean
+          const: false
+        shaping_proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/LRMShapingProposal'
+        warning:
+          type: string
+    LRMItineraryPreviewRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - route_revision_id
+      - candidate_id
+      - graph_dataset_id
+      - profile_digest
+      properties:
+        route_revision_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+        candidate_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+        graph_dataset_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+        profile_digest:
+          type: string
+          minLength: 1
+          maxLength: 180
+        language:
+          type: string
+          minLength: 1
+          maxLength: 16
+        max_steps:
+          type: integer
+          minimum: 1
+          maximum: 500
+    LRMItineraryPreviewResult:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - route_authority
+      - candidate_id
+      - instructions
+      - graph_dataset_id
+      properties:
+        status:
+          type: string
+          const: PREVIEW_ONLY
+        route_authority:
+          type: boolean
+          const: false
+        candidate_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+        instructions:
+          type: array
+          maxItems: 500
+          items:
+            type: object
+            additionalProperties: false
+            required:
+            - text
+            properties:
+              text:
+                type: string
+              distance_mm:
+                type: integer
+                minimum: 0
+              duration_ms:
+                type: integer
+                minimum: 0
+              maneuver:
+                type: string
+        graph_dataset_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+        warning:
+          type: string
+    LRMAlternativePreviewRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - route_revision_id
+      - graph_dataset_id
+      - candidate_id
+      properties:
+        route_revision_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+        graph_dataset_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+        candidate_id:
+          type: string
+          minLength: 1
+          maxLength: 180
+    LRMCapabilitiesResult:
+      type: object
+      additionalProperties: false
+      required:
+      - source
+      - source_commit
+      - status
+      - supported_modes
+      - route_authority
+      - capability_ids
+      properties:
+        source:
+          type: string
+        source_commit:
+          type: string
+          minLength: 1
+          maxLength: 40
+        status:
+          type: string
+          const: MAPPED_NOT_BROWSER_VERIFIED
+        supported_modes:
+          type: array
+          items:
+            type: string
+            enum:
+            - PREP
+            - REVIEW
+        route_authority:
+          type: boolean
+          const: false
+        capability_ids:
           type: array
           items:
             type: string

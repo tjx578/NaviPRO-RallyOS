@@ -1,0 +1,42 @@
+version: 1.0.0
+scope: NaviPRO Page 2 routing lab; Page 3 agent read/propose only
+source_library: Leaflet Routing Machine 3.3.0 source snapshot; no direct source bundling
+allowed_modes:
+- PREP
+- REVIEW
+driver_live_dependency: FORBIDDEN
+route_authority: CANDIDATE_ONLY
+canonical_source: Official RoadbookRevision and RouteRevision; server reviewer permission
+locked_control_options:
+  autoRoute: false
+  routeWhileDragging: false
+  addWaypoints: false
+  draggableWaypoints: false
+  reverseWaypoints: false
+  waypointMode: connect
+  showAlternatives: true
+  fitSelectedRoutes: false
+ui_policy:
+  routeselected: Preview change only; never route confirm
+  waypointschanged: Reject official anchor modification; request separate shaping-point
+    proposal
+  waypointdrag: Reject when official anchor locked
+  linetouched: Show coordinate proposal workflow only; do not splice official waypoints
+  route_error: Retain last confirmed revision and show non-authoritative error
+  geocode: Result is CANDIDATE; no automatic snapping or verification
+  instructions: Non-authoritative and subject to roadbook/graph review
+separation:
+  shaping_points: Proposal-only; never insert into ordered source anchors
+  graph_distance: Measurement candidate from matching routing graph; not authority_distance
+  route_revision: Immutable once confirmed; new proposal references parent revision
+  provider_version: Capture graph dataset ID, Lua profile hash, LRM integration version
+  approval: Authenticated Navigator-only backend authority gate
+  mcp_tools: Review/proposal only; no confirm/publish/driver send
+known_risks:
+- Upstream poorly maintained
+- Old Browserify build/dependencies
+- LRM 3.3.0 vs OSRM Frontend 3.2.12
+- UI option disabling alone is not server-side security
+- Provider steps may differ from official roadbook
+- Default demo router/service is not production-grade
+- Geocoding lookup requires provider licensing and permissions

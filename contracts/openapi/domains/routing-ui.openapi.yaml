@@ -1,0 +1,11 @@
+document_role: OPENAPI_DOMAIN_INDEX
+aggregate: ../navipro-rallyos.openapi.yaml
+source: LEAFLET_ROUTING_MACHINE_REA
+operations:
+- getLrmUiCapabilities
+- planLrmReviewSession
+- proposeLrmShapingPoint
+- previewLrmItinerary
+- previewLrmAlternativeSelection
+note: Only aggregate contract defines OpenAPI executable specification; UI-only selection
+  is excluded from MCP.

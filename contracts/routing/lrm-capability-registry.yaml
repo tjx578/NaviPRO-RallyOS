@@ -1,0 +1,398 @@
+registry_version: 1.0.0
+source:
+  repository: tjx578/leaflet-routing-machine-rally
+  commit: 8dc939a314425684883dc6f016b3aa9d04c8b7ca
+  license: ISC
+scope: SOURCE_CAPABILITIES_MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+forbidden_in_authoritative_mode:
+- autoRoute
+- reverseWaypoints
+- addWaypoints
+- draggableWaypoints
+- routeWhileDragging
+- waypointMode=snap
+- line-click insertion
+- promote_route_candidate
+- activate_driver_route
+- modify_roadbook_order
+capabilities:
+- id: lrm.core.control
+  label: Leaflet routing control integration
+  source_file: src/index.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/index.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.core.custom_control_options
+  label: Configurable UI, plan, route line and router options
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.core.events
+  label: routingstart / routesfound / routingerror and selection events
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.core.request_versioning
+  label: Discard superseded async routing results
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.core.abort_pending
+  label: Abort previous in-flight routing request
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.core.backend_plug
+  label: Inject alternate routing backend adapter
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.control.auto_route
+  label: Automatic reroute on waypoint changes
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.control.drag_routing
+  label: Live preview while dragging waypoints
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.control.route_zoom_detail
+  label: Refetch detailed geometry when zooming
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.control.fit_bounds
+  label: Smart selected-route fit to map viewport
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.control.snap_waypoint_mode
+  label: Replace waypoint positions with snapped positions
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.control.connect_waypoint_mode
+  label: Display connector to original waypoint position
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.plan.ordered_via_points
+  label: Start/via/finish waypoint list
+  source_file: src/plan.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/plan.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.plan.insert_delete
+  label: Add/delete waypoints from geocoder controls
+  source_file: src/plan.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/plan.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.plan.reverse_waypoints
+  label: Reverse order of waypoints
+  source_file: src/plan.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/plan.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.plan.drag_markers
+  label: Editable draggable waypoint markers
+  source_file: src/plan.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/plan.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.plan.route_line_insert
+  label: Drag route line to insert new waypoint
+  source_file: src/plan.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/plan.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.plan.waypoints_changed
+  label: Waypoint event/update propagation
+  source_file: src/plan.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/plan.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.map.route_multiline
+  label: Main route rendered as styled polyline layers
+  source_file: src/line.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/line.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.map.missing_route_bridge
+  label: Dashed missing-route connector visualization
+  source_file: src/line.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/line.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.map.line_hit_test
+  label: Clickable/touch route line emits segment index
+  source_file: src/line.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/line.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.map.alternatives
+  label: Alternative routes selectable by touching route lines
+  source_file: src/control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/control.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.itinerary.route_summary
+  label: Total distance and duration rendering
+  source_file: src/itinerary.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/itinerary.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.itinerary.steps
+  label: Turn-by-turn step list from backend
+  source_file: src/itinerary.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/itinerary.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.itinerary.collapse
+  label: Expandable/collapsible itinerary presentation
+  source_file: src/itinerary.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/itinerary.js
+  priority: P2
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.itinerary.formatter
+  label: Distance/time localized formatting
+  source_file: src/formatter.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/formatter.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.i18n.translations
+  label: Localization of UI strings
+  source_file: src/localization.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/localization.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.geocode.geocoder_forms
+  label: Search inputs for start/via/end
+  source_file: src/geocoder-element.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/geocoder-element.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.geocode.autocomplete
+  label: Suggestions and keyboard navigation
+  source_file: src/autocomplete.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/autocomplete.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.geocode.reverse_lookup
+  label: Reverse geocoder fallback for waypoint names
+  source_file: src/geocoder-element.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/geocoder-element.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.routing_adapter.osrm_v1
+  label: OSRM v5 route call & response conversion
+  source_file: src/osrm-v1.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/osrm-v1.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.routing_adapter.osrm_instructions
+  label: Convert OSRM maneuver to UI instructions
+  source_file: src/osrm-v1.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/osrm-v1.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.routing_adapter.polyline_decode
+  label: Decode polyline geometry into LatLng points
+  source_file: src/osrm-v1.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/osrm-v1.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.routing_adapter.waypoint_hints
+  label: Cache OSRM hint data for subsequent requests
+  source_file: src/osrm-v1.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/osrm-v1.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.routing_adapter.mapbox
+  label: Mapbox Directions protocol adapter
+  source_file: src/mapbox.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/mapbox.js
+  priority: P2
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.ui.error_control
+  label: Route errors can be presented by UI control
+  source_file: src/error-control.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/error-control.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.data.waypoint_model
+  label: Waypoint contains position/name/options
+  source_file: src/waypoint.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/src/waypoint.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY
+- id: lrm.test.jasmine_spec
+  label: Legacy Jasmine tests for OSRM and formatting
+  source_file: test/spec/osrmv1-spec.js
+  source_link: https://github.com/tjx578/leaflet-routing-machine-rally/blob/8dc939a314425684883dc6f016b3aa9d04c8b7ca/test/spec/osrmv1-spec.js
+  priority: P2
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  integration_status: MAPPED_NO_BROWSER_PARITY

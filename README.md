@@ -73,3 +73,10 @@ python -m pytest -q tests/contracts
 - No `Trip`/TSP in NaviPRO MCP, no official source waypoint reorder; OSRM results always candidate-only. Driver LIVE does not call OSRM.
 - Verify locally: `python tools/validate_openapi.py && python tools/build_mcp_registry.py && python -m pytest -q tests/contracts && node --test apps/routing-lab-web/test/*.test.mjs`.
 - **Status:** OSRM dataset/build/CH/MLD, real network server, browser UI, field accuracy and end-to-end routing parity are **NOT VERIFIED**.
+
+## Leaflet Routing Machine REA — Page 2 Route Editor (2026-10-20)
+
+- [Source audit](docs/rea/LEAFLET-ROUTING-MACHINE-REA-v1.md), [38-capability registry](contracts/routing/lrm-capability-registry.yaml), [source manifest](docs/rea/LEAFLET-ROUTING-MACHINE-SOURCE-MANIFEST.yaml) and [policy](governance/lrm-routing-ui-policy.yaml).
+- Source `tjx578/leaflet-routing-machine-rally` is identical to upstream `perliedman/leaflet-routing-machine` at `8dc939a314...` (LRM `3.3.0`, ISC license); not a rally-specific codebase. The separate OSRM Frontend uses LRM `3.2.12`; no dependency upgrade was done.
+- A clean-room LRM review-state prototype in `apps/routing-lab-web/src/lrm-rally-review.mjs` and a server-side proposal validator in `python/src/navipro_rallyos/route/lrm_review.py` **reject official anchor edits/changes to graph/revision ID and LIVE**. New UI contract only adds 5 OpenAPI operations, with UI-only alternative selection blocked from MCP.
+- No Leaflet browser application, backend endpoint, authenticated review service or official route confirmation is implemented. Driver LIVE uses only previously confirmed offline NaviPack; **NOT_RACE_READY**.

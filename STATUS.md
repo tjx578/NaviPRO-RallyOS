@@ -37,3 +37,10 @@
 - Routing Lab JavaScript: READ_ONLY_STATE_TESTED; full Leaflet/MapLibre GUI NOT_BUILT.
 - OSRM profile and dataset manifest: REQUIRED_BUT_NOT_BUILT; no MLD/CH preprocessing executed.
 - OSRM Driver offline integration: NOT_BUILT; LIVE provider calls prohibited.
+
+- Leaflet Routing Machine REA: SOURCE_INSPECTED at `8dc939a314425684883dc6f016b3aa9d04c8b7ca` (fork identical to upstream at audit, ISC source, v3.3.0).
+- LRM source capability map: 38 SOURCE_MAPPED / NOT_BROWSER_VERIFIED; no upstream source copied.
+- LRM UI review-state JS / server-side Python proposal guard: UNIT_TESTED; no Leaflet DOM/graphical build.
+- LRM OpenAPI: +5 CONTRACT_ONLY operations, +4 agent-safe MCP definitions, +1 UI-only excluded operation.
+- Version compatibility (separate OSRM Frontend LRM v3.2.12 vs v3.3.0): NOT_TESTED.
+- Route confirmation permission service: NOT_IMPLEMENTED. LIVE LRM calls: FORBIDDEN.
