@@ -2,6 +2,18 @@
 name = "navipro-rallyos-vnext"
 version = "0.1.0"
 requires-python = ">=3.11"
+dependencies = ["PyYAML==6.0.3"]
+
+[project.optional-dependencies]
+test = [
+    "pytest==8.4.2",
+    "jsonschema==4.26.0",
+    "rfc3339-validator==0.1.4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/contracts"]
+pythonpath = ["python/src"]
 
 [tool.navipro]
 status = "OPENAPI_VNEXT_DRAFT"

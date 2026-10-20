@@ -62,3 +62,10 @@
 - Navigator/Driver Android features: README_MODULE_SCAFFOLDS_ONLY, NO_ANDROID_BUILD
 - TSD Cadencer/Driver ACK adapters: DESIGN_ONLY, NOT_INTEGRATED
 - Driver overview/driving mode and cue FSM: NOT_BUILT
+
+### Valhalla REA scope (2026-10-20)
+
+- Source: `tjx578/valhalla-navipro@618cad5`, upstream-identical MIT fork.
+- Added: clean-room Valhalla native candidate/matrix adapter, provider-distance diagnostics, REA source manifest, governance and fixture tests.
+- **Not built/deployed:** Valhalla graph tiles, live HTTP integration, Page 2 route workbench, comparative performance benchmark, live Driver runtime, production release. No replacement of OSRM. `NOT_RACE_READY` remains.
+- Integration response guards: native source indices validated, missing matrix values rejected, provider warnings preserved, and route/matrix provenance required before transport; fixture-only regression coverage.

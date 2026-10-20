@@ -82,7 +82,7 @@ def test_osrm_client_injected_http_keeps_route_prep_only():
     requested=[]
     def fake(url,payload):requested.append((url,payload));return RESPONSE
     adapter=OSRMAdapter(transport=fake)
-    out=adapter.route(ANCHORS,'bali-graph','sha256:foo')
+    out=adapter.route(ANCHORS,'bali-graph','sha256:foo',mode='PREP')
     assert requested[0][0]=='http://127.0.0.1:5000/route/v1/driving'
     assert out['route_authority'] is False
     assert requested[0][1]['coordinates']==[a.as_lonlat() for a in ANCHORS]
@@ -90,7 +90,7 @@ def test_osrm_client_injected_http_keeps_route_prep_only():
 
 def test_client_match_outliers_no_verification():
     def fake(url,payload):return {'code':'Ok','tracepoints':[{'foo':1},None,{'foo':2}],'matchings':[{'confidence':0.8}]}
-    out=OSRMAdapter(transport=fake).match(ANCHORS,[101,102,103],[4,5,6])
+    out=OSRMAdapter(transport=fake).match(ANCHORS,[101,102,103],[4,5,6],mode='REVIEW')
     assert out['status']=='MATCH_PROPOSAL_ONLY' and out['outlier_indices']==[1]
     assert out['route_authority'] is False
 

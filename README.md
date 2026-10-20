@@ -115,3 +115,7 @@ The project decisions from the latest navigator review are now recorded in the [
 The previously standalone [React Native Maps audit](docs/rea/REACT-NATIVE-MAPS-REA-v1.md) is now included **as documentation**, not as a mobile build or installed adapter.
 
 **Status:** governance + draft schema + schema unit tests only; no satellite POI matcher, time solver, REST/MCP endpoints or live Driver integration. `NOT_RACE_READY`.
+
+## Valhalla routing provider REA (2026-10-20)
+
+Valhalla (`tjx578/valhalla-navipro@618cad5`) has been source-audited as a ninth routing/spatial donor, and a **PREP/REVIEW only** clean-room Python `ValhallaAdapter` prototype plus OSRM/Valhalla residual comparison were added. `POST /route` and `/sources_to_targets` request/response normalization and fixture tests are implemented, including response-order, explicit-null, warning preservation and provenance regressions; **no Valhalla graph or HTTP service has been deployed**. Valhalla `optimized_route` is forbidden for official roadbook anchors, and neither graph estimated times nor provider distances override source rules. See [Valhalla REA](docs/rea/VALHALLA-NAVIPRO-REA-v1.md), [governance](governance/valhalla-routing-policy.yaml), and [capabilities](contracts/routing/valhalla-capability-registry.yaml).
