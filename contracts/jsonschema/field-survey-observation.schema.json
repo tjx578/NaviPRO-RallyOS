@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://navipro.invalid/schemas/field-survey-observation.v1.json",
+  "title": "NaviPRO field survey observation (non-authoritative)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "observation_id",
+    "task_id",
+    "route_revision_id",
+    "actor_id",
+    "quest_type",
+    "answer",
+    "observed_at",
+    "osm_element_type",
+    "osm_element_id",
+    "observed_osm_version",
+    "lat_e7",
+    "lon_e7",
+    "mode",
+    "route_authority"
+  ],
+  "properties": {
+    "observation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "route_revision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quest_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "answer": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "minProperties": 1
+        }
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "osm_element_type": {
+      "enum": [
+        "way",
+        "node"
+      ]
+    },
+    "osm_element_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "observed_osm_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "lat_e7": {
+      "type": "integer",
+      "minimum": -900000000,
+      "maximum": 900000000
+    },
+    "lon_e7": {
+      "type": "integer",
+      "minimum": -1800000000,
+      "maximum": 1800000000
+    },
+    "gps_accuracy_m": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 100000
+    },
+    "evidence_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "mode": {
+      "enum": [
+        "PREP",
+        "REVIEW"
+      ]
+    },
+    "route_authority": {
+      "type": "boolean",
+      "const": false
+    },
+    "capture_method": {
+      "enum": [
+        "HUMAN_VISUAL",
+        "HUMAN_MEASURED",
+        "DOCUMENT_REFERENCE"
+      ]
+    },
+    "survey_safety_attested": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 3000
+    }
+  }
+}

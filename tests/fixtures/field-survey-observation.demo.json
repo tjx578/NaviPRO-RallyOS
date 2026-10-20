@@ -1,0 +1,20 @@
+{
+  "observation_id": "OBS-DEM-001",
+  "task_id": "SVY-DEM-001",
+  "route_revision_id": "ROUTE-REV-DEMO",
+  "actor_id": "SURVEYOR-DEMO",
+  "quest_type": "road_surface",
+  "answer": "asphalt",
+  "observed_at": "2026-10-19T14:30:00+08:00",
+  "osm_element_type": "way",
+  "osm_element_id": 123456,
+  "observed_osm_version": 7,
+  "lat_e7": -86700000,
+  "lon_e7": 1152100000,
+  "gps_accuracy_m": 12.0,
+  "evidence_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "mode": "PREP",
+  "route_authority": false,
+  "capture_method": "HUMAN_VISUAL",
+  "survey_safety_attested": true
+}

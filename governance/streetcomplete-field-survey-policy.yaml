@@ -1,0 +1,56 @@
+policy_id: NAVIPRO-FIELD-SURVEY-POLICY-V1
+source_repo: tjx578/StreetComplete_rally-maps
+architecture_only_adoption: true
+source_license: GPL-3.0-only
+code_reuse_without_license_review: DENY
+osm_data_license_review: ODbL-1.0-ATTRIBUTION-AND-DERIVATIVE-OBLIGATIONS
+modes:
+  PREP:
+    propose_survey_tasks: ALLOW
+    human_field_capture: ALLOW_LOCAL
+    submit_to_navipro_staging: ALLOW_AUTHENTICATED
+    agent_auto_capture: DENY
+  REVIEW:
+    propose_survey_tasks: ALLOW
+    inspect_conflicts: ALLOW
+    human_field_capture: ALLOW_LOCAL
+    submit_to_navipro_staging: ALLOW_AUTHENTICATED
+    navigator_evidence_decision: ALLOW_SEPARATE_HUMAN_AUTH_GATE
+  LIVE:
+    survey_app: DENY
+    ai_tools: DENY
+    network_sync: DENY
+    mutate_route: DENY
+    driver_navi_pack: READ_ONLY
+invariants:
+  - OBSERVATION_IS_NOT_VERIFICATION
+  - OSM_TAG_IS_NOT_OFFICIAL_ROADBOOK
+  - OSM_DATA_STALENESS_DOES_NOT_JUSTIFY_AUTOMATIC_ROUTE_CHANGE
+  - VERSION_MISMATCH_YIELDS_CONFLICT
+  - ABSENT_SOURCE_VERSION_YIELDS_HOLD
+  - STAGING_ACK_IS_NOT_NAVIGATOR_APPROVAL
+  - SURVEY_COMPLETION_DOES_NOT_PUBLISH_TO_OSM
+  - ROUTE_SOURCE_ORDER_IS_IMMUTABLE_AFTER_CONFIRMATION
+  - SURVEY_APP_NOT_ACTIVE_DURING_LIVE_DRIVING
+  - REMOVE_GPS_EXIF_AND_PRIVATE_METADATA_BEFORE_SHARING
+  - NO_SURVEYS_REQUIRING_UNSAFE_OR_RESTRICTED_ACCESS
+agent_denied_actions:
+  - submit_field_observation_as_human
+  - publish_osm_changeset
+  - promote_location_verified
+  - confirm_route
+  - mutate_live_route
+  - publish_navipack
+  - override_validation_gate
+storage:
+  observation_queue: LOCAL_SQLITE_OUTBOX
+  staging: NAVIPRO_STAGING_ONLY
+  route_authority: FALSE
+  attachments: HASHED_ACCESS_CONTROLLED
+  exact_gps_retention: POLICY_REQUIRED_BEFORE_DEPLOYMENT
+sync:
+  source_osm_version: REQUIRED
+  deduplication_id: observation_id
+  conflict: HUMAN_REVIEW_REQUIRED
+  upload_retry: IDEMPOTENT_ONLY
+  auth: REQUIRED_ON_SERVER

@@ -1,0 +1,727 @@
+id: NAVIPRO-STREETCOMPLETE-REA-CAPABILITIES-V1
+version: 0.1.0
+source_repo: tjx578/StreetComplete_rally-maps
+source_sha: e6b04da98028d34c1e49625edd7095f7008106a6
+source_license: GPL-3.0-only
+rule: Architecture patterns only; no GPL source copied into NaviPRO code
+capabilities:
+- id: SC_ATOMIC_QUEST
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/quest/QuestType.kt
+  source_capability: atomic_quest
+  navipro_target: atomic survey question/card
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_OSM_ATTRIBUTE_FILTER
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/osmquests/OsmFilterQuestType.kt
+  source_capability: osm_attribute_filter
+  navipro_target: missing-tag based task planning
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_QUEST_REGISTRY
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/QuestTypesRegistry.kt
+  source_capability: quest_registry
+  navipro_target: registry with stable quest IDs
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_ROAD_SURFACE
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/surface/AddRoadSurface.kt
+  source_capability: road_surface
+  navipro_target: surface evidence
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_ROAD_SMOOTHNESS
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/smoothness/AddRoadSmoothness.kt
+  source_capability: road_smoothness
+  navipro_target: road passability context
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_ONEWAY
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/oneway/AddOneway.kt
+  source_capability: oneway
+  navipro_target: directional restrictions candidate
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_MAX_SPEED
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/max_speed/AddMaxSpeed.kt
+  source_capability: max_speed
+  navipro_target: posted legal speed only
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_ROAD_NAME
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/road_name/AddRoadName.kt
+  source_capability: road_name
+  navipro_target: landmark street names
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_LANES
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/lanes
+  source_capability: lanes
+  navipro_target: lane count
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_LANE_MARKINGS
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/lane_markings
+  source_capability: lane_markings
+  navipro_target: road markings
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_WIDTH
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/width
+  source_capability: width
+  navipro_target: road width
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_BARRIER
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/barrier_type
+  source_capability: barrier
+  navipro_target: barrier candidate
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_CROSSING
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/crossing
+  source_capability: crossing
+  navipro_target: crossing metadata
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_TRAFFIC_CALMING
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/traffic_calming_type
+  source_capability: traffic_calming
+  navipro_target: traffic calming candidate
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_CONSTRUCTION
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/construction
+  source_capability: construction
+  navipro_target: temporary topology risk
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_BRIDGE_STRUCTURE
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/bridge_structure
+  source_capability: bridge_structure
+  navipro_target: bridge identification
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_LIGHTING
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/way_lit
+  source_capability: lighting
+  navipro_target: lighting observations
+  priority: P2
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_SIGNBOARD
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/board_name
+  source_capability: signboard
+  navipro_target: roadside signs context
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_OPENING_HOURS_SIGNED
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/opening_hours_signed
+  source_capability: opening_hours_signed
+  navipro_target: information-board observation
+  priority: P2
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_ROAD_REF
+  domain: QUEST
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests/access_point_ref
+  source_capability: road_ref
+  navipro_target: road access reference
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_OVERLAY_REGISTRY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/OverlaysRegistry.kt
+  source_capability: overlay_registry
+  navipro_target: thematic overlay menu
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_SURFACE_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/surface
+  source_capability: surface_overlay
+  navipro_target: surface continuity map
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_LIGHTING_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/way_lit
+  source_capability: lighting_overlay
+  navipro_target: lighting thematic layer
+  priority: P2
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_SIDEWALK_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/sidewalk
+  source_capability: sidewalk_overlay
+  navipro_target: sidewalk context
+  priority: P2
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_CYCLEWAY_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/cycleway
+  source_capability: cycleway_overlay
+  navipro_target: cycleway context
+  priority: P2
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_PARKING_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/street_parking
+  source_capability: parking_overlay
+  navipro_target: parking/access context
+  priority: P2
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_ADDRESS_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/address
+  source_capability: address_overlay
+  navipro_target: address references
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_PLACES_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/places
+  source_capability: places_overlay
+  navipro_target: POI landmark reference
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_BUILDINGS_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/buildings
+  source_capability: buildings_overlay
+  navipro_target: building landmarks
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_THINGS_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/things
+  source_capability: things_overlay
+  navipro_target: infrastructure references
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_MTB_SCALE_OVERLAY
+  domain: OVERLAY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays/mtb_scale
+  source_capability: mtb_scale_overlay
+  navipro_target: track steepness context (non motor use)
+  priority: P2
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_TILE_AREA_DOWNLOAD
+  domain: OFFLINE
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/download/DownloadController.kt
+  source_capability: tile_area_download
+  navipro_target: corridor offline area
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_DOWNLOAD_ORCHESTRATION
+  domain: OFFLINE
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/download/Downloader.kt
+  source_capability: download_orchestration
+  navipro_target: map+notes+mapdata acquisition
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_DOWNLOAD_STRATEGY
+  domain: OFFLINE
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/download/strategy
+  source_capability: download_strategy
+  navipro_target: network-aware scheduled download
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_MAP_TILE_CACHE
+  domain: OFFLINE
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/maptiles
+  source_capability: map_tile_cache
+  navipro_target: vector basemap cache
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_PRELOADER
+  domain: OFFLINE
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/Preloader.kt
+  source_capability: preloader
+  navipro_target: initial data preload
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_AUTOSYNC
+  domain: OFFLINE
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/quest/AutoSyncer.kt
+  source_capability: autosync
+  navipro_target: network and GPS-aware sync policy
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_PERSISTENCE
+  domain: OFFLINE
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/Database.kt
+  source_capability: persistence
+  navipro_target: durable SQLite observations
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_LOCAL_EDIT
+  domain: EDIT
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/edits/ElementEdit.kt
+  source_capability: local_edit
+  navipro_target: audit observation provenance
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_UNDO
+  domain: EDIT
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/edits/ElementEditsControllerImpl.kt
+  source_capability: undo
+  navipro_target: correction/retraction events
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_PENDING_QUEUE
+  domain: EDIT
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/edits/ElementEditsControllerImpl.kt
+  source_capability: pending_queue
+  navipro_target: offline survey outbox
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_OSM_VERSION_CONFLICT
+  domain: EDIT
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/mapdata/MapDataApiClientImpl.kt
+  source_capability: osm_version_conflict
+  navipro_target: stale source hold/compare
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_UPLOAD_ORCHESTRATION
+  domain: EDIT
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/upload/Uploader.kt
+  source_capability: upload_orchestration
+  navipro_target: separate upload-to-staging
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_SOURCE_CHANGESET
+  domain: EDIT
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/edits/upload
+  source_capability: source_changeset
+  navipro_target: audit bundle metadata
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_EDIT_HISTORY
+  domain: EDIT
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/edithistory
+  source_capability: edit_history
+  navipro_target: survey change timeline
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_TAG_DIFF
+  domain: EDIT
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/edits/update_tags
+  source_capability: tag_diff
+  navipro_target: candidate OSM tag diff only
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_OSM_NOTES
+  domain: FIELD
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osmnotes
+  source_capability: osm_notes
+  navipro_target: annotation capture
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_PHOTO_EVIDENCE
+  domain: FIELD
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osmnotes/PhotoServiceApiClientImpl.kt
+  source_capability: photo_evidence
+  navipro_target: photo evidence with consent and hashes
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_GPS_TRACKS
+  domain: FIELD
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osmtracks
+  source_capability: gps_tracks
+  navipro_target: recon trace input
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_GEO_QUEST_MAP
+  domain: FIELD
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/screens/main/map
+  source_capability: geo_quest_map
+  navipro_target: map quest pin workflow
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_TEAM_MODE
+  domain: FIELD
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/visiblequests/TeamModeQuestFilterSource.kt
+  source_capability: team_mode
+  navipro_target: survey assignment/filter
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_QUEST_PRESETS
+  domain: FIELD
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/presets
+  source_capability: quest_presets
+  navipro_target: event-specific survey template
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_QUEST_FILTER_VISIBILITY
+  domain: FIELD
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/visiblequests
+  source_capability: quest_filter_visibility
+  navipro_target: quest types by event
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_MAIN_MAP_CONTEXT
+  domain: FIELD
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/screens/main/MapContextMenu.kt
+  source_capability: main_map_context
+  navipro_target: survey/context quick actions
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_OSM_NODES_WAYS_RELATIONS
+  domain: INTEROPERABILITY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/mapdata/MapDataRepository.kt
+  source_capability: osm_nodes_ways_relations
+  navipro_target: provider OSM identifiers and types
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_OSM_API_CLIENT
+  domain: INTEROPERABILITY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm/mapdata/MapDataApiClientImpl.kt
+  source_capability: osm_api_client
+  navipro_target: read OSM snapshot with version
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_ELEMENT_FILTER_PARSER
+  domain: INTEROPERABILITY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/elementfilter
+  source_capability: element_filter_parser
+  navipro_target: curated deterministic quest predicates
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_COUNTRY_RULES
+  domain: INTEROPERABILITY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/meta
+  source_capability: country_rules
+  navipro_target: country-specific road metadata checks
+  priority: P1
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_ANDROID_SHARED_KOTLIN
+  domain: INTEROPERABILITY
+  source_path: app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/quest/QuestType.kt
+  source_capability: android_shared_kotlin
+  navipro_target: Kotlin/Android architecture path
+  priority: P0
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED
+- id: SC_IOS_WORK_IN_PROGRESS
+  domain: INTEROPERABILITY
+  source_path: iosApp
+  source_capability: ios_work_in_progress
+  navipro_target: 'evaluate later: not field-ready'
+  priority: P2
+  allowed_modes:
+  - PREP
+  - REVIEW
+  route_authority: false
+  osm_publish: false
+  implementation_status: MAPPED_NOT_PARITY_VERIFIED

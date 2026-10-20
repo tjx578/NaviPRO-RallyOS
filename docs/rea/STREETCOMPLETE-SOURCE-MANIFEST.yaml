@@ -1,0 +1,26 @@
+source:
+  repository: https://github.com/tjx578/StreetComplete_rally-maps
+  branch: master
+  commit_sha: e6b04da98028d34c1e49625edd7095f7008106a6
+  commit_date: '2026-09-10T23:50:33Z'
+  repository_kind: FORK_OF_UPSTREAM
+  upstream: https://github.com/streetcomplete/StreetComplete
+  upstream_sha_at_review: 5ed9bcd0685e81f7a00a334b0bebf5b8f91b1e8c
+  upstream_ahead_commits_at_review: 462
+  license: GPL-3.0-only
+  code_copied_into_navipro: false
+  clean_room_architecture_inspiration: true
+  tracked_directories:
+    - app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/quest
+    - app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osm
+    - app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/download
+    - app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/upload
+    - app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osmnotes
+    - app/src/commonMain/kotlin/de/westnordost/streetcomplete/data/osmtracks
+    - app/src/commonMain/kotlin/de/westnordost/streetcomplete/quests
+    - app/src/commonMain/kotlin/de/westnordost/streetcomplete/overlays
+limitations:
+  - No built Android/iOS StreetComplete fork evaluated during this audit
+  - No race-specific modifications established in inspected code
+  - OSM survey workflows require provenance and explicit separation from NaviPRO route authority
+  - iOS source tree presence is not evidence of production readiness

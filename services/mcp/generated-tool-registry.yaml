@@ -414,6 +414,87 @@ tools:
   authority: AGENT_PROPOSE
   side_effect: DRAFT_MUTATION
   tool: navipro.spatial3d.project.draft
+- operation_id: getSurveyCapabilities
+  method: GET
+  path: /survey/capabilities
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.survey.capabilities.get
+- operation_id: planSurveyTasks
+  method: POST
+  path: /survey/tasks/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: PROPOSAL_ONLY
+  tool: navipro.survey.tasks.plan
+- operation_id: getSurveyTask
+  method: GET
+  path: /survey/tasks/{taskId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.survey.task.get
+- operation_id: assessSurveyRouteGaps
+  method: POST
+  path: /survey/gaps/route
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.survey.gaps.assess
+- operation_id: getSurveyObservation
+  method: GET
+  path: /survey/observations/{observationId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.survey.observation.get
+- operation_id: assessSurveyObservation
+  method: POST
+  path: /survey/observations/assess
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.survey.observation.assess
+- operation_id: assessSurveyConflict
+  method: POST
+  path: /survey/conflicts/assess
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.survey.conflicts.assess
+- operation_id: planSurveySync
+  method: POST
+  path: /survey/sync/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.survey.sync.plan
+- operation_id: planSurveyOverlays
+  method: POST
+  path: /survey/overlays/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.survey.overlays.plan
 blocked_operations:
 - operation_id: healthCheck
   method: GET
@@ -472,3 +553,27 @@ blocked_operations:
   - REVIEW
   authority: RELEASE_MANAGER_ONLY
   side_effect: RELEASE_MUTATION
+- operation_id: captureSurveyObservation
+  method: POST
+  path: /survey/observations
+  modes:
+  - PREP
+  - REVIEW
+  authority: HUMAN_SURVEYOR
+  side_effect: STAGING_WRITE
+- operation_id: commitSurveySync
+  method: POST
+  path: /survey/sync/commit
+  modes:
+  - PREP
+  - REVIEW
+  authority: HUMAN_SURVEYOR
+  side_effect: STAGING_WRITE
+- operation_id: decideSurveyEvidence
+  method: POST
+  path: /survey/decisions/{observationId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: NAVIGATOR_ONLY
+  side_effect: AUTHORITY_MUTATION

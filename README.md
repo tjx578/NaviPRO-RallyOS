@@ -56,3 +56,10 @@ python -m pytest -q tests/contracts
 ```
 
 **Important:** neither Kepler nor Cesium WebGL frontend has been built in this environment, and OpenAPI/MCP service implementations are not present. The static Cesium app is a prototype; the numerical geodesy helper is tested. No dependency is added to Driver LIVE.
+
+## StreetComplete Field Survey REA (third spatial capability)
+
+- [Source audit](docs/rea/STREETCOMPLETE-REA-v1.md) and [Kepler/Cesium/StreetComplete reconciliation](docs/rea/SPATIAL-RECONCILIATION-KEPLER-CESIUM-STREETCOMPLETE-v1.md).
+- Source: `tjx578/StreetComplete_rally-maps`, GPL-3.0-only, SHA `e6b04da98028d34c1e49625edd7095f7008106a6`. **Patterns only; no GPL source copied.**
+- [Registry](contracts/spatial/streetcomplete-capability-registry.yaml), [policy](governance/streetcomplete-field-survey-policy.yaml), [Android scaffold](apps/field-survey-android/README.md).
+- Python deterministic survey planner and SQLite offline outbox are prototypes, not production or race-ready services. `LIVE` remains deny.

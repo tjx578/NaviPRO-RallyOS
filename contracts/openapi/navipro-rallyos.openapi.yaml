@@ -2,11 +2,13 @@ openapi: 3.1.0
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: NaviPRO RallyOS Unified API
-  version: 0.3.0-vnext-cesium-rea
-  description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver LIVE
-    runtime consumes confirmed offline packages and does not depend on this API. Spatial Intelligence REA baseline adds Kepler-grade
-    PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA defines PREP/REVIEW-only 3D
-    scene and terrain analytical plan contracts; definitions are not deployed API implementations.
+  version: 0.4.0-vnext-streetcomplete-rea
+  description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver
+    LIVE runtime consumes confirmed offline packages and does not depend on this API. Spatial Intelligence REA baseline
+    adds Kepler-grade PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA defines
+    PREP/REVIEW-only 3D scene and terrain analytical plan contracts; definitions are not deployed API implementations.
+    StreetComplete REA adds clean-room, PREP/REVIEW-only field-survey contracts; observational data is not OSM-tag editing,
+    verified road truth, or route authority.
 servers:
 - url: https://api.navipro.local/vnext
   description: Placeholder target; replace per deployment
@@ -27,6 +29,8 @@ tags:
 - name: Governance
 - name: Terrain3D
   description: Non-authoritative 3D geospatial analysis planning and inspection
+- name: FieldSurvey
+  description: Quest-inspired offline survey planning and staging (no direct OSM publish)
 paths:
   /health:
     get:
@@ -2652,6 +2656,470 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+  /survey/capabilities:
+    get:
+      operationId: getSurveyCapabilities
+      summary: List survey capability registry
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.capabilities.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyCapabilitiesResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+  /survey/tasks/plan:
+    post:
+      operationId: planSurveyTasks
+      summary: Propose atomic road/landmark surveys
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.tasks.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: PROPOSAL_ONLY
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyTaskPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyTaskPlanRequest'
+  /survey/tasks/{taskId}:
+    get:
+      operationId: getSurveyTask
+      summary: Read a survey task
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.task.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyTaskReadResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      parameters:
+      - in: path
+        name: taskId
+        required: true
+        schema: &id006
+          type: string
+          minLength: 1
+  /survey/gaps/route:
+    post:
+      operationId: assessSurveyRouteGaps
+      summary: Find route evidence gaps and propose survey tasks
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.gaps.assess
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyTaskPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyGapAnalysisRequest'
+  /survey/observations:
+    post:
+      operationId: captureSurveyObservation
+      summary: Record human field observation to local staging
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: HUMAN_SURVEYOR
+      x-navipro-side-effect: STAGING_WRITE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyTaskResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyObservationDraft'
+  /survey/observations/{observationId}:
+    get:
+      operationId: getSurveyObservation
+      summary: Read staging observation
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.observation.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyObservationReadResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      parameters:
+      - in: path
+        name: observationId
+        required: true
+        schema: *id006
+  /survey/observations/assess:
+    post:
+      operationId: assessSurveyObservation
+      summary: Assess candidate observation, do not promote verified
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.observation.assess
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyTaskResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyAssessmentRequest'
+  /survey/conflicts/assess:
+    post:
+      operationId: assessSurveyConflict
+      summary: Version-aware OSM survey conflict assessment
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.conflicts.assess
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyConflictResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyConflictCheckRequest'
+  /survey/sync/plan:
+    post:
+      operationId: planSurveySync
+      summary: Plan offline to NaviPRO staging sync
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.sync.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveySyncPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveySyncPlanRequest'
+  /survey/sync/commit:
+    post:
+      operationId: commitSurveySync
+      summary: Authenticated field client uploads staged observations
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: HUMAN_SURVEYOR
+      x-navipro-side-effect: STAGING_WRITE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyTaskResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveySyncPlanRequest'
+  /survey/overlays/plan:
+    post:
+      operationId: planSurveyOverlays
+      summary: Plan thematic road-attribute review overlays
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.survey.overlays.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyOverlayPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyOverlayPlanRequest'
+  /survey/decisions/{observationId}:
+    post:
+      operationId: decideSurveyEvidence
+      summary: Navigator alone issues a scoped evidence decision
+      tags:
+      - FieldSurvey
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: NAVIGATOR_ONLY
+      x-navipro-side-effect: AUTHORITY_MUTATION
+      responses:
+        '200':
+          description: PREP/REVIEW assessment or proposal only; not authoritative
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyTaskResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Authentication required
+        '403':
+          description: Forbidden
+        '409':
+          description: Stale source/conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyAssessmentRequest'
+      parameters:
+      - in: path
+        name: observationId
+        required: true
+        schema: *id006
 components:
   securitySchemes:
     bearerAuth:
@@ -3715,7 +4183,7 @@ components:
           type: array
           items:
             type: string
-            enum: &id006
+            enum: &id007
             - POINT
             - ARC
             - LINE
@@ -3794,7 +4262,7 @@ components:
           type: array
           items:
             type: string
-            enum: *id006
+            enum: *id007
         goal:
           type:
           - string
@@ -4418,3 +4886,458 @@ components:
           type: array
           items:
             type: string
+    SurveySourceRef:
+      type: object
+      additionalProperties: false
+      required:
+      - source_kind
+      - osm_element_type
+      - osm_element_id
+      - osm_version
+      properties:
+        source_kind:
+          type: string
+          const: OSM_SNAPSHOT
+        osm_element_type:
+          type: string
+          enum:
+          - node
+          - way
+          - relation
+        osm_element_id:
+          type: integer
+          minimum: 1
+        osm_version:
+          type: integer
+          minimum: 1
+        snapshot_id: *id006
+        dataset_sha256:
+          type: string
+          pattern: ^[0-9a-f]{64}$
+    SurveyTaskPlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - route_revision_id
+      - event_id
+      - mode
+      - source_snapshot_id
+      - quest_types
+      properties:
+        route_revision_id: *id006
+        event_id: *id006
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        source_snapshot_id: *id006
+        quest_types:
+          type: array
+          minItems: 1
+          items: *id006
+          uniqueItems: true
+        max_tasks:
+          type: integer
+          minimum: 1
+          maximum: 5000
+        corridor_filter_ref: *id006
+    SurveyTask:
+      type: object
+      additionalProperties: false
+      required:
+      - task_id
+      - quest_type
+      - question
+      - source
+      - status
+      - route_revision_id
+      - priority
+      - human_survey_required
+      - route_authority
+      properties:
+        task_id: *id006
+        quest_type: *id006
+        question: *id006
+        source:
+          $ref: '#/components/schemas/SurveySourceRef'
+        status:
+          type: string
+          enum:
+          - PROPOSED
+          - ASSIGNED
+          - IN_PROGRESS
+          - ANSWERED
+          - SKIPPED
+          - CLOSED
+        route_revision_id: *id006
+        priority:
+          type: integer
+          minimum: 0
+          maximum: 100
+        lat_e7:
+          type: integer
+          minimum: -900000000
+          maximum: 900000000
+        lon_e7:
+          type: integer
+          minimum: -1800000000
+          maximum: 1800000000
+        human_survey_required:
+          type: boolean
+          const: true
+        route_authority:
+          type: boolean
+          const: false
+        reasons:
+          type: array
+          items: *id006
+        osm_tag_key: &id008
+          type: string
+          minLength: 1
+        mode: &id009
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        authority:
+          type: string
+          const: SURVEY_PROPOSAL_ONLY
+    SurveyObservationDraft:
+      type: object
+      additionalProperties: false
+      required:
+      - observation_id
+      - task_id
+      - route_revision_id
+      - actor_id
+      - quest_type
+      - answer
+      - observed_at
+      - osm_element_type
+      - osm_element_id
+      - observed_osm_version
+      - lat_e7
+      - lon_e7
+      - mode
+      - route_authority
+      properties:
+        observation_id: *id008
+        task_id: *id008
+        route_revision_id: *id008
+        actor_id: *id008
+        quest_type: *id008
+        answer:
+          oneOf:
+          - type: string
+            minLength: 1
+          - type: object
+            minProperties: 1
+        observed_at:
+          type: string
+          format: date-time
+        osm_element_type:
+          type: string
+          enum:
+          - node
+          - way
+        osm_element_id:
+          type: integer
+          minimum: 1
+        observed_osm_version:
+          type: integer
+          minimum: 1
+        lat_e7:
+          type: integer
+          minimum: -900000000
+          maximum: 900000000
+        lon_e7:
+          type: integer
+          minimum: -1800000000
+          maximum: 1800000000
+        mode: *id009
+        route_authority: &id010
+          type: boolean
+          const: false
+        gps_accuracy_m:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+        evidence_sha256:
+          type: string
+          pattern: ^[0-9a-f]{64}$
+        source_snapshot_id: *id008
+        notes:
+          type: string
+          maxLength: 3000
+    SurveyAssessmentRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - observation_id
+      - route_revision_id
+      - mode
+      properties:
+        observation_id: *id006
+        route_revision_id: *id006
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        current_osm_version:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+        source_snapshot_id: *id006
+    SurveyConflictCheckRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - observation_id
+      - observed_osm_version
+      - current_osm_version
+      - mode
+      properties:
+        observation_id: *id006
+        observed_osm_version:
+          type: integer
+          minimum: 1
+        current_osm_version:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+    SurveyGapAnalysisRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - route_revision_id
+      - source_snapshot_id
+      - mode
+      properties:
+        route_revision_id: *id006
+        source_snapshot_id: *id006
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        include_kmpal:
+          type: boolean
+        include_mandatory_landmarks:
+          type: boolean
+    SurveySyncPlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - device_id
+      - batch_id
+      - mode
+      properties:
+        device_id: *id006
+        batch_id: *id006
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        pending_observation_ids:
+          type: array
+          items: *id006
+          uniqueItems: true
+        network_preference:
+          type: string
+          enum:
+          - WIFI_ONLY
+          - ANY_NETWORK
+          - MANUAL
+        destination:
+          type: string
+          const: NAVIPRO_STAGING_ONLY
+    SurveyOverlayPlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - route_revision_id
+      - mode
+      - overlay_types
+      properties:
+        route_revision_id: *id006
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        overlay_types:
+          type: array
+          items:
+            type: string
+            enum:
+            - surface
+            - smoothness
+            - oneway
+            - maxspeed
+            - access
+            - road_name
+            - width
+            - quests
+            - observations
+            - conflicts
+            - kmpal
+        source_snapshot_id: *id006
+    SurveyTaskResult:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - route_authority
+      - mode
+      properties:
+        status:
+          type: string
+          enum:
+          - PROPOSED
+          - PENDING_SYNC
+          - STAGED_REVIEW
+          - CONFLICT
+          - HOLD
+          - NEEDS_REVIEW
+        route_authority:
+          type: boolean
+          const: false
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        task_id: *id006
+        observation_id: *id006
+        plan_id: *id006
+        warnings:
+          type: array
+          items:
+            type: string
+        requires_human_review:
+          type: boolean
+    SurveyCapabilitiesResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - quest_types
+      properties:
+        mode: *id009
+        route_authority: *id010
+        quest_types:
+          type: array
+          items: *id008
+        source_sha: *id008
+    SurveyTaskPlanResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - tasks
+      properties:
+        mode: *id009
+        route_authority: *id010
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurveyTask'
+        warnings:
+          type: array
+          items: *id008
+    SurveyTaskReadResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - task
+      properties:
+        mode: *id009
+        route_authority: *id010
+        task:
+          $ref: '#/components/schemas/SurveyTask'
+    SurveyObservationReadResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - observation
+      properties:
+        mode: *id009
+        route_authority: *id010
+        observation:
+          $ref: '#/components/schemas/SurveyObservationDraft'
+        staging_status:
+          type: string
+          enum:
+          - PENDING_SYNC
+          - STAGED_REVIEW
+          - CONFLICT
+          - HOLD
+    SurveyConflictResult:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - route_authority
+      - reason
+      properties:
+        status:
+          type: string
+          enum:
+          - REVIEW_REQUIRED
+          - CONFLICT
+          - HOLD
+        route_authority: *id010
+        reason: *id008
+        observation_id: *id008
+    SurveySyncPlanResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - destination
+      - pending_count
+      properties:
+        mode: *id009
+        route_authority: *id010
+        destination:
+          const: NAVIPRO_STAGING_ONLY
+        pending_count:
+          type: integer
+          minimum: 0
+        warnings:
+          type: array
+          items: *id008
+    SurveyOverlayPlanResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - overlay_types
+      properties:
+        mode: *id009
+        route_authority: *id010
+        overlay_types:
+          type: array
+          items: *id008
+        warnings:
+          type: array
+          items: *id008
