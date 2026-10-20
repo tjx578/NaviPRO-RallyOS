@@ -1,0 +1,9 @@
+document_role: OPENAPI_DOMAIN_INDEX
+aggregate: ../navipro-rallyos.openapi.yaml
+operations:
+- reviewRouteWorkflow
+- compileWorkflow
+- getRelease
+- publishRelease
+note: Edit the aggregate contract or generator source; this index exists to preserve
+  domain ownership.

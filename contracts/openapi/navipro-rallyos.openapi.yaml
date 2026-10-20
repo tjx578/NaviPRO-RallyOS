@@ -1,0 +1,2736 @@
+openapi: 3.1.0
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+info:
+  title: NaviPRO RallyOS Unified API
+  version: 0.1.0-vnext
+  description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver
+    LIVE runtime consumes confirmed offline packages and does not depend on this API.
+servers:
+- url: https://api.navipro.local/vnext
+  description: Placeholder target; replace per deployment
+security:
+- bearerAuth: []
+tags:
+- name: System
+- name: Rally
+- name: Location
+- name: Evidence
+- name: Route
+- name: Timing
+- name: Validation
+- name: Integration
+- name: Workflow
+- name: Release
+- name: Governance
+paths:
+  /health:
+    get:
+      operationId: healthCheck
+      summary: Health check
+      tags:
+      - System
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      - LIVE
+      x-navipro-authority: SYSTEM
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /events/{eventId}:
+    get:
+      operationId: getEvent
+      summary: Get event
+      tags:
+      - Rally
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.rally.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+  /events/{eventId}/sub-trayeks:
+    get:
+      operationId: listSubTrayeks
+      summary: List sub-trayeks
+      tags:
+      - Rally
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.subtrayek.list
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubTrayek'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+  /events/{eventId}/sub-trayeks/{subTrayekId}:
+    get:
+      operationId: getSubTrayek
+      summary: Get sub-trayek
+      tags:
+      - Rally
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.subtrayek.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubTrayek'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      - name: subTrayekId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+  /events/{eventId}/roadbooks/parse:
+    post:
+      operationId: parseRoadbook
+      summary: Parse roadbook into proposal events
+      tags:
+      - Rally
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.rally.parse
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadbookEvent'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceBinding'
+  /locations/search:
+    post:
+      operationId: searchLocations
+      summary: Search location candidates
+      tags:
+      - Location
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.location.search
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCandidate'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      description: Provider selection is internal. External results remain candidates, never authority.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationCandidate'
+  /locations/kmpal/parse:
+    post:
+      operationId: parseKmPal
+      summary: Parse KM PAL marker
+      tags:
+      - Location
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.location.kmpal.parse
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KmPalParseResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KmPalParseRequest'
+  /locations/kmpal/estimate:
+    post:
+      operationId: estimateKmPal
+      summary: Estimate KM PAL candidate
+      tags:
+      - Location
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.location.kmpal.estimate
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCandidate'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KmPalEstimateRequest'
+  /locations/kmpal/assess:
+    post:
+      operationId: assessKmPal
+      summary: Assess KM PAL candidate without verifying it
+      tags:
+      - Location
+      - Evidence
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.location.kmpal.assess
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KmPalAssessment'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KmPalEstimateRequest'
+  /location-observations:
+    post:
+      operationId: createLocationObservation
+      summary: Store proposal-only location observation
+      tags:
+      - Evidence
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.evidence.location.propose
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationObservation'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationObservation'
+  /location-decisions:
+    post:
+      operationId: createLocationDecision
+      summary: Create human location decision
+      tags:
+      - Evidence
+      - Governance
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: NAVIGATOR_ONLY
+      x-navipro-side-effect: AUTHORITY_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDecision'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationDecision'
+  /routes/resolve:
+    post:
+      operationId: resolveRoute
+      summary: Resolve route candidate
+      tags:
+      - Route
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.route.resolve
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteRevision'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteResolveRequest'
+  /routes/{routeId}:
+    get:
+      operationId: getRoute
+      summary: Get route revision
+      tags:
+      - Route
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.route.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteRevision'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+  /routes/{routeId}/compare:
+    post:
+      operationId: compareRoutes
+      summary: Compare route candidates/revisions
+      tags:
+      - Route
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.route.compare
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteRevision'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteResolveRequest'
+  /routes/{routeId}/validate:
+    post:
+      operationId: validateRoute
+      summary: Validate route with deterministic gates
+      tags:
+      - Route
+      - Validation
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.route.validate
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationReport'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteRevision'
+  /routes/{routeId}/revisions:
+    post:
+      operationId: createRouteRevision
+      summary: Create draft route revision
+      tags:
+      - Route
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.route.revision.propose
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteRevision'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteRevision'
+  /routes/{routeId}/revisions/{revisionId}/confirm:
+    post:
+      operationId: confirmRouteRevision
+      summary: Confirm route revision
+      tags:
+      - Route
+      - Governance
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: NAVIGATOR_ONLY
+      x-navipro-side-effect: AUTHORITY_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteRevision'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      - name: revisionId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteRevision'
+  /timing/compute:
+    post:
+      operationId: computeTiming
+      summary: Compute deterministic absolute time
+      tags:
+      - Timing
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.timing.compute
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimingComputeResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimingComputeRequest'
+  /timing/plans:
+    post:
+      operationId: createTimingPlan
+      summary: Create timing plan draft
+      tags:
+      - Timing
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.timing.plan.propose
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimingPlan'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimingPlan'
+  /timing/validate:
+    post:
+      operationId: validateTiming
+      summary: Validate timing plan
+      tags:
+      - Timing
+      - Validation
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.timing.validate
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationReport'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimingPlan'
+  /validation/routes/{routeId}:
+    post:
+      operationId: runRouteValidation
+      summary: Run 16 blocking route/release gates
+      tags:
+      - Validation
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.validation.route
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationReport'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: routeId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteRevision'
+  /validation/reports/{reportId}:
+    get:
+      operationId: getValidationReport
+      summary: Get validation report
+      tags:
+      - Validation
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.validation.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationReport'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: reportId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+  /integrations/google-maps/links:
+    post:
+      operationId: generateGoogleMapsPreview
+      summary: Generate Google Maps preview links
+      tags:
+      - Integration
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.maps.preview_link
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MapsLinkPreview'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      description: Reference/export only. Does not mutate or authorize the canonical route.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MapsLinkRequest'
+  /integrations/tsd/deliver:
+    post:
+      operationId: deliverTsdPlan
+      summary: Deliver confirmed timing plan to TSD
+      tags:
+      - Integration
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: NAVIGATOR_ONLY
+      x-navipro-side-effect: EXTERNAL_DELIVERY
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryEnvelope'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryEnvelope'
+  /integrations/driver/deliver:
+    post:
+      operationId: deliverDriverPackage
+      summary: Deliver confirmed package to Driver Runtime
+      tags:
+      - Integration
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: NAVIGATOR_ONLY
+      x-navipro-side-effect: EXTERNAL_DELIVERY
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryEnvelope'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryEnvelope'
+  /integrations/deliveries/{deliveryId}:
+    get:
+      operationId: getDeliveryState
+      summary: Read delivery/ACK state
+      tags:
+      - Integration
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.integration.delivery.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryEnvelope'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: deliveryId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+  /workflows/review-route:
+    post:
+      operationId: reviewRouteWorkflow
+      summary: Run proposal-only review workflow
+      tags:
+      - Workflow
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.workflow.review_route
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowReviewResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowReviewRequest'
+  /workflows/compile:
+    post:
+      operationId: compileWorkflow
+      summary: Compile release candidate after gates
+      tags:
+      - Workflow
+      - Release
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: RELEASE_MANAGER_ONLY
+      x-navipro-side-effect: RELEASE_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReleaseManifest'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseManifest'
+  /releases/{releaseId}:
+    get:
+      operationId: getRelease
+      summary: Get release manifest
+      tags:
+      - Release
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.release.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReleaseManifest'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: releaseId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+  /releases/{releaseId}/publish:
+    post:
+      operationId: publishRelease
+      summary: Publish frozen release
+      tags:
+      - Release
+      x-navipro-mcp:
+        enabled: false
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: RELEASE_MANAGER_ONLY
+      x-navipro-side-effect: RELEASE_MUTATION
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReleaseManifest'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      parameters:
+      - name: releaseId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/IdRef'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseManifest'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ApiError:
+      type: object
+      required:
+      - code
+      - message
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+        trace_id:
+          type:
+          - string
+          - 'null'
+    IdRef:
+      type: string
+      minLength: 1
+      maxLength: 128
+    Sha256:
+      type: string
+      pattern: ^[a-f0-9]{64}$
+    GeoPointE7:
+      type: object
+      required:
+      - lat_e7
+      - lon_e7
+      additionalProperties: false
+      properties:
+        lat_e7:
+          type: integer
+          minimum: -900000000
+          maximum: 900000000
+        lon_e7:
+          type: integer
+          minimum: -1800000000
+          maximum: 1800000000
+    LocationRef:
+      type: object
+      required:
+      - location_id
+      additionalProperties: false
+      properties:
+        location_id:
+          $ref: '#/components/schemas/IdRef'
+        name:
+          type:
+          - string
+          - 'null'
+        coord:
+          oneOf:
+          - $ref: '#/components/schemas/GeoPointE7'
+          - type: 'null'
+        status:
+          type: string
+          enum:
+          - UNRESOLVED
+          - CANDIDATE
+          - CONFLICTED
+          - VERIFIED
+          - REJECTED_CONTEXT_ONLY
+          - RETIRED
+    SourceBinding:
+      type: object
+      required:
+      - source_id
+      - revision_id
+      - sha256
+      additionalProperties: false
+      properties:
+        source_id:
+          $ref: '#/components/schemas/IdRef'
+        revision_id:
+          $ref: '#/components/schemas/IdRef'
+        sha256:
+          $ref: '#/components/schemas/Sha256'
+        source_anchor:
+          type:
+          - string
+          - 'null'
+    Rational:
+      type: object
+      required:
+      - numerator
+      - denominator
+      additionalProperties: false
+      properties:
+        numerator:
+          type: integer
+        denominator:
+          type: integer
+          minimum: 1
+    TimingRule:
+      type: object
+      required:
+      - rule_id
+      - mode
+      - clock_scale
+      - rounding_rule
+      additionalProperties: false
+      properties:
+        rule_id:
+          $ref: '#/components/schemas/IdRef'
+        mode:
+          type: string
+          enum:
+          - TETAP_DETIK
+          - TETAP_MENIT
+          - RATA_RATA
+          - BEBAS
+          - EVENT_DEFINED
+        clock_scale:
+          $ref: '#/components/schemas/Rational'
+        rounding_rule:
+          type: string
+        authority_profile_id:
+          $ref: '#/components/schemas/IdRef'
+    RoadbookEvent:
+      type: object
+      required:
+      - event_id
+      - sub_trayek_id
+      - source_sequence
+      - event_type
+      - raw_text
+      - mandatory
+      additionalProperties: false
+      properties:
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        sub_trayek_id:
+          $ref: '#/components/schemas/IdRef'
+        source_sequence:
+          type: integer
+          minimum: 1
+        sub_sequence:
+          type: integer
+          minimum: 0
+          default: 0
+        event_type:
+          type: string
+          enum:
+          - RALLY_INSTRUCTION
+          - PHYSICAL_LANDMARK
+          - ROAD_CONTEXT
+          - DISTANCE_MARKER
+          - CONTROL_POINT
+          - TIME_RULE
+        raw_text:
+          type: string
+        mandatory:
+          type: boolean
+        location_ref:
+          oneOf:
+          - $ref: '#/components/schemas/LocationRef'
+          - type: 'null'
+    SubTrayek:
+      type: object
+      required:
+      - sub_trayek_id
+      - event_id
+      - sequence
+      - authority_distance_mm
+      - authority_duration_ms
+      - timing_mode
+      - validation_status
+      additionalProperties: false
+      properties:
+        sub_trayek_id:
+          $ref: '#/components/schemas/IdRef'
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        sequence:
+          type: integer
+          minimum: 1
+        name:
+          type:
+          - string
+          - 'null'
+        authority_distance_mm:
+          type: integer
+          minimum: 0
+        authority_duration_ms:
+          type: integer
+          minimum: 0
+        timing_mode:
+          type: string
+          enum:
+          - TETAP_DETIK
+          - TETAP_MENIT
+          - RATA_RATA
+          - BEBAS
+          - EVENT_DEFINED
+        start_location:
+          oneOf:
+          - $ref: '#/components/schemas/LocationRef'
+          - type: 'null'
+        finish_location:
+          oneOf:
+          - $ref: '#/components/schemas/LocationRef'
+          - type: 'null'
+        roadbook_event_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdRef'
+        active_route_revision_id:
+          type:
+          - string
+          - 'null'
+        timing_plan_id:
+          type:
+          - string
+          - 'null'
+        validation_status:
+          type: string
+          enum:
+          - NOT_RUN
+          - HOLD
+          - PASS
+          - FAIL
+    Event:
+      type: object
+      required:
+      - event_id
+      - name
+      - status
+      additionalProperties: false
+      properties:
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        name:
+          type: string
+        date:
+          type:
+          - string
+          - 'null'
+          format: date
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - PREP
+          - REVIEW
+          - LOCKED
+          - COMPLETED
+          - RETIRED
+        authority_profile_id:
+          type:
+          - string
+          - 'null'
+        source_bindings:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceBinding'
+    LocationCandidate:
+      type: object
+      required:
+      - candidate_id
+      - query
+      - source
+      - status
+      additionalProperties: false
+      properties:
+        candidate_id:
+          $ref: '#/components/schemas/IdRef'
+        query:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        coord:
+          oneOf:
+          - $ref: '#/components/schemas/GeoPointE7'
+          - type: 'null'
+        source:
+          type: string
+          enum:
+          - NAVIPRO_DB
+          - OSM
+          - GOOGLE
+          - WIKIMAPIA
+          - MANUAL
+          - AI_INFERENCE
+          - OTHER
+        status:
+          type: string
+          enum:
+          - CANDIDATE
+          - CONFLICTED
+          - REJECTED_CONTEXT_ONLY
+        confidence:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 1
+        evidence_refs:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdRef'
+    KmPalParseRequest:
+      type: object
+      required:
+      - raw_marker_text
+      additionalProperties: false
+      properties:
+        raw_marker_text:
+          type: string
+        grammar_version:
+          type:
+          - string
+          - 'null'
+    KmPalParseResult:
+      type: object
+      required:
+      - raw_marker_text
+      - parse_status
+      additionalProperties: false
+      properties:
+        raw_marker_text:
+          type: string
+        parse_status:
+          type: string
+          enum:
+          - PARSED
+          - AMBIGUOUS
+          - CONFLICTED
+          - UNRESOLVED
+        destination_code:
+          type:
+          - string
+          - 'null'
+        destination_distance_mm:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        origin_code:
+          type:
+          - string
+          - 'null'
+        origin_distance_mm:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        reference_code:
+          type:
+          - string
+          - 'null'
+        ambiguity_codes:
+          type: array
+          items:
+            type: string
+    KmPalEstimateRequest:
+      type: object
+      required:
+      - parse
+      - event_context_id
+      additionalProperties: false
+      properties:
+        parse:
+          $ref: '#/components/schemas/KmPalParseResult'
+        event_context_id:
+          $ref: '#/components/schemas/IdRef'
+        route_profile_id:
+          type:
+          - string
+          - 'null'
+        providers:
+          type: array
+          items:
+            type: string
+            enum:
+            - NAVIPRO_DB
+            - OFFLINE_GRAPH
+            - OSM
+            - GOOGLE
+            - WIKIMAPIA
+    KmPalAssessment:
+      type: object
+      required:
+      - assessment_status
+      - candidate_id
+      - corridor_fit
+      additionalProperties: false
+      properties:
+        assessment_status:
+          type: string
+          enum:
+          - PASS_CANDIDATE
+          - HOLD
+          - REJECT_CANDIDATE
+        candidate_id:
+          $ref: '#/components/schemas/IdRef'
+        corridor_fit:
+          type: boolean
+        measured_from_origin_mm:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        measured_to_destination_mm:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        origin_residual_mm:
+          type:
+          - integer
+          - 'null'
+        destination_residual_mm:
+          type:
+          - integer
+          - 'null'
+        graph_release_id:
+          type:
+          - string
+          - 'null'
+        notes:
+          type: array
+          items:
+            type: string
+    LocationObservation:
+      type: object
+      required:
+      - observation_id
+      - candidate_id
+      - source
+      - proposal_only
+      additionalProperties: false
+      properties:
+        observation_id:
+          $ref: '#/components/schemas/IdRef'
+        candidate_id:
+          $ref: '#/components/schemas/IdRef'
+        source:
+          type: string
+        observed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        evidence_sha256:
+          oneOf:
+          - $ref: '#/components/schemas/Sha256'
+          - type: 'null'
+        proposal_only:
+          type: boolean
+          const: true
+        details:
+          type: object
+          additionalProperties: true
+    LocationDecision:
+      type: object
+      required:
+      - decision_id
+      - candidate_id
+      - decision
+      - reviewer_principal_id
+      - reason_code
+      additionalProperties: false
+      properties:
+        decision_id:
+          $ref: '#/components/schemas/IdRef'
+        candidate_id:
+          $ref: '#/components/schemas/IdRef'
+        decision:
+          type: string
+          enum:
+          - VERIFY
+          - REJECT
+          - CONFLICT
+          - RETIRE
+        reviewer_principal_id:
+          $ref: '#/components/schemas/IdRef'
+        reason_code:
+          type: string
+        decided_at:
+          type: string
+          format: date-time
+    RoutePoint:
+      type: object
+      required:
+      - seq
+      - lat_e7
+      - lon_e7
+      - offset_mm
+      - edge_id
+      additionalProperties: false
+      properties:
+        seq:
+          type: integer
+          minimum: 1
+        lat_e7:
+          type: integer
+          minimum: -900000000
+          maximum: 900000000
+        lon_e7:
+          type: integer
+          minimum: -1800000000
+          maximum: 1800000000
+        offset_mm:
+          type: integer
+          minimum: 0
+        edge_id:
+          $ref: '#/components/schemas/IdRef'
+    CoverageBinding:
+      type: object
+      required:
+      - event_id
+      - binding_type
+      - route_element_refs
+      - disposition
+      additionalProperties: false
+      properties:
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        binding_type:
+          type: string
+          enum:
+          - MANEUVER_TRANSITION
+          - LANDMARK_POINT
+          - DISTANCE_MARKER_POINT
+          - CONTROL_POINT
+          - ROAD_CONTEXT
+        route_element_refs:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/IdRef'
+        route_offset_mm:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        disposition:
+          type: string
+          enum:
+          - MAPPED
+          - NOT_APPLICABLE_WITH_REASON
+          - UNMAPPED
+          - CONFLICTED
+        reason:
+          type:
+          - string
+          - 'null'
+    RouteRevision:
+      type: object
+      required:
+      - route_id
+      - revision_id
+      - sub_trayek_id
+      - status
+      - profile
+      - providers
+      - graph_distance_mm
+      - route_points
+      - coverage_bindings
+      additionalProperties: false
+      properties:
+        route_id:
+          $ref: '#/components/schemas/IdRef'
+        revision_id:
+          $ref: '#/components/schemas/IdRef'
+        parent_revision_id:
+          type:
+          - string
+          - 'null'
+        sub_trayek_id:
+          $ref: '#/components/schemas/IdRef'
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - CANDIDATE
+          - VALIDATED
+          - CONFIRMED
+          - ACTIVE
+          - COMPLETED
+          - RETIRED
+        profile:
+          type: string
+          enum:
+          - RALLY_OFFICIAL
+          - RALLY_MASTERPOS
+          - RALLY_CANDIDATE
+          - GOOGLE_REFERENCE
+          - OSM_REFERENCE
+          - OFFLINE_GRAPH
+          - DRIVER_ACTIVE
+          - RECORDED
+        providers:
+          type: array
+          items:
+            type: string
+            enum:
+            - OFFLINE_GRAPH
+            - NAVIPRO_DB
+            - GOOGLE_REFERENCE
+            - OSM_REFERENCE
+            - MANUAL
+            - MASTERPOS
+        authority_distance_mm:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        graph_distance_mm:
+          type: integer
+          minimum: 0
+        route_points:
+          type: array
+          minItems: 2
+          items:
+            $ref: '#/components/schemas/RoutePoint'
+        coverage_bindings:
+          type: array
+          items:
+            $ref: '#/components/schemas/CoverageBinding'
+    RouteResolveRequest:
+      type: object
+      required:
+      - sub_trayek_id
+      - profile
+      - constraints
+      additionalProperties: false
+      properties:
+        sub_trayek_id:
+          $ref: '#/components/schemas/IdRef'
+        profile:
+          type: string
+          enum:
+          - RALLY_OFFICIAL
+          - RALLY_MASTERPOS
+          - RALLY_CANDIDATE
+          - GOOGLE_REFERENCE
+          - OSM_REFERENCE
+          - OFFLINE_GRAPH
+        providers:
+          type: array
+          items:
+            type: string
+            enum:
+            - OFFLINE_GRAPH
+            - NAVIPRO_DB
+            - GOOGLE_REFERENCE
+            - OSM_REFERENCE
+            - MANUAL
+            - MASTERPOS
+        constraints:
+          type: object
+          required:
+          - preserve_source_order
+          - mandatory_landmarks
+          additionalProperties: false
+          properties:
+            preserve_source_order:
+              type: boolean
+              const: true
+            mandatory_landmarks:
+              type: boolean
+              const: true
+            no_tsp_reorder:
+              type: boolean
+              const: true
+    TimingComputeRequest:
+      type: object
+      required:
+      - distance_mm
+      - speed_kmh_ratio
+      - start_time
+      - timing_rule
+      additionalProperties: false
+      properties:
+        distance_mm:
+          type: integer
+          minimum: 0
+        speed_kmh_ratio:
+          $ref: '#/components/schemas/Rational'
+        start_time:
+          type: string
+          pattern: ^([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]{3})?$
+        timing_rule:
+          $ref: '#/components/schemas/TimingRule'
+    TimingComputeResult:
+      type: object
+      required:
+      - travel_duration_ms
+      - arrival_time
+      - calculation_receipt
+      additionalProperties: false
+      properties:
+        travel_duration_ms:
+          type: integer
+          minimum: 0
+        arrival_time:
+          type: string
+        calculation_receipt:
+          type: object
+          required:
+          - distance_mm
+          - speed_kmh_ratio
+          - clock_scale
+          additionalProperties: false
+          properties:
+            distance_mm:
+              type: integer
+            speed_kmh_ratio:
+              $ref: '#/components/schemas/Rational'
+            clock_scale:
+              $ref: '#/components/schemas/Rational'
+            rounding_rule:
+              type: string
+    TimingPlan:
+      type: object
+      required:
+      - timing_plan_id
+      - sub_trayek_id
+      - start_time
+      - duration_ms
+      - status
+      additionalProperties: false
+      properties:
+        timing_plan_id:
+          $ref: '#/components/schemas/IdRef'
+        sub_trayek_id:
+          $ref: '#/components/schemas/IdRef'
+        start_time:
+          type: string
+        duration_ms:
+          type: integer
+          minimum: 0
+        arrival_time:
+          type: string
+        rule_id:
+          $ref: '#/components/schemas/IdRef'
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - VALIDATED
+          - CONFIRMED
+    GateResult:
+      type: object
+      required:
+      - gate
+      - result
+      additionalProperties: false
+      properties:
+        gate:
+          type: string
+          enum:
+          - SCHEMA_DOMAIN
+          - SOURCE_INTEGRITY
+          - RELEASE_BINDING
+          - REVIEW_AUTHORIZATION
+          - SOURCE_ORDER
+          - SOURCE_COVERAGE
+          - MANDATORY_LANDMARK
+          - SPATIAL_VERIFICATION
+          - ROUTE_CONTINUITY
+          - LANDMARK_ROUTE_BINDING
+          - DENSE_GEOMETRY_MEASURE
+          - MONOTONIC_SEQUENCE
+          - DISTANCE_RESIDUAL_PER_SUB
+          - INTER_SUB_CHAINING
+          - ROUTE_ENDPOINT_BINDING
+          - TIMING_CONSISTENCY
+        result:
+          type: string
+          enum:
+          - PASS
+          - FAIL
+          - NOT_RUN
+        message:
+          type:
+          - string
+          - 'null'
+    ValidationReport:
+      type: object
+      required:
+      - report_id
+      - subject_id
+      - release_status
+      - gates
+      additionalProperties: false
+      properties:
+        report_id:
+          $ref: '#/components/schemas/IdRef'
+        subject_id:
+          $ref: '#/components/schemas/IdRef'
+        release_status:
+          type: string
+          enum:
+          - PASS
+          - HOLD
+        gates:
+          type: array
+          minItems: 16
+          maxItems: 16
+          items:
+            $ref: '#/components/schemas/GateResult'
+    MapsLinkRequest:
+      type: object
+      required:
+      - route_revision_id
+      - verified_anchor_ids
+      additionalProperties: false
+      properties:
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        verified_anchor_ids:
+          type: array
+          minItems: 2
+          items:
+            $ref: '#/components/schemas/IdRef'
+        segment_limit:
+          type: integer
+          minimum: 2
+          maximum: 25
+          default: 25
+    MapsLinkPreview:
+      type: object
+      required:
+      - route_revision_id
+      - segments
+      - reference_only
+      additionalProperties: false
+      properties:
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        segments:
+          type: array
+          items:
+            type: string
+        reference_only:
+          type: boolean
+          const: true
+    DeliveryEnvelope:
+      type: object
+      required:
+      - delivery_id
+      - target
+      - schema_version
+      - revision_id
+      - payload_sha256
+      - idempotency_key
+      - state
+      additionalProperties: false
+      properties:
+        delivery_id:
+          $ref: '#/components/schemas/IdRef'
+        target:
+          type: string
+          enum:
+          - TSD_CADENCER
+          - DRIVER_RUNTIME
+        schema_version:
+          type: string
+        revision_id:
+          $ref: '#/components/schemas/IdRef'
+        payload_sha256:
+          $ref: '#/components/schemas/Sha256'
+        idempotency_key:
+          type: string
+        state:
+          type: string
+          enum:
+          - QUEUED
+          - SENT
+          - ACKED
+          - FAILED
+        ack_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    WorkflowReviewRequest:
+      type: object
+      required:
+      - event_id
+      - sub_trayek_id
+      additionalProperties: false
+      properties:
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        sub_trayek_id:
+          $ref: '#/components/schemas/IdRef'
+        include_location_search:
+          type: boolean
+          default: true
+        include_maps_preview:
+          type: boolean
+          default: true
+    WorkflowReviewResult:
+      type: object
+      required:
+      - status
+      - proposals
+      - validation_report_id
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+          - READY_FOR_REVIEW
+          - HOLD
+        proposals:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        validation_report_id:
+          $ref: '#/components/schemas/IdRef'
+    ReleaseManifest:
+      type: object
+      required:
+      - release_id
+      - event_id
+      - revision_id
+      - sha256
+      - status
+      additionalProperties: false
+      properties:
+        release_id:
+          $ref: '#/components/schemas/IdRef'
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        revision_id:
+          $ref: '#/components/schemas/IdRef'
+        sha256:
+          $ref: '#/components/schemas/Sha256'
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - HOLD
+          - COMPILE_READY
+          - PUBLISHED

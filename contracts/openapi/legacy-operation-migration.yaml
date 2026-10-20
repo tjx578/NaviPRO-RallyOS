@@ -1,0 +1,114 @@
+schema_version: '1.0'
+legacy_operation:
+  computeTimeAbsolute:
+    target_operation_id: computeTiming
+    target_tool: navipro.timing.compute
+    action: KEEP_REFACTOR
+  parseKmPalString:
+    target_operation_id: parseKmPal
+    target_tool: navipro.location.kmpal.parse
+    action: KEEP_UPGRADE
+  estimateKmPalLocation:
+    target_operation_id: estimateKmPal
+    target_tool: navipro.location.kmpal.estimate
+    action: KEEP_UPGRADE
+  verifyKmPalPosition:
+    target_operation_id: assessKmPal
+    target_tool: navipro.location.kmpal.assess
+    action: RENAME_VERIFY_TO_ASSESS
+  generateMapsLinks:
+    target_operation_id: generateGoogleMapsPreview
+    target_tool: navipro.maps.preview_link
+    action: KEEP_AS_ADAPTER
+  getAllStages:
+    target_operation_id: listSubTrayeks
+    target_tool: navipro.subtrayek.list
+    action: MIGRATE_GENERIC_EVENT
+  addSubTrayek:
+    target_operation_id: null
+    target_tool: null
+    action: HUMAN_GATED_RESOURCE_MUTATION
+  getSubTrayekById:
+    target_operation_id: getSubTrayek
+    target_tool: navipro.subtrayek.get
+    action: MIGRATE_GENERIC_EVENT
+  updateSubTrayek:
+    target_operation_id: null
+    target_tool: null
+    action: HUMAN_GATED_RESOURCE_MUTATION
+  searchPlaces:
+    target_operation_id: searchLocations
+    target_tool: navipro.location.search
+    action: KEEP_PROVIDER_ADAPTER
+  executeWorkflow:
+    target_operation_id: reviewRouteWorkflow
+    target_tool: navipro.workflow.review_route
+    action: THIN_FACADE
+  validateConstraints:
+    target_operation_id: runRouteValidation
+    target_tool: navipro.validation.route
+    action: DECOMPOSE_TO_GATES
+  generateMapsLink:
+    target_operation_id: generateGoogleMapsPreview
+    target_tool: navipro.maps.preview_link
+    action: KEEP_AS_ADAPTER
+  saveYaml:
+    target_operation_id: null
+    target_tool: null
+    action: REPLACE_WITH_CONTROLLED_ARTIFACT_STORE
+  processUltimateChampionshipRoute:
+    target_operation_id: reviewRouteWorkflow
+    target_tool: navipro.workflow.review_route
+    action: DECOMPOSE_RETAIN_REQUIREMENTS
+  calculateSubTrayek:
+    target_operation_id: resolveRoute
+    target_tool: navipro.route.resolve
+    action: DECOMPOSE_ROUTE_PLUS_TIMING
+  searchWithFallback:
+    target_operation_id: searchLocations
+    target_tool: navipro.location.search
+    action: KEEP_WITH_AUTHORITY_ORDER
+  validateSubTrayekAbsolute:
+    target_operation_id: runRouteValidation
+    target_tool: navipro.validation.route
+    action: DECOMPOSE_TO_GATES
+  storeKnowledge:
+    target_operation_id: createLocationObservation
+    target_tool: navipro.evidence.location.propose
+    action: STAGING_ONLY
+  retrieveKnowledge:
+    target_operation_id: searchLocations
+    target_tool: navipro.location.search
+    action: RETRIEVAL_ONLY
+  getChampionshipStats:
+    target_operation_id: null
+    target_tool: null
+    action: OBSERVABILITY_LATER
+  healthCheck:
+    target_operation_id: healthCheck
+    target_tool: null
+    action: KEEP_INTERNAL
+  listSubTrayek:
+    target_operation_id: listSubTrayeks
+    target_tool: navipro.subtrayek.list
+    action: PRIMARY_MIGRATION_SEED
+  upsertManySubTrayek:
+    target_operation_id: null
+    target_tool: null
+    action: HUMAN_GATED_RESOURCE_MUTATION
+  getSubTrayek:
+    target_operation_id: getSubTrayek
+    target_tool: navipro.subtrayek.get
+    action: PRIMARY_MIGRATION_SEED
+  upsertSubTrayek:
+    target_operation_id: null
+    target_tool: null
+    action: HUMAN_GATED_RESOURCE_MUTATION
+  computeLinksAndTimes:
+    target_operation_id: reviewRouteWorkflow
+    target_tool: navipro.workflow.review_route
+    action: SPLIT_INTEGRATION_AND_TIMING
+  validateSubTrayek:
+    target_operation_id: runRouteValidation
+    target_tool: navipro.validation.route
+    action: DECOMPOSE_TO_GATES

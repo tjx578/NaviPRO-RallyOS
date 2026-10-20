@@ -1,0 +1,267 @@
+generated_from: contracts/openapi/navipro-rallyos.openapi.yaml
+tools:
+- operation_id: getEvent
+  method: GET
+  path: /events/{eventId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.rally.get
+- operation_id: listSubTrayeks
+  method: GET
+  path: /events/{eventId}/sub-trayeks
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.subtrayek.list
+- operation_id: getSubTrayek
+  method: GET
+  path: /events/{eventId}/sub-trayeks/{subTrayekId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.subtrayek.get
+- operation_id: parseRoadbook
+  method: POST
+  path: /events/{eventId}/roadbooks/parse
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.rally.parse
+- operation_id: searchLocations
+  method: POST
+  path: /locations/search
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.location.search
+- operation_id: parseKmPal
+  method: POST
+  path: /locations/kmpal/parse
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.location.kmpal.parse
+- operation_id: estimateKmPal
+  method: POST
+  path: /locations/kmpal/estimate
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.location.kmpal.estimate
+- operation_id: assessKmPal
+  method: POST
+  path: /locations/kmpal/assess
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.location.kmpal.assess
+- operation_id: createLocationObservation
+  method: POST
+  path: /location-observations
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.evidence.location.propose
+- operation_id: resolveRoute
+  method: POST
+  path: /routes/resolve
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.route.resolve
+- operation_id: getRoute
+  method: GET
+  path: /routes/{routeId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.route.get
+- operation_id: compareRoutes
+  method: POST
+  path: /routes/{routeId}/compare
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.route.compare
+- operation_id: validateRoute
+  method: POST
+  path: /routes/{routeId}/validate
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.route.validate
+- operation_id: createRouteRevision
+  method: POST
+  path: /routes/{routeId}/revisions
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.route.revision.propose
+- operation_id: computeTiming
+  method: POST
+  path: /timing/compute
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.timing.compute
+- operation_id: createTimingPlan
+  method: POST
+  path: /timing/plans
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.timing.plan.propose
+- operation_id: validateTiming
+  method: POST
+  path: /timing/validate
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.timing.validate
+- operation_id: runRouteValidation
+  method: POST
+  path: /validation/routes/{routeId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.validation.route
+- operation_id: getValidationReport
+  method: GET
+  path: /validation/reports/{reportId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.validation.get
+- operation_id: generateGoogleMapsPreview
+  method: POST
+  path: /integrations/google-maps/links
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.maps.preview_link
+- operation_id: getDeliveryState
+  method: GET
+  path: /integrations/deliveries/{deliveryId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.integration.delivery.get
+- operation_id: reviewRouteWorkflow
+  method: POST
+  path: /workflows/review-route
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.workflow.review_route
+- operation_id: getRelease
+  method: GET
+  path: /releases/{releaseId}
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.release.get
+blocked_operations:
+- operation_id: healthCheck
+  method: GET
+  path: /health
+  modes:
+  - PREP
+  - REVIEW
+  - LIVE
+  authority: SYSTEM
+  side_effect: NONE
+- operation_id: createLocationDecision
+  method: POST
+  path: /location-decisions
+  modes:
+  - PREP
+  - REVIEW
+  authority: NAVIGATOR_ONLY
+  side_effect: AUTHORITY_MUTATION
+- operation_id: confirmRouteRevision
+  method: POST
+  path: /routes/{routeId}/revisions/{revisionId}/confirm
+  modes:
+  - PREP
+  - REVIEW
+  authority: NAVIGATOR_ONLY
+  side_effect: AUTHORITY_MUTATION
+- operation_id: deliverTsdPlan
+  method: POST
+  path: /integrations/tsd/deliver
+  modes:
+  - PREP
+  - REVIEW
+  authority: NAVIGATOR_ONLY
+  side_effect: EXTERNAL_DELIVERY
+- operation_id: deliverDriverPackage
+  method: POST
+  path: /integrations/driver/deliver
+  modes:
+  - PREP
+  - REVIEW
+  authority: NAVIGATOR_ONLY
+  side_effect: EXTERNAL_DELIVERY
+- operation_id: compileWorkflow
+  method: POST
+  path: /workflows/compile
+  modes:
+  - PREP
+  - REVIEW
+  authority: RELEASE_MANAGER_ONLY
+  side_effect: RELEASE_MUTATION
+- operation_id: publishRelease
+  method: POST
+  path: /releases/{releaseId}/publish
+  modes:
+  - PREP
+  - REVIEW
+  authority: RELEASE_MANAGER_ONLY
+  side_effect: RELEASE_MUTATION
