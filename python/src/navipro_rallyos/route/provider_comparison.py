@@ -22,8 +22,8 @@ def compare_provider_candidates(*, osrm: Mapping[str, Any] | None,
     dataset = None
     diagnostics = []
     for name, resp in provided:
-        if not isinstance(resp, Mapping) or resp.get('route_authority') is not False or resp.get('mode') != 'PREP':
-            raise RouteCandidateError('only PREP non-authoritative provider results can be compared')
+        if not isinstance(resp, Mapping) or resp.get('route_authority') is not False or resp.get('mode') not in ('PREP', 'REVIEW'):
+            raise RouteCandidateError('only PREP/REVIEW non-authoritative provider results can be compared')
         if resp.get('provider', 'OSRM' if name == 'OSRM' else None) != name:
             raise RouteCandidateError('provider result mismatch')
         order = resp.get('source_anchor_order')

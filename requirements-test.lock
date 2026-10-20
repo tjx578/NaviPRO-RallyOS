@@ -1,0 +1,16 @@
+# Tested CPython 3.11 dependency set. No globally installed packages required.
+PyYAML==6.0.3
+pytest==8.4.2
+jsonschema==4.26.0
+rfc3339-validator==0.1.4
+six==1.17.0
+attrs==25.4.0
+referencing==0.37.0
+rpds-py==0.30.0
+jsonschema-specifications==2025.9.1
+typing-extensions==4.15.0
+packaging==26.0
+pluggy==1.6.0
+iniconfig==2.3.0
+colorama==0.4.6
+Pygments==2.19.2

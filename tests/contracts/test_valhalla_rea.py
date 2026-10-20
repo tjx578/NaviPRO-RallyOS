@@ -131,7 +131,7 @@ def test_mock_provider_transport_only():
         paths.append((url, body))
         return route_result()
     adapter = ValhallaAdapter(transport=fake)
-    out = adapter.route(ANCHORS, graph_dataset_id='osm-version', profile_digest='auto-version', valhalla_build='build-version')
+    out = adapter.route(ANCHORS, graph_dataset_id='osm-version', profile_digest='auto-version', valhalla_build='build-version', mode='PREP')
     assert out['provider'] == 'VALHALLA'
     assert paths[0][0] == 'http://127.0.0.1:8002/route'
     assert paths[0][1]['locations'][1]['type'] == 'break_through'
@@ -139,13 +139,13 @@ def test_mock_provider_transport_only():
 
 def test_provider_matrix_mock_transport():
     adapter = ValhallaAdapter(transport=lambda url, body: matrix_result())
-    assert adapter.matrix(ANCHORS, **PROVENANCE)['provider'] == 'VALHALLA'
+    assert adapter.matrix(ANCHORS, mode='REVIEW', **PROVENANCE)['provider'] == 'VALHALLA'
 
 
 def test_native_alternate_endpoint_unimplemented_by_design():
     adapter = ValhallaAdapter(transport=lambda url, body: route_result(2))
     with pytest.raises(ValhallaCandidateError):
-        adapter.route(ANCHORS[:2], graph_dataset_id='d', profile_digest='p', valhalla_build='v', alternates=1)
+        adapter.route(ANCHORS[:2], graph_dataset_id='d', profile_digest='p', valhalla_build='v', mode='PREP', alternates=1)
 
 
 def test_matrix_request_preserves_order_no_optimization():

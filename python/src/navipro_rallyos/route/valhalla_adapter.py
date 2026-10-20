@@ -11,7 +11,7 @@ from math import isfinite
 from typing import Any, Callable, Mapping, Sequence
 from urllib.parse import urlsplit
 
-from .osrm_adapter import OSRMAdapter, RouteAnchor, RouteCandidateError, validate_anchors
+from .osrm_adapter import OSRMAdapter, RouteAnchor, RouteCandidateError, validate_anchors, require_routing_mode
 
 
 class ValhallaCandidateError(RouteCandidateError):
@@ -249,19 +249,25 @@ class ValhallaAdapter:
         self.transport = transport or OSRMAdapter._http_transport
 
     def route(self, anchors: Sequence[RouteAnchor], *, graph_dataset_id: str,
-              profile_digest: str, valhalla_build: str, alternates: int = 0) -> dict[str, Any]:
+              profile_digest: str, valhalla_build: str, mode: str, alternates: int = 0) -> dict[str, Any]:
+        require_routing_mode(mode)
         if alternates:
             raise ValhallaCandidateError('alternate native trip normalization not enabled: review contract first')
         _validate_provenance(graph_dataset_id, profile_digest, valhalla_build)
         payload = build_valhalla_route_request(anchors, alternates=alternates)
         response = self.transport(self.base_url + '/route', payload)
-        return normalize_valhalla_route(response, anchors, graph_dataset_id=graph_dataset_id,
-                                        profile_digest=profile_digest, valhalla_build=valhalla_build)
+        result = normalize_valhalla_route(response, anchors, graph_dataset_id=graph_dataset_id,
+                                         profile_digest=profile_digest, valhalla_build=valhalla_build)
+        result['mode'] = mode
+        return result
 
     def matrix(self, anchors: Sequence[RouteAnchor], *, graph_dataset_id: str,
-               profile_digest: str, valhalla_build: str) -> dict[str, Any]:
+               profile_digest: str, valhalla_build: str, mode: str) -> dict[str, Any]:
+        require_routing_mode(mode)
         _validate_provenance(graph_dataset_id, profile_digest, valhalla_build)
         payload = build_valhalla_matrix_request(anchors)
         response = self.transport(self.base_url + '/sources_to_targets', payload)
-        return normalize_valhalla_matrix(response, anchors, graph_dataset_id=graph_dataset_id,
-                                        profile_digest=profile_digest, valhalla_build=valhalla_build)
+        result = normalize_valhalla_matrix(response, anchors, graph_dataset_id=graph_dataset_id,
+                                          profile_digest=profile_digest, valhalla_build=valhalla_build)
+        result['mode'] = mode
+        return result

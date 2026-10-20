@@ -86,13 +86,13 @@ def test_missing_provenance_is_rejected_before_transport(method, field):
     provenance = {**PROVENANCE, field: ''}
     adapter = ValhallaAdapter(transport=transport)
     with pytest.raises(ValhallaCandidateError, match='identities required'):
-        getattr(adapter, method)(ANCHORS, **provenance)
+        getattr(adapter, method)(ANCHORS, mode='PREP', **provenance)
     assert calls == []
 
 
 def test_matrix_preserves_declared_build_and_graph_provenance():
     adapter = ValhallaAdapter(transport=lambda url, body: matrix_result())
-    result = adapter.matrix(ANCHORS, **PROVENANCE)
+    result = adapter.matrix(ANCHORS, mode='REVIEW', **PROVENANCE)
     assert result['graph_dataset_id'] == PROVENANCE['graph_dataset_id']
     assert result['profile_digest'] == PROVENANCE['profile_digest']
     assert result['provider_build'] == PROVENANCE['valhalla_build']
