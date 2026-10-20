@@ -30,3 +30,10 @@
 - OpenAPI Field Survey: 12 CONTRACT_ONLY endpoints; no HTTP implementation.
 - MCP Field Survey: registry definitions only; human capture/sync/decision explicitly excluded.
 - Real field-survey parity and ground-truth validation: NOT_MEASURED.
+
+- OSRM Backend+Frontend REA: DIRECT_GITHUB_SOURCE_INSPECTED, 56 capability mappings, both forks tracked with exact commits.
+- OSRM Routing contract: 9 PREP/REVIEW operations added; generated MCP tool definitions only, not a running MCP server.
+- OSRM Python route/table/match adapter: PROTOTYPE_UNIT_TESTED_WITH_MOCK_PROVIDER; no real OSM graph, no OSRM server, no routing parity.
+- Routing Lab JavaScript: READ_ONLY_STATE_TESTED; full Leaflet/MapLibre GUI NOT_BUILT.
+- OSRM profile and dataset manifest: REQUIRED_BUT_NOT_BUILT; no MLD/CH preprocessing executed.
+- OSRM Driver offline integration: NOT_BUILT; LIVE provider calls prohibited.

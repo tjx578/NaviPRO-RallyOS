@@ -2,13 +2,14 @@ openapi: 3.1.0
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: NaviPRO RallyOS Unified API
-  version: 0.4.0-vnext-streetcomplete-rea
+  version: 0.5.0-vnext-osrm-rea
   description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver
     LIVE runtime consumes confirmed offline packages and does not depend on this API. Spatial Intelligence REA baseline
-    adds Kepler-grade PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA defines
-    PREP/REVIEW-only 3D scene and terrain analytical plan contracts; definitions are not deployed API implementations.
-    StreetComplete REA adds clean-room, PREP/REVIEW-only field-survey contracts; observational data is not OSM-tag editing,
-    verified road truth, or route authority.
+    adds Kepler-grade PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA
+    defines PREP/REVIEW-only 3D scene and terrain analytical plan contracts; definitions are not deployed API implementations.
+    StreetComplete REA adds clean-room, PREP/REVIEW-only field-survey contracts; observational data is not OSM-tag
+    editing, verified road truth, or route authority. OSRM REA adds PREP/REVIEW-only routing candidate, directed
+    graph, matrix and map-matching planning contracts. OSRM Trip/TSP explicitly excluded from official route sequence.
 servers:
 - url: https://api.navipro.local/vnext
   description: Placeholder target; replace per deployment
@@ -31,6 +32,8 @@ tags:
   description: Non-authoritative 3D geospatial analysis planning and inspection
 - name: FieldSurvey
   description: Quest-inspired offline survey planning and staging (no direct OSM publish)
+- name: RoutingGraph
+  description: OSRM graph and candidate only; never confirms roadbook official route
 paths:
   /health:
     get:
@@ -3120,6 +3123,429 @@ paths:
         name: observationId
         required: true
         schema: *id006
+  /routing/graph/inspect:
+    post:
+      operationId: inspectRoutingGraph
+      summary: Inspect graph manifest and provenance
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.graph.inspect
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMDiagnosticRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMAnalysisPlanResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing/profile/inspect:
+    post:
+      operationId: inspectRoutingProfile
+      summary: Inspect Lua profile and access flags
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.profile.inspect
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMDiagnosticRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMAnalysisPlanResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing/nearest:
+    post:
+      operationId: planNearestRoadSnaps
+      summary: Plan nearest road snapping candidates
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.nearest.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMOrderedRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMAnalysisPlanResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing/route-candidates:
+    post:
+      operationId: calculateOrderedRouteCandidates
+      summary: Compute ordered non-authoritative OSRM route candidates
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.route.candidates
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMOrderedRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMCandidatesResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing/matrix:
+    post:
+      operationId: calculateRoutingMatrix
+      summary: Compute asymmetric road graph matrix (no geodesic fallback)
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.matrix.calculate
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMOrderedRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMMatrixResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing/trace/match:
+    post:
+      operationId: matchReviewTrace
+      summary: Propose map matching of GPS trace to road graph
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.trace.match
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMGpsMatchRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMMatchResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing/trace/assess:
+    post:
+      operationId: assessMatchedTrace
+      summary: Assess match gaps/outliers and residuals for review
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.trace.assess
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMGpsMatchRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMAnalysisPlanResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing/debug/tiles-plan:
+    post:
+      operationId: planRoutingDebugTiles
+      summary: Plan debug vector tile overlay from correct OSRM graph
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.debug.tiles.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMDiagnosticRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMAnalysisPlanResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /routing/frontend/session-plan:
+    post:
+      operationId: planRoutingReviewSession
+      summary: Plan interactive frontend review without changing official order
+      tags:
+      - RoutingGraph
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
+        Do not use Trip/TSP.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.routing.frontend.session.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OSRMOrderedRequest'
+      responses:
+        '200':
+          description: Draft analytical response (implementation pending)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OSRMAnalysisPlanResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Graph/version conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Graph unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 components:
   securitySchemes:
     bearerAuth:
@@ -5341,3 +5767,301 @@ components:
         warnings:
           type: array
           items: *id008
+    RoutingAnchor:
+      type: object
+      additionalProperties: false
+      required:
+      - anchor_id
+      - lat_e7
+      - lon_e7
+      properties:
+        anchor_id:
+          type: string
+          minLength: 1
+        lat_e7:
+          type: integer
+          minimum: -900000000
+          maximum: 900000000
+        lon_e7:
+          type: integer
+          minimum: -1800000000
+          maximum: 1800000000
+        source_event_id:
+          type: string
+    OSRMGraphManifest:
+      type: object
+      additionalProperties: false
+      required:
+      - graph_dataset_id
+      - profile_digest
+      - algorithm
+      - osm_source_digest
+      properties:
+        graph_dataset_id:
+          type: string
+          minLength: 1
+        profile_digest:
+          type: string
+          minLength: 1
+        osm_source_digest:
+          type: string
+          minLength: 1
+        algorithm:
+          enum:
+          - MLD
+          - CH
+        osm_data_version:
+          type:
+          - string
+          - 'null'
+        prepared_at:
+          type: string
+          format: date-time
+    OSRMOrderedRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - graph
+      - anchors
+      - mode
+      properties:
+        graph:
+          $ref: '#/components/schemas/OSRMGraphManifest'
+        anchors:
+          type: array
+          minItems: 2
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/RoutingAnchor'
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+        route_revision_id:
+          type: string
+    OSRMGpsMatchRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - graph
+      - anchors
+      - timestamps_s
+      - accuracy_m
+      - mode
+      properties:
+        graph:
+          $ref: '#/components/schemas/OSRMGraphManifest'
+        anchors:
+          type: array
+          minItems: 2
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/RoutingAnchor'
+        timestamps_s:
+          type: array
+          minItems: 2
+          items:
+            type: integer
+        accuracy_m:
+          type: array
+          minItems: 2
+          items:
+            type: number
+            exclusiveMinimum: 0
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+    OSRMCandidateSummary:
+      type: object
+      additionalProperties: false
+      required:
+      - candidate_id
+      - status
+      - graph_distance_mm_candidate
+      - route_authority
+      - source_anchor_order
+      properties:
+        candidate_id:
+          type: string
+        status:
+          const: CANDIDATE_REVIEW
+        graph_distance_mm_candidate:
+          type: integer
+          minimum: 0
+        estimated_travel_seconds:
+          type: number
+          minimum: 0
+        route_authority:
+          const: false
+        source_anchor_order:
+          type: array
+          items:
+            type: string
+        legs_count:
+          type: integer
+        geometry:
+          type: object
+        warnings:
+          type: array
+          items:
+            type: string
+    OSRMCandidatesResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - graph_dataset_id
+      - profile_digest
+      - source_anchor_order
+      - candidates
+      properties:
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+        route_authority:
+          const: false
+        graph_dataset_id:
+          type: string
+        profile_digest:
+          type: string
+        osm_data_version:
+          type:
+          - string
+          - 'null'
+        source_anchor_order:
+          type: array
+          items:
+            type: string
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/OSRMCandidateSummary'
+        warnings:
+          type: array
+          items:
+            type: string
+    OSRMMatrixResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - anchor_order
+      - distances_m
+      - durations_s
+      - unreachable_cells
+      properties:
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+        route_authority:
+          const: false
+        anchor_order:
+          type: array
+          items:
+            type: string
+        distances_m:
+          type: array
+          items:
+            type: array
+            items:
+              type:
+              - number
+              - 'null'
+        durations_s:
+          type: array
+          items:
+            type: array
+            items:
+              type:
+              - number
+              - 'null'
+        unreachable_cells:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+    OSRMMatchResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - status
+      - input_anchor_order
+      - matched_segments
+      - outlier_indices
+      properties:
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+        route_authority:
+          const: false
+        status:
+          const: MATCH_PROPOSAL_ONLY
+        input_anchor_order:
+          type: array
+          items:
+            type: string
+        matched_segments:
+          type: integer
+        outlier_indices:
+          type: array
+          items:
+            type: integer
+        confidence_per_segment:
+          type: array
+          items:
+            type:
+            - number
+            - 'null'
+        warning:
+          type: string
+    OSRMDiagnosticRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - graph_dataset_id
+      properties:
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+        graph_dataset_id:
+          type: string
+        route_revision_id:
+          type: string
+        layer:
+          type: string
+    OSRMAnalysisPlanResult:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_authority
+      - status
+      - steps
+      properties:
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+        route_authority:
+          const: false
+        status:
+          const: PLAN_ONLY
+        steps:
+          type: array
+          items:
+            type: string
+        warnings:
+          type: array
+          items:
+            type: string

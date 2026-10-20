@@ -63,3 +63,13 @@ python -m pytest -q tests/contracts
 - Source: `tjx578/StreetComplete_rally-maps`, GPL-3.0-only, SHA `e6b04da98028d34c1e49625edd7095f7008106a6`. **Patterns only; no GPL source copied.**
 - [Registry](contracts/spatial/streetcomplete-capability-registry.yaml), [policy](governance/streetcomplete-field-survey-policy.yaml), [Android scaffold](apps/field-survey-android/README.md).
 - Python deterministic survey planner and SQLite offline outbox are prototypes, not production or race-ready services. `LIVE` remains deny.
+
+## OSRM Backend + Frontend REA (2026-10-20)
+
+- Sources: `tjx578/osrm-backend-maps-rally` (`f0a7a2ff`) and `tjx578/osrm-frontend-rally-maps` (`067092c0`). Both are general-purpose Project-OSRM forks; **not** Time Rally-specific implementations.
+- [Detailed dual repo audit](docs/rea/OSRM-BACKEND-FRONTEND-REA-v1.md), [source manifest](docs/rea/OSRM-SOURCE-MANIFEST.yaml), [five-engine reconciliation](docs/rea/SPATIAL-RECONCILIATION-FIVE-ENGINES-v1.md), [capability registry](contracts/routing/osrm-capability-registry.yaml), [policy](governance/osrm-routing-policy.yaml).
+- `python/src/navipro_rallyos/route/osrm_adapter.py` provides **tested PREP/REVIEW prototype** request builders and a response adapter for route/table/match, not an OSRM engine or deployed API.
+- `apps/routing-lab-web/` is a small standalone JS **read-only state prototype**; there is no Leaflet/MapLibre graphical frontend yet.
+- No `Trip`/TSP in NaviPRO MCP, no official source waypoint reorder; OSRM results always candidate-only. Driver LIVE does not call OSRM.
+- Verify locally: `python tools/validate_openapi.py && python tools/build_mcp_registry.py && python -m pytest -q tests/contracts && node --test apps/routing-lab-web/test/*.test.mjs`.
+- **Status:** OSRM dataset/build/CH/MLD, real network server, browser UI, field accuracy and end-to-end routing parity are **NOT VERIFIED**.

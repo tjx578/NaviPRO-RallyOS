@@ -495,6 +495,87 @@ tools:
   authority: AGENT_PROPOSE
   side_effect: NONE
   tool: navipro.survey.overlays.plan
+- operation_id: inspectRoutingGraph
+  method: POST
+  path: /routing/graph/inspect
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.graph.inspect
+- operation_id: inspectRoutingProfile
+  method: POST
+  path: /routing/profile/inspect
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.profile.inspect
+- operation_id: planNearestRoadSnaps
+  method: POST
+  path: /routing/nearest
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.nearest.plan
+- operation_id: calculateOrderedRouteCandidates
+  method: POST
+  path: /routing/route-candidates
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.routing.route.candidates
+- operation_id: calculateRoutingMatrix
+  method: POST
+  path: /routing/matrix
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.matrix.calculate
+- operation_id: matchReviewTrace
+  method: POST
+  path: /routing/trace/match
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.routing.trace.match
+- operation_id: assessMatchedTrace
+  method: POST
+  path: /routing/trace/assess
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.trace.assess
+- operation_id: planRoutingDebugTiles
+  method: POST
+  path: /routing/debug/tiles-plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.debug.tiles.plan
+- operation_id: planRoutingReviewSession
+  method: POST
+  path: /routing/frontend/session-plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.routing.frontend.session.plan
 blocked_operations:
 - operation_id: healthCheck
   method: GET

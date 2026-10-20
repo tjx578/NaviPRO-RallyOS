@@ -1,0 +1,8 @@
+{
+  "name": "navipro-routing-lab-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {"test": "node --test test/*.test.mjs"},
+  "description": "OSRM routing review state prototype; graphical Leaflet UI not implemented"
+}

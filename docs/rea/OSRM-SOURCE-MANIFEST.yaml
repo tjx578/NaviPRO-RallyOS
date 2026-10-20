@@ -1,0 +1,49 @@
+audit_date: 2026-10-20
+source_type: GITHUB_CONNECTED_SOURCE_INSPECTION
+sources:
+  backend:
+    repository: tjx578/osrm-backend-maps-rally
+    fork_of: Project-OSRM/osrm-backend
+    branch: master
+    commit: f0a7a2ff0877c534316a2a0a16830228fe45178f
+    license: BSD-2-Clause
+    upstream_delta_during_audit: 8_commits_ahead_of_fork
+    inspected:
+      - README.md
+      - docs/http.md
+      - docs/profiles.md
+      - docs/tools.md
+      - profiles/car.lua
+      - include/engine/
+      - src/engine/
+      - src/extractor/
+      - unit_tests/
+  frontend:
+    repository: tjx578/osrm-frontend-rally-maps
+    fork_of: Project-OSRM/osrm-frontend
+    branch: gh-pages
+    commit: 067092c0c01efd57c2bf1c2b1e9fc1da4a193871
+    license_repo: BSD-2-Clause
+    package_json_declares: ISC
+    licensing_action: review_file_level_licenses_and_dependency_notices
+    upstream_delta_during_audit: 5_commits_ahead_of_fork
+    inspected:
+      - README.md
+      - package.json
+      - src/index.js
+      - src/leaflet_options.js
+      - src/router_patches.js
+      - src/waypoint_reorder.js
+      - src/route_throttle.js
+      - src/waypoint_placement.js
+      - src/route_alternative.js
+      - src/gpx.js
+      - src/entrance_waypoints.js
+      - src/links.js
+      - src/url_state.js
+      - test/
+limitations:
+  - Snapshot inspection not full clone/build/test of either upstream repository
+  - No real OSM PBF extraction, CH/MLD preprocessing, or OSRM server invocation
+  - Added Python/JS adapter prototypes are clean-room, not copies of upstream
+  - Mapping layer capability is not runtime equivalence

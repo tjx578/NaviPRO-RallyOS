@@ -1,0 +1,691 @@
+spec_version: 1.0.0
+source_audit:
+  backend:
+    repo: tjx578/osrm-backend-maps-rally
+    sha: f0a7a2ff0877c534316a2a0a16830228fe45178f
+    license: BSD-2-Clause
+  frontend:
+    repo: tjx578/osrm-frontend-rally-maps
+    sha: 067092c0c01efd57c2bf1c2b1e9fc1da4a193871
+    license: BSD-2-Clause
+forbidden_automatic_actions:
+- trip
+- reorder_official_waypoints
+- promote_route_candidate
+- override_distance_gate
+- publish_navipack
+- activate_driver_route
+- assume_fallback_distance_as_true
+capabilities:
+- id: osrm.backend.extract_osm_pbf
+  label: OSM PBF ingest
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: src/extractor/extractor.cpp
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/src/extractor/extractor.cpp
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.car_profile
+  label: Car Lua profile
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: profiles/car.lua
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/profiles/car.lua
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.bicycle_profile
+  label: Bicycle Lua profile
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: profiles/bicycle.lua
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/profiles/bicycle.lua
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.pedestrian_profile
+  label: Foot Lua profile
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: profiles/foot.lua
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/profiles/foot.lua
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.turn_restrictions
+  label: Restriction parsing
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: src/extractor/restriction_parser.cpp
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/src/extractor/restriction_parser.cpp
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.directed_edges
+  label: Edge based graph
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: src/extractor/edge_based_graph_factory.cpp
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/src/extractor/edge_based_graph_factory.cpp
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.graph_compression
+  label: Graph compression
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: src/extractor/graph_compressor.cpp
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/src/extractor/graph_compressor.cpp
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.conditional_rules
+  label: Location-dependent graph input
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: src/extractor/location_dependent_data.cpp
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/src/extractor/location_dependent_data.cpp
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.mld_partition
+  label: MLD spatial partition
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/tools.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/tools.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.mld_customize
+  label: Customizable MLD traffic/penalty
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/tools.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/tools.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.ch_contraction
+  label: CH contraction
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/tools.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/tools.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.route
+  label: Ordered via-anchor routing
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.nearest
+  label: Road segment snap candidates
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.table
+  label: Asymmetric distance and duration matrix
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.match
+  label: GPS probabilistic matching
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.match_confidence
+  label: Match confidence and outliers
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.trip_tsp
+  label: Trip/TSP endpoint (DENY for official roadbook)
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.tile
+  label: Routing debug vector tiles
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.post_many
+  label: POST JSON for large coordinates
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.bearings
+  label: Bearing restrictions
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.radiuses
+  label: GPS radius/snap uncertainty
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.approaches
+  label: Curb/opposite approach
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.annotations
+  label: Leg edge duration/distance/nodes
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.no_route
+  label: NoRoute/NoSegment fail-closed
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.data_version
+  label: Optional source data version
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.candidate_alternatives
+  label: Route alternatives
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.conditional_restrictions
+  label: Conditional restrictions preprocessing
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/tools.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/tools.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.segment_speed_file
+  label: Editable segment speed file (requires customize)
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/tools.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/tools.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.turn_penalty_file
+  label: Editable turn penalty file (requires customize)
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/tools.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/tools.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.geometry_full
+  label: Full GeoJSON geometry
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/http.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/http.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.backend.profile_vehicle
+  label: Vehicle dimensions and access exclusions
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: profiles/car.lua
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/profiles/car.lua
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.area_routing_experimental
+  label: Area polygon routing modules (review support only)
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: src/engine/area_route.cpp
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/src/engine/area_route.cpp
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.libosrm
+  label: C++ embedded library
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: docs/libosrm.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/docs/libosrm.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.backend.preprocess_deploy
+  label: OSRM Extract → MLD → server
+  source_repository: tjx578/osrm-backend-maps-rally
+  source_file: README.md
+  source_link: https://github.com/tjx578/osrm-backend-maps-rally/blob/f0a7a2ff0877c534316a2a0a16830228fe45178f/README.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.frontend.leaflet_baselayer
+  label: Leaflet basemaps
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/leaflet_options.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/leaflet_options.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.custom_tiles
+  label: Custom/local tile server via runtime configuration
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/leaflet_options.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/leaflet_options.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.frontend.multi_mode
+  label: Multiple OSRM backends and profiles
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/leaflet_options.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/leaflet_options.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.frontend.geocoder_config
+  label: Pluggable geocoder + coordinates-only option
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: README.md
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/README.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.waypoint_drag
+  label: Waypoint reorder drag (DENY for official order)
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/waypoint_reorder.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/waypoint_reorder.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.waypoint_slots
+  label: Add via shaping points
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/waypoint_placement.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/waypoint_placement.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.waypoint_marker
+  label: Waypoint marker distinctions
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/waypoint_marker.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/waypoint_marker.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.entrance_picker
+  label: Human selection of site entrances
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/entrance_picker.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/entrance_picker.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.frontend.entrance_waypoints
+  label: Preserve entrance anchor vs marker
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/entrance_waypoints.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/entrance_waypoints.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.alternative_selection
+  label: Manual route alternatives
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/route_alternative.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/route_alternative.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.gpx_export
+  label: GPX export
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/gpx.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/gpx.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.shareable_url
+  label: Persist shareable map URL state
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/url_state.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/url_state.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.url_links
+  label: Encode/decode waypoints in links
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/links.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/links.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.rate_limit
+  label: Drag preview backoff
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/route_throttle.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/route_throttle.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.request_cancel
+  label: Cancel/stale route responses
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/router_patches.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/router_patches.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.frontend.longitude_wrap
+  label: International dateline waypoint wrap
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/router_patches.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/router_patches.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P0
+- id: osrm.frontend.itinerary
+  label: Turn-by-turn instruction display
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/itinerary_builder.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/itinerary_builder.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.route_zoom
+  label: Zoom-to-route controls
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/route_zoom.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/route_zoom.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.routing_debug
+  label: Per-profile debug map and overlays
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: README.md
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/README.md
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.localization
+  label: Language mapping
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/localization.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/localization.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.geolocation
+  label: Client location display
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/location_handler.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/location_handler.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1
+- id: osrm.frontend.map_overlays
+  label: Public tile overlay layers
+  source_repository: tjx578/osrm-frontend-rally-maps
+  source_file: src/leaflet_options.js
+  source_link: https://github.com/tjx578/osrm-frontend-rally-maps/blob/067092c0c01efd57c2bf1c2b1e9fc1da4a193871/src/leaflet_options.js
+  source_status: SOURCE_PATH_VERIFIED_OR_DOC_READ
+  integration_status: MAPPED_NOT_RUNTIME_PARITY_VERIFIED
+  modes:
+  - PREP
+  - REVIEW
+  authority: CANDIDATE_ONLY
+  priority: P1

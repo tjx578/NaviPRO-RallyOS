@@ -1,0 +1,71 @@
+version: 1.0.0
+scope: PREP_REVIEW_ONLY
+source_authority: OFFICIAL_ROADBOOK
+provider: OSRM
+modes:
+  PREP:
+    candidate_route: ALLOW
+    source_anchor_reorder: DENY
+    approve_route: DENY
+  REVIEW:
+    candidate_route: ALLOW
+    source_anchor_reorder: DENY
+    approve_route: DENY
+  LIVE:
+    osrm_http: DENY
+    route_recalculation: DENY
+    mcp_calls: DENY
+    candidate_review_ui: DENY
+route_candidate:
+  immutable_source_anchor_ids: true
+  alternatives_are_comparison_only: true
+  unchanged_source_order_required: true
+  official_source_coverage_binding_required: true
+  directed_edge_validation_required: true
+  no_trip_optimizer: true
+  no_auto_reorder: true
+  no_auto_confirm: true
+  no_auto_distance_compliance: true
+  distance_domains:
+    D_auth: official_roadbook
+    D_graph_candidate: osrm_route_geometry_and_distance
+    D_odo: observed_tripmeter
+    D_geo: non_network_diagnostic
+  graph_manifest_required:
+    - graph_dataset_id
+    - osm_source_digest
+    - profile_digest
+    - algorithm
+  missing_map_matching: HOLD
+  profile_mode: ROUTING_PREFERENCE_NOT_RALLY_CLOCK
+  matrix_fallback_speed: DENY
+  match_confidence_auto_promote: DENY
+  snap_cannot_replace_verified_anchor: true
+  geometry_overview: full
+  source_data_version_missing: WARNING_NOT_VERIFIED
+agent:
+  exposed:
+    - routing.route.candidates
+    - routing.matrix.calculate
+    - routing.trace.match
+    - routing.graph.inspect
+  denied:
+    - trip
+    - roadbook.reorder
+    - route.confirm
+    - route.activate
+    - release.publish
+    - driver.send
+network:
+  allowed_origins: TRUSTED_ADMIN_CONFIG_ONLY
+  provider_auth: SERVER_SIDE_ONLY
+  no_agent_supplied_url: true
+  redirect_rejection: true
+  request_limits: REQUIRED_BEFORE_DEPLOY
+  response_limits: REQUIRED_BEFORE_DEPLOY
+  tls_auth_rate_limit: REQUIRED_BEFORE_DEPLOY
+validation:
+  zero_tests_with_real_graph: true
+  osrm_build: NOT_ATTEMPTED
+  mld_ch_preprocessing: NOT_ATTEMPTED
+  offline_driver_parity: NOT_ATTEMPTED
