@@ -1,0 +1,14 @@
+{
+  "OSRM": {
+    "image": "ghcr.io/project-osrm/osrm-backend@sha256:8d8c2656a500ca78b8820828b045eff9973990d240ec50da3f5937d2f10d8d5d",
+    "source_tag": "v26.4.1-debian",
+    "platform": "linux/amd64",
+    "index_sha256": "6b3d7232f168289fa97ca5a27c02a47895959a2f75cdc3ebfe406f31928702e5"
+  },
+  "VALHALLA": {
+    "image": "ghcr.io/valhalla/valhalla@sha256:18cb42988e03c70dc4bc4ca095a259ec4db5e5df928be65956fc1c64c280b47a",
+    "source_tag": "3.9.1",
+    "platform": "linux/amd64",
+    "index_sha256": "4fd114eb1d26b8fc2f43bcb3df234c1b63a0bf13c277405e5943d5361dc575de"
+  }
+}

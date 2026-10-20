@@ -1,0 +1,24 @@
+{
+  "event": "ROTR Ramadhan On The Road 2025 Surabaya",
+  "trayek": 2,
+  "source_image": "source.jpeg",
+  "source_image_sha256": "e51ca2d91c7cf7c8c1e0c668b65b114f0a42d08efd0ff819d191de53b929124c",
+  "original_filename": "WhatsApp Image 2025-08-17 at 01.21.47 (1).jpeg",
+  "transcription_file": "roadbook.txt",
+  "transcription_method": "VISUAL_TRANSCRIPTION_OF_ROUTING_RELEVANT_TEXT",
+  "transcription_status": "PENDING_OPERATOR_REVIEW",
+  "non_routing_prose_omitted": true,
+  "operator_confirmed": false,
+  "declared_distance_mm": 19600000,
+  "declared_duration_ms": 7200000,
+  "event_timing_rule_version": null,
+  "confirmed_coordinates": [],
+  "uncertainties": [
+    "2.93 km reference in B has no confirmed cumulative/segment meaning",
+    "B finish to C start and C finish to D start bindings are unresolved",
+    "Start/finish coordinates and physical road access points are unconfirmed",
+    "BKR/BKN/BKRT/BKNT/JT/X LR legend and timing scoring rules require event evidence",
+    "The image text Jl. BKR Pelajar and Stikes SMK Kesehatan Nusantara is retained pending review",
+    "Repeated Jalan Jawa occurrences are separate ordered instructions"
+  ]
+}
