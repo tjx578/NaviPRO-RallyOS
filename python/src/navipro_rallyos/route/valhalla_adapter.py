@@ -102,7 +102,8 @@ def normalize_valhalla_route(
     if not isinstance(response, Mapping):
         raise ValhallaCandidateError('Valhalla returned an invalid response')
     trip = response.get('trip')
-    if not isinstance(trip, Mapping) or trip.get('status') not in (0, '0'):
+    if (not isinstance(trip, Mapping) or type(trip.get('status')) not in (int, str)
+            or trip.get('status') not in (0, '0')):
         raise ValhallaCandidateError('Valhalla route did not succeed')
     if trip.get('units') != 'kilometers':
         raise ValhallaCandidateError('Valhalla response unit mismatch')
@@ -116,6 +117,8 @@ def normalize_valhalla_route(
             for k in ('lat','lon')
         ):
             raise ValhallaCandidateError('route location invalid')
+        if abs(loc['lat']) > 90 or abs(loc['lon']) > 180:
+            raise ValhallaCandidateError('route location outside WGS84 bounds')
     # Valhalla may snap response locations to nearby edges. Do not compare snapped
     # coordinates to source anchors for identity: preserve source-anchor IDs instead.
     if not isinstance(legs, list) or len(legs) != len(ordered)-1:

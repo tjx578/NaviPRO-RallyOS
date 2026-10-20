@@ -183,3 +183,17 @@ def test_compare_providers_reject_different_dataset():
             'graph_dataset_id': 'osm-y', 'candidates': []}
     with pytest.raises(RouteCandidateError):
         compare_provider_candidates(osrm=osrm, valhalla=val, official_distance_mm=1_200_000)
+
+
+def test_bool_status_cannot_masquerade_as_success():
+    r = route_result()
+    r['trip']['status'] = False
+    with pytest.raises(ValhallaCandidateError):
+        normalize_valhalla_route(r, ANCHORS, graph_dataset_id='d', profile_digest='p', valhalla_build='v')
+
+
+def test_invalid_returned_location_rejected():
+    r = route_result()
+    r['trip']['locations'][0]['lat'] = 120.0
+    with pytest.raises(ValhallaCandidateError):
+        normalize_valhalla_route(r, ANCHORS, graph_dataset_id='d', profile_digest='p', valhalla_build='v')
