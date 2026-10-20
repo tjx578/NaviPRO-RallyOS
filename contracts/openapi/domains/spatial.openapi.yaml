@@ -1,0 +1,7 @@
+openapi: 3.1.0
+info:
+  title: NaviPRO Spatial Intelligence Domain API
+  version: 0.1.0-rea
+  description: PREP/REVIEW spatial workbench capabilities reverse-engineered at capability
+    level from the inspected Kepler.gl fork. No route authority.
+paths: {}

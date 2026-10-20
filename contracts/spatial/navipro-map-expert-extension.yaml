@@ -1,0 +1,72 @@
+registry_id: NAVIPRO-MAP-EXPERT-EXTENSION-V1
+version: 1.0.0-draft
+status: DESIGN_BASELINE_NOT_RACE_READY
+purpose: >-
+  Capabilities that NaviPRO requires to become a rally-grade map intelligence system beyond
+  generic Kepler.gl visualization/analytics. These remain deterministic/core capabilities and
+  are not delegated to the visualization workbench.
+capabilities:
+  - id: MAP-CORE-001
+    capability: CRS normalization and explicit coordinate-reference metadata
+    priority: P0
+    target: spatial.core.crs
+  - id: MAP-CORE-002
+    capability: Geometry validity, topology checks and controlled repair proposals
+    priority: P0
+    target: spatial.core.topology
+  - id: MAP-CORE-003
+    capability: Spatial indexing with SQLite R*Tree and optional H3 analytical index
+    priority: P0
+    target: spatial.core.index
+  - id: MAP-CORE-004
+    capability: Directed road graph with stable edge identifiers and versioned graph releases
+    priority: P0
+    target: route.graph
+  - id: MAP-CORE-005
+    capability: Ordered routing constrained by immutable roadbook sequence
+    priority: P0
+    target: route.resolve
+  - id: MAP-CORE-006
+    capability: Dense route geometry with cumulative graph offset / linear referencing
+    priority: P0
+    target: route.geometry
+  - id: MAP-CORE-007
+    capability: Map matching of observed GNSS track to confirmed directed route
+    priority: P1
+    target: spatial.map_match
+  - id: MAP-CORE-008
+    capability: Snap-to-road and candidate edge scoring with uncertainty retained
+    priority: P1
+    target: spatial.snap
+  - id: MAP-CORE-009
+    capability: Route corridor generation and off-route distance calculation
+    priority: P0
+    target: route.corridor
+  - id: MAP-CORE-010
+    capability: KM PAL / road-chainage reasoning using versioned reference points and reverse-distance residuals
+    priority: P0
+    target: location.kmpal
+  - id: MAP-CORE-011
+    capability: Planned-vs-observed route reconciliation with deviation timeline
+    priority: P1
+    target: spatial.reconcile
+  - id: MAP-CORE-012
+    capability: Spatial evidence uncertainty, provenance, source freshness and reviewer decision lifecycle
+    priority: P0
+    target: evidence.spatial
+  - id: MAP-CORE-013
+    capability: Offline PMTiles/vector/raster packaging with local glyph/sprite/style manifest
+    priority: P0
+    target: navipack.map_assets
+  - id: MAP-CORE-014
+    capability: Graph distance / authority distance / odometer distance domain separation
+    priority: P0
+    target: route.distance_domains
+  - id: MAP-CORE-015
+    capability: Deterministic spatial validation gates for endpoint binding, continuity, coverage and landmark binding
+    priority: P0
+    target: validation.spatial
+  - id: MAP-CORE-016
+    capability: Immutable spatial revision receipts and before/after geometry digests
+    priority: P0
+    target: governance.spatial_revision

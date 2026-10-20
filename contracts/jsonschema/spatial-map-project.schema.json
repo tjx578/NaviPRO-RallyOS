@@ -1,0 +1,428 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.navipro.local/spatial-map-project.schema.json",
+  "title": "NaviPRO Spatial Map Project Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "event_id",
+    "mode",
+    "revision",
+    "datasets",
+    "layers",
+    "view_state",
+    "authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "PREP",
+        "REVIEW"
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parent_snapshot_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dataset"
+      }
+    },
+    "layers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/layer"
+      }
+    },
+    "filters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/filter"
+      }
+    },
+    "annotations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/annotation"
+      }
+    },
+    "drawings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/drawing"
+      }
+    },
+    "route_overlays": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/routeOverlay"
+      }
+    },
+    "view_state": {
+      "$ref": "#/$defs/viewState"
+    },
+    "comparison": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "playback": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_authority",
+        "map_project_authority"
+      ],
+      "properties": {
+        "route_authority": {
+          "const": false
+        },
+        "map_project_authority": {
+          "type": "string",
+          "enum": [
+            "ANALYTIC_DRAFT",
+            "REVIEW_ARTIFACT"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "label",
+        "format",
+        "source_kind",
+        "content_sha256"
+      ],
+      "properties": {
+        "dataset_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "CSV",
+            "TSV",
+            "DSV",
+            "JSON",
+            "GEOJSON",
+            "GEOJSONL",
+            "NDJSON",
+            "KML",
+            "GPX",
+            "TCX",
+            "ARROW",
+            "FEATHER",
+            "PARQUET",
+            "MVT",
+            "PMTILES_VECTOR",
+            "PMTILES_RASTER",
+            "COG_STAC",
+            "WMS",
+            "TILE3D",
+            "BITMAP"
+          ]
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "LOCAL_FILE",
+            "REMOTE_URL",
+            "LOCAL_DB",
+            "GENERATED",
+            "PROVIDER"
+          ]
+        },
+        "source_uri": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "crs": {
+          "type": "string",
+          "default": "EPSG:4326"
+        },
+        "row_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "layer_id",
+        "dataset_id",
+        "type",
+        "visible"
+      ],
+      "properties": {
+        "layer_id": {
+          "type": "string"
+        },
+        "dataset_id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "POINT",
+            "ARC",
+            "LINE",
+            "GRID",
+            "HEXBIN",
+            "GEOJSON",
+            "CLUSTER",
+            "ICON",
+            "HEATMAP",
+            "H3",
+            "SCENEGRAPH_3D",
+            "TRIP",
+            "S2",
+            "A5",
+            "GEOHASH",
+            "FLOW",
+            "VECTOR_TILE",
+            "RASTER_TILE",
+            "WMS",
+            "TILE_3D",
+            "BITMAP"
+          ]
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "config": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "visual_channels": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "z_index": {
+          "type": "integer"
+        }
+      }
+    },
+    "filter": {
+      "type": "object",
+      "required": [
+        "filter_id",
+        "kind"
+      ],
+      "properties": {
+        "filter_id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ATTRIBUTE",
+            "SPATIAL",
+            "TIME"
+          ]
+        },
+        "dataset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "spec": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotation": {
+      "type": "object",
+      "required": [
+        "annotation_id",
+        "status",
+        "content"
+      ],
+      "properties": {
+        "annotation_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PROPOSAL",
+            "REVIEWED"
+          ]
+        },
+        "content": {
+          "type": "string"
+        },
+        "anchor": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "drawing": {
+      "type": "object",
+      "required": [
+        "drawing_id",
+        "status",
+        "geojson"
+      ],
+      "properties": {
+        "drawing_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PROPOSAL",
+            "REVIEWED"
+          ]
+        },
+        "geojson": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "routeOverlay": {
+      "type": "object",
+      "required": [
+        "route_revision_id",
+        "read_only"
+      ],
+      "properties": {
+        "route_revision_id": {
+          "type": "string"
+        },
+        "read_only": {
+          "const": true
+        },
+        "style": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "viewState": {
+      "type": "object",
+      "required": [
+        "longitude",
+        "latitude",
+        "zoom"
+      ],
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "zoom": {
+          "type": "number"
+        },
+        "bearing": {
+          "type": "number"
+        },
+        "pitch": {
+          "type": "number"
+        },
+        "projection": {
+          "type": "string",
+          "enum": [
+            "WEB_MERCATOR",
+            "GLOBE"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

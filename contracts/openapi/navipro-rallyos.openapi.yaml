@@ -2,9 +2,10 @@ openapi: 3.1.0
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: NaviPRO RallyOS Unified API
-  version: 0.1.0-vnext
-  description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver
-    LIVE runtime consumes confirmed offline packages and does not depend on this API.
+  version: 0.2.0-vnext-rea
+  description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver LIVE
+    runtime consumes confirmed offline packages and does not depend on this API. Spatial Intelligence REA baseline adds Kepler-grade
+    PREP/REVIEW mapping capabilities without granting route authority.
 servers:
 - url: https://api.navipro.local/vnext
   description: Placeholder target; replace per deployment
@@ -16,6 +17,7 @@ tags:
 - name: Location
 - name: Evidence
 - name: Route
+- name: Spatial
 - name: Timing
 - name: Validation
 - name: Integration
@@ -1781,6 +1783,473 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReleaseManifest'
+  /spatial/capabilities:
+    get:
+      operationId: getSpatialCapabilities
+      summary: List NaviPRO spatial capability registry
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.capabilities.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialCapabilityRegistry'
+        '400': &id001
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401': &id002
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403': &id003
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409': &id004
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500': &id005
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial/datasets/inspect:
+    post:
+      operationId: inspectSpatialDataset
+      summary: Inspect dataset schema and visualization candidates
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.dataset.inspect
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialDatasetInspectRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialDatasetInspectResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/datasets/import:
+    post:
+      operationId: importSpatialDatasetDraft
+      summary: Register dataset as PREP/REVIEW draft
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.dataset.import_draft
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialDatasetImportRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialDatasetResource'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/layers/plan:
+    post:
+      operationId: planSpatialLayers
+      summary: Propose layers and visual channels for a dataset
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.layer.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialLayerPlanRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialLayerPlanResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/filters/plan:
+    post:
+      operationId: planSpatialFilters
+      summary: Propose attribute, spatial or time filters
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.filter.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialFilterPlanRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialOperationResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/drawings/convert:
+    post:
+      operationId: convertSpatialDrawing
+      summary: Convert a drawing into a geometry proposal
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.drawing.convert
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialDrawingConvertRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialGeometryProposal'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/compare:
+    post:
+      operationId: createSpatialComparison
+      summary: Create split or swipe comparison plan
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.compare.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialCompareRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialOperationResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/playback/plan:
+    post:
+      operationId: createSpatialPlaybackPlan
+      summary: Create time or trip playback plan
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.playback.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialPlaybackPlanRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialOperationResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/query:
+    post:
+      operationId: runSpatialAnalyticQuery
+      summary: Run read-only local spatial analytic query
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.query.read
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialQueryRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialQueryResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/projects/snapshot:
+    post:
+      operationId: createSpatialProjectSnapshot
+      summary: Create versioned analytic map snapshot
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.project.snapshot
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: DRAFT_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialProjectSnapshotRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialProjectSnapshot'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/export/plan:
+    post:
+      operationId: planSpatialExport
+      summary: Plan image, CSV, JSON, HTML or video export
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.export.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialExportPlanRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialOperationResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/annotations:
+    post:
+      operationId: createSpatialAnnotationProposal
+      summary: Create annotation proposal
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.annotation.propose
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: STAGING_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialAnnotationProposal'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialOperationResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/live-datasets/plan:
+    post:
+      operationId: planSpatialLiveDataset
+      summary: Plan PREP/REVIEW polling or host WebSocket ingestion
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.live.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialLiveDatasetPlan'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialOperationResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
+  /spatial/tilesets/inspect:
+    post:
+      operationId: inspectSpatialTileset
+      summary: Inspect MVT, PMTiles, WMS, COG/STAC or 3D tile source
+      tags:
+      - Spatial
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial.tileset.inspect
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpatialTilesetInspectRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialTilesetInspectResult'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '409': *id004
+        '500': *id005
 components:
   securitySchemes:
     bearerAuth:
@@ -2734,3 +3203,499 @@ components:
           - HOLD
           - COMPILE_READY
           - PUBLISHED
+    SpatialCapability:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - group
+      - capability
+      - priority
+      - parity_target
+      - allowed_modes
+      - navipro_target
+      - implementation_status
+      properties:
+        id:
+          type: string
+        group:
+          type: string
+        capability:
+          type: string
+        priority:
+          type: string
+          enum:
+          - P0
+          - P1
+          - P2
+        parity_target:
+          type: string
+          enum:
+          - FULL
+          - ADAPTED
+          - REFERENCE_ONLY
+        allowed_modes:
+          type: array
+          items:
+            type: string
+            enum:
+            - PREP
+            - REVIEW
+        navipro_target:
+          type: string
+        authority_class:
+          type: string
+        implementation_status:
+          type: string
+        notes:
+          type: string
+    SpatialCapabilityRegistry:
+      type: object
+      required:
+      - registry_id
+      - version
+      - status
+      - capabilities
+      properties:
+        registry_id:
+          type: string
+        version:
+          type: string
+        status:
+          type: string
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpatialCapability'
+    SpatialDatasetInspectRequest:
+      type: object
+      required:
+      - source_kind
+      - format
+      properties:
+        source_kind:
+          type: string
+          enum:
+          - LOCAL_FILE
+          - REMOTE_URL
+          - LOCAL_DB
+          - PROVIDER
+        format:
+          type: string
+        source_ref:
+          type:
+          - string
+          - 'null'
+        sample_rows:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    SpatialDatasetInspectResult:
+      type: object
+      required:
+      - detected_fields
+      - geometry_candidates
+      - layer_candidates
+      - authority
+      properties:
+        detected_fields:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        geometry_candidates:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        layer_candidates:
+          type: array
+          items:
+            type: string
+            enum: &id006
+            - POINT
+            - ARC
+            - LINE
+            - GRID
+            - HEXBIN
+            - GEOJSON
+            - CLUSTER
+            - ICON
+            - HEATMAP
+            - H3
+            - SCENEGRAPH_3D
+            - TRIP
+            - S2
+            - A5
+            - GEOHASH
+            - FLOW
+            - VECTOR_TILE
+            - RASTER_TILE
+            - WMS
+            - TILE_3D
+            - BITMAP
+        authority:
+          type: string
+          const: ANALYTIC_ONLY
+    SpatialDatasetImportRequest:
+      type: object
+      required:
+      - event_id
+      - label
+      - format
+      - source_kind
+      - content_sha256
+      properties:
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        label:
+          type: string
+        format:
+          type: string
+        source_kind:
+          type: string
+        source_ref:
+          type:
+          - string
+          - 'null'
+        content_sha256:
+          $ref: '#/components/schemas/Sha256'
+    SpatialDatasetResource:
+      type: object
+      required:
+      - dataset_id
+      - event_id
+      - status
+      - authority
+      properties:
+        dataset_id:
+          $ref: '#/components/schemas/IdRef'
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - READY_FOR_REVIEW
+        authority:
+          type: string
+          const: ANALYTIC_ONLY
+    SpatialLayerPlanRequest:
+      type: object
+      required:
+      - dataset_id
+      properties:
+        dataset_id:
+          $ref: '#/components/schemas/IdRef'
+        requested_types:
+          type: array
+          items:
+            type: string
+            enum: *id006
+        goal:
+          type:
+          - string
+          - 'null'
+    SpatialLayerPlanResult:
+      type: object
+      required:
+      - proposals
+      properties:
+        proposals:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        authority:
+          type: string
+          const: PROPOSAL_ONLY
+    SpatialFilterPlanRequest:
+      type: object
+      required:
+      - dataset_ids
+      - kind
+      properties:
+        dataset_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdRef'
+        kind:
+          type: string
+          enum:
+          - ATTRIBUTE
+          - SPATIAL
+          - TIME
+        spec:
+          type: object
+          additionalProperties: true
+    SpatialDrawingConvertRequest:
+      type: object
+      required:
+      - event_id
+      - geojson
+      properties:
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        geojson:
+          type: object
+          additionalProperties: true
+        intent:
+          type: string
+          enum:
+          - ANNOTATION
+          - LOCATION_CANDIDATE
+          - ROUTE_GEOMETRY_PROPOSAL
+          - SPATIAL_FILTER
+    SpatialGeometryProposal:
+      type: object
+      required:
+      - proposal_id
+      - intent
+      - status
+      - geojson
+      properties:
+        proposal_id:
+          $ref: '#/components/schemas/IdRef'
+        intent:
+          type: string
+        status:
+          type: string
+          const: PROPOSAL
+        geojson:
+          type: object
+          additionalProperties: true
+    SpatialCompareRequest:
+      type: object
+      required:
+      - mode
+      - left_layer_ids
+      - right_layer_ids
+      properties:
+        mode:
+          type: string
+          enum:
+          - SPLIT
+          - SWIPE
+        left_layer_ids:
+          type: array
+          items:
+            type: string
+        right_layer_ids:
+          type: array
+          items:
+            type: string
+    SpatialPlaybackPlanRequest:
+      type: object
+      required:
+      - dataset_id
+      - time_field
+      properties:
+        dataset_id:
+          $ref: '#/components/schemas/IdRef'
+        time_field:
+          type: string
+        end_time_field:
+          type:
+          - string
+          - 'null'
+        trip_geometry_field:
+          type:
+          - string
+          - 'null'
+        speed_multiplier:
+          type: number
+          exclusiveMinimum: 0
+    SpatialQueryRequest:
+      type: object
+      required:
+      - dataset_ids
+      - query
+      properties:
+        dataset_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdRef'
+        query:
+          type: string
+        engine:
+          type: string
+          enum:
+          - DUCKDB_READ_ONLY
+          default: DUCKDB_READ_ONLY
+    SpatialQueryResult:
+      type: object
+      required:
+      - columns
+      - rows
+      - read_only
+      properties:
+        columns:
+          type: array
+          items:
+            type: string
+        rows:
+          type: array
+          items:
+            type: array
+            items: {}
+        read_only:
+          type: boolean
+          const: true
+    SpatialProjectSnapshotRequest:
+      type: object
+      required:
+      - project_id
+      - event_id
+      - snapshot
+      properties:
+        project_id:
+          $ref: '#/components/schemas/IdRef'
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        snapshot:
+          type: object
+          additionalProperties: true
+    SpatialProjectSnapshot:
+      type: object
+      required:
+      - snapshot_id
+      - project_id
+      - event_id
+      - status
+      - route_authority
+      properties:
+        snapshot_id:
+          $ref: '#/components/schemas/IdRef'
+        project_id:
+          $ref: '#/components/schemas/IdRef'
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - REVIEW_ARTIFACT
+        route_authority:
+          type: boolean
+          const: false
+    SpatialExportPlanRequest:
+      type: object
+      required:
+      - project_id
+      - format
+      properties:
+        project_id:
+          $ref: '#/components/schemas/IdRef'
+        format:
+          type: string
+          enum:
+          - IMAGE
+          - CSV_FILTERED
+          - CSV_FULL
+          - MAP_JSON
+          - STANDALONE_HTML
+          - VIDEO_WEBM
+          - VIDEO_GIF
+          - PNG_SEQUENCE
+          - JPEG_SEQUENCE
+        options:
+          type: object
+          additionalProperties: true
+    SpatialAnnotationProposal:
+      type: object
+      required:
+      - event_id
+      - content
+      properties:
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        content:
+          type: string
+        anchor:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+        status:
+          type: string
+          const: PROPOSAL
+    SpatialLiveDatasetPlan:
+      type: object
+      required:
+      - dataset_id
+      - transport
+      properties:
+        dataset_id:
+          $ref: '#/components/schemas/IdRef'
+        transport:
+          type: string
+          enum:
+          - HTTP_POLL
+          - HOST_ROW_UPSERT
+          - HOST_WEBSOCKET
+        refresh_interval_ms:
+          type:
+          - integer
+          - 'null'
+          minimum: 100
+        upsert_key:
+          type:
+          - string
+          - 'null'
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+    SpatialTilesetInspectRequest:
+      type: object
+      required:
+      - source_type
+      - source_ref
+      properties:
+        source_type:
+          type: string
+          enum:
+          - MVT
+          - PMTILES_VECTOR
+          - PMTILES_RASTER
+          - COG_STAC
+          - WMS
+          - TILE3D
+          - BITMAP
+        source_ref:
+          type: string
+    SpatialTilesetInspectResult:
+      type: object
+      required:
+      - source_type
+      - reachable
+      - authority
+      properties:
+        source_type:
+          type: string
+        reachable:
+          type: boolean
+        metadata:
+          type: object
+          additionalProperties: true
+        authority:
+          type: string
+          const: PROVIDER_EVIDENCE_ONLY
+    SpatialOperationResult:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - PROPOSED
+          - READY_FOR_REVIEW
+          - HOLD
+        message:
+          type:
+          - string
+          - 'null'
+        payload:
+          type: object
+          additionalProperties: true

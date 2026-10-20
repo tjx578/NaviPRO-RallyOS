@@ -1,0 +1,35 @@
+rea_id: REA-KEPLERGL-MAPAS-RALLY-2026-10-20
+source:
+  repository: tjx578/kepler.gl-_mapas_rally
+  repository_url: https://github.com/tjx578/kepler.gl-_mapas_rally
+  type: GITHUB_FORK
+  parent_repository: keplergl/kepler.gl
+  license: MIT
+  default_branch: master
+  fork_head_sha: d63c07d4e28da4834b4cf101cfab366066bee515
+  fork_version: 3.3.0-alpha.11
+  fork_created_at: '2026-09-11T10:01:06Z'
+  fork_pushed_at: '2026-09-11T01:46:47Z'
+upstream_observation:
+  observed_at: '2026-10-20'
+  upstream_head_sha: 2288a22b4b79017c557b9ca252e8b5fa00261ff9
+  commits_ahead_of_fork_head: 130
+  changed_files_in_compare: 300
+  note: Observed through the connected GitHub repository interface. Re-evaluate before
+    dependency upgrades.
+provenance_findings:
+- The source repository is a fork of keplergl/kepler.gl.
+- The inspected fork head is the same upstream release commit for 3.3.0-alpha.11.
+- No rally-specific branch or custom fork commit was observed after that head in the
+  inspected master branch.
+- Treat the repository as a Kepler.gl capability snapshot, not as a completed rally-domain
+  implementation.
+adoption_policy:
+  strategy: CAPABILITY_PARITY_WITH_DOMAIN_ISOLATION
+  code_reuse: Prefer upstream packages/adapters. If source code is copied or modified,
+    retain applicable MIT copyright/license notices.
+  live_runtime: Kepler-derived workbench capability is PREP/REVIEW only unless separately
+    hardened and approved.
+  route_authority: NONE; visual analytics never changes official roadbook order or
+    confirmed route revision.
+  ai_authority: PROPOSE_ONLY

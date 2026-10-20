@@ -1,0 +1,986 @@
+registry_id: NAVIPRO-SPATIAL-CAPABILITY-REGISTRY-V1
+version: 1.0.0-draft
+status: REA_BASELINE_NOT_RACE_READY
+source_manifest: ../../docs/rea/KEPLER-GL-SOURCE-MANIFEST.yaml
+principles:
+- Parity is targeted for PREP/REVIEW spatial intelligence, not for authority mutation.
+- Confirmed roadbook order and confirmed route revisions remain immutable.
+- Map analytics, layer auto-detection, SQL, provider data and visual effects are evidence/support tools only.
+- Driver LIVE remains offline, deterministic and free of dynamic Kepler/agent/network dependencies.
+- Large data uses tile/Arrow/Parquet patterns; authoritative route geometry stays canonical and versioned.
+capabilities:
+- id: SPATIAL-INGEST-001
+  group: data_ingest
+  source_component: processors/loader-registry
+  capability: Local/URL CSV, TSV/DSV ingestion
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.ingest
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INGEST-002
+  group: data_ingest
+  source_component: processors/loader-registry
+  capability: GeoJSON and JSON ingestion
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.ingest
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INGEST-003
+  group: data_ingest
+  source_component: processors/loader-registry
+  capability: GeoJSONL/NDJSON streaming-friendly file ingestion
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.ingest
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INGEST-004
+  group: data_ingest
+  source_component: processors/loader-registry
+  capability: KML ingestion
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.ingest
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INGEST-005
+  group: data_ingest
+  source_component: processors/loader-registry
+  capability: GPX ingestion
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.ingest
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INGEST-006
+  group: data_ingest
+  source_component: processors/loader-registry
+  capability: TCX ingestion
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.ingest
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INGEST-007
+  group: data_ingest
+  source_component: processors/loader-registry
+  capability: Arrow/Feather/GeoArrow ingestion
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.ingest
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INGEST-008
+  group: data_ingest
+  source_component: processors/loader-registry
+  capability: Parquet ingestion
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.ingest
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INGEST-009
+  group: data_ingest
+  source_component: processors/data-processor
+  capability: Type and geometry auto-detection from columns/WKT/GeoJSON
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.dataset.inspect
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: Detection may propose a visualization but never determines route authority.
+- id: SPATIAL-LAYER-001
+  group: layer_engine
+  source_component: layers/PointLayer
+  capability: POINT visualization layer
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.point
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-002
+  group: layer_engine
+  source_component: layers/ArcLayer
+  capability: ARC visualization layer
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.arc
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-003
+  group: layer_engine
+  source_component: layers/LineLayer
+  capability: LINE visualization layer
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.line
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-004
+  group: layer_engine
+  source_component: layers/GridLayer
+  capability: GRID visualization layer
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.grid
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-005
+  group: layer_engine
+  source_component: layers/HexagonLayer
+  capability: HEXBIN visualization layer
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.hexbin
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-006
+  group: layer_engine
+  source_component: layers/GeojsonLayer
+  capability: GEOJSON visualization layer
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.geojson
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-007
+  group: layer_engine
+  source_component: layers/ClusterLayer
+  capability: CLUSTER visualization layer
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.cluster
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-008
+  group: layer_engine
+  source_component: layers/IconLayer
+  capability: ICON visualization layer
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.icon
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-009
+  group: layer_engine
+  source_component: layers/HeatmapLayer
+  capability: HEATMAP visualization layer
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.heatmap
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-010
+  group: layer_engine
+  source_component: layers/H3Layer
+  capability: H3 visualization layer
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.h3
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-011
+  group: layer_engine
+  source_component: layers/ScenegraphLayer
+  capability: SCENEGRAPH_3D visualization layer
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.scenegraph_3d
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-012
+  group: layer_engine
+  source_component: layers/TripLayer
+  capability: TRIP visualization layer
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.trip
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-013
+  group: layer_engine
+  source_component: layers/S2GeometryLayer
+  capability: S2 visualization layer
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.s2
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-014
+  group: layer_engine
+  source_component: layers/A5GeometryLayer
+  capability: A5 visualization layer
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.a5
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-015
+  group: layer_engine
+  source_component: layers/GeohashGeometryLayer
+  capability: GEOHASH visualization layer
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.geohash
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-016
+  group: layer_engine
+  source_component: layers/FlowLayer
+  capability: FLOW visualization layer
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.flow
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-017
+  group: layer_engine
+  source_component: layers/VectorTileLayer
+  capability: VECTOR_TILE visualization layer
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.vector_tile
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-018
+  group: layer_engine
+  source_component: layers/RasterTileLayer
+  capability: RASTER_TILE visualization layer
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.raster_tile
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-019
+  group: layer_engine
+  source_component: layers/WMSLayer
+  capability: WMS visualization layer
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.wms
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-020
+  group: layer_engine
+  source_component: layers/Tile3DLayer
+  capability: TILE_3D visualization layer
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.tile_3d
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LAYER-021
+  group: layer_engine
+  source_component: layers/BitmapOverlayLayer
+  capability: BITMAP visualization layer
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.layer.bitmap
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-TILE-001
+  group: large_data
+  source_component: vector-tile
+  capability: MVT and PMTiles vector tiles
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.tiles.vector
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-TILE-002
+  group: large_data
+  source_component: raster-tile
+  capability: Raster PMTiles
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.tiles.raster
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-TILE-003
+  group: large_data
+  source_component: raster-tile
+  capability: COG/STAC raster sources through tile server
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.tiles.cog_stac
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-TILE-004
+  group: large_data
+  source_component: wms-layer
+  capability: OGC WMS raster layers and feature info
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.tiles.wms
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-TILE-005
+  group: large_data
+  source_component: tile3d-layer
+  capability: 3D Tiles visualization
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.tiles.3d
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-TILE-006
+  group: large_data
+  source_component: processors/table
+  capability: Progressive Arrow loading and batch compaction
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.performance.arrow
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-FILTER-001
+  group: analysis
+  source_component: filters
+  capability: Attribute filters by number/string/time/etc.
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.filter.attribute
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-FILTER-002
+  group: analysis
+  source_component: filters
+  capability: Polygon/rectangle/circle spatial filters
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.filter.geometry
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-FILTER-003
+  group: analysis
+  source_component: filters/playback
+  capability: Time interval filters with start/end semantics
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.filter.time
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-DRAW-001
+  group: editing
+  source_component: editor-layer
+  capability: Draw point, line, polygon, rectangle and circle
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.draw
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-DRAW-002
+  group: editing
+  source_component: editor-layer
+  capability: Move/reshape/insert vertices and edit properties
+  priority: P0
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.geometry.edit
+  authority_class: PROPOSAL_ONLY
+  implementation_status: SCAFFOLDED
+  notes: Edits generate proposal/revision deltas; they do not mutate confirmed route geometry.
+- id: SPATIAL-DRAW-003
+  group: editing
+  source_component: editor-layer
+  capability: Measure line length and circle radius while drawing
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.measure
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INT-001
+  group: interaction
+  source_component: interactions
+  capability: Configurable tooltip, image/link fields and pinned feature info
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.interaction.tooltip
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INT-002
+  group: interaction
+  source_component: interactions
+  capability: Brushing/highlight inspection
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.interaction.brush
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-INT-003
+  group: interaction
+  source_component: interactions
+  capability: Cursor coordinate display
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.interaction.coordinates
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-ANNOT-001
+  group: annotation
+  source_component: components/annotations
+  capability: Map annotations and rich-text notes
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.annotation
+  authority_class: PROPOSAL_ONLY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-VIEW-001
+  group: map_view
+  source_component: map-settings
+  capability: Split-map synchronized comparison
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.compare.split
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-VIEW-002
+  group: map_view
+  source_component: application-config
+  capability: Swipe comparison mode
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.compare.swipe
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-VIEW-003
+  group: map_view
+  source_component: map-settings
+  capability: 3D pitch/rotate view
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.view.3d
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-VIEW-004
+  group: map_view
+  source_component: map-settings
+  capability: Globe projection with capability fallbacks
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.view.globe
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-VIEW-005
+  group: map_view
+  source_component: map-settings
+  capability: Layer legend
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.legend
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-VIEW-006
+  group: map_view
+  source_component: map-styles
+  capability: Base-map layer groups, layer ordering and custom map styles
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.basemap.style
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-VIEW-007
+  group: map_view
+  source_component: application-config
+  capability: MapLibre/Mapbox renderer abstraction
+  priority: P0
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.renderer
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: NaviPRO defaults to MapLibre; Mapbox is an optional reference provider.
+- id: SPATIAL-TIME-001
+  group: temporal
+  source_component: playback
+  capability: Time playback with histogram and variable speed
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.playback
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-TIME-002
+  group: temporal
+  source_component: trip-layer
+  capability: Trip/path animation with timestamps
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.trip.playback
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-TIME-003
+  group: temporal
+  source_component: playback
+  capability: Custom Y-axis such as distance vs time
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.playback.chart
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LIVE-001
+  group: live_data
+  source_component: examples/live-data
+  capability: HTTP polling dataset refresh
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.live.polling
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LIVE-002
+  group: live_data
+  source_component: actions/addToDataset
+  capability: Host-row append/remove/upsert by key
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.live.upsert
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-LIVE-003
+  group: live_data
+  source_component: examples/live-data
+  capability: Host WebSocket → dataset upsert pattern
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.live.websocket
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: WebSocket transport belongs to NaviPRO host service; not the authoritative LIVE route control loop.
+- id: SPATIAL-SQL-001
+  group: analytics
+  source_component: duckdb
+  capability: Local DuckDB SQL exploration of map datasets
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.query.sql
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-AGG-001
+  group: analytics
+  source_component: aggregation layers
+  capability: Grid/hex/cluster/heatmap spatial aggregation
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.aggregate
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-STATS-001
+  group: analytics
+  source_component: data-table/column-statistics
+  capability: Data table and column statistics
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.table.stats
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-SCHEMA-001
+  group: persistence
+  source_component: schemas/SchemaManager
+  capability: Versioned map save/load and backward parsing
+  priority: P0
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.project.snapshot
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: NaviPRO wraps this in its own versioned MapProjectSnapshot tied to event/revision provenance.
+- id: SPATIAL-EXPORT-001
+  group: export
+  source_component: save-and-export
+  capability: Image export
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.export.image
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-EXPORT-002
+  group: export
+  source_component: save-and-export
+  capability: Filtered/unfiltered CSV export
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.export.csv
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-EXPORT-003
+  group: export
+  source_component: save-and-export
+  capability: Standalone HTML and map JSON export
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.export.map
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-EXPORT-004
+  group: export
+  source_component: save-and-export
+  capability: Video/GIF/frame-sequence export of animated map
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.export.video
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-CUSTOM-001
+  group: extensibility
+  source_component: component injection
+  capability: Component dependency injection/custom UI replacement
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: maplab.ui.plugins
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-CUSTOM-002
+  group: extensibility
+  source_component: reducers/actions/updaters
+  capability: Action/reducer/updater extension model
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: maplab.state.plugins
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-CUSTOM-003
+  group: extensibility
+  source_component: application-config
+  capability: Feature flags and capability configuration
+  priority: P0
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.capabilities
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-CUSTOM-004
+  group: extensibility
+  source_component: application-config
+  capability: Custom SVG icon registry
+  priority: P1
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.icon.registry
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-CUSTOM-005
+  group: extensibility
+  source_component: localization/styles
+  capability: Localization and theme customization
+  priority: P2
+  parity_target: FULL
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: maplab.presentation
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-EFFECT-001
+  group: presentation
+  source_component: effects
+  capability: Post-processing visual effects including light/shadow, fog, magnify and color effects
+  priority: P2
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.effects
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: Presentation-only; excluded from canonical route evidence and Driver LIVE.
+- id: SPATIAL-PERF-001
+  group: performance
+  source_component: deck.gl/luma.gl
+  capability: GPU-accelerated rendering for large geospatial datasets
+  priority: P0
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.renderer.gpu
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''
+- id: SPATIAL-PERF-002
+  group: performance
+  source_component: tasks/tiles
+  capability: Abortable tile requests and async task cancellation
+  priority: P1
+  parity_target: ADAPTED
+  allowed_modes:
+  - PREP
+  - REVIEW
+  navipro_target: spatial.tasks
+  authority_class: NON_AUTHORITY
+  implementation_status: SCAFFOLDED
+  notes: ''

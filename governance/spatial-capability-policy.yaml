@@ -1,0 +1,37 @@
+policy_id: NAVIPRO-SPATIAL-CAPABILITY-POLICY-V1
+version: 1.0.0-draft
+modes:
+  PREP:
+    mapping_workbench: ALLOW
+    dataset_ingest: ALLOW
+    geometry_edit: ALLOW_PROPOSAL
+    external_network: ALLOW_BY_PROVIDER_POLICY
+    ai_tools: ALLOW_PROPOSE
+  REVIEW:
+    mapping_workbench: ALLOW
+    dataset_ingest: ALLOW
+    geometry_edit: ALLOW_NEW_REVISION_ONLY
+    external_network: ALLOW_BY_PROVIDER_POLICY
+    ai_tools: ALLOW_PROPOSE
+  LIVE:
+    mapping_workbench: DENY
+    dataset_ingest: DENY
+    geometry_edit: DENY
+    external_network: DENY
+    ai_tools: DENY
+    driver_confirmed_package: READ_ONLY
+invariants:
+- SPATIAL_ANALYTICS_NEVER_OVERRIDES_SOURCE_ORDER
+- VISUAL_LAYER_IS_NOT_ROUTE_AUTHORITY
+- DRAWN_GEOMETRY_IS_PROPOSAL_UNTIL_REVIEWED
+- GOOGLE_MAPBOX_WMS_STAC_AND_EXTERNAL_TILES_ARE_PROVIDER_EVIDENCE_ONLY
+- CONFIRMED_ROUTE_REVISION_IS_IMMUTABLE
+- LIVE_HAS_NO_DYNAMIC_REROUTING
+- LIVE_HAS_NO_AGENT_OR_CLOUD_DEPENDENCY
+agent_denied_actions:
+- confirm_route
+- promote_location_verified
+- publish_release
+- activate_navipack
+- override_gate
+- mutate_live_route

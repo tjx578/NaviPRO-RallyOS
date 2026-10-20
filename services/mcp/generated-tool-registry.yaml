@@ -207,6 +207,132 @@ tools:
   authority: READ
   side_effect: NONE
   tool: navipro.release.get
+- operation_id: getSpatialCapabilities
+  method: GET
+  path: /spatial/capabilities
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.spatial.capabilities.get
+- operation_id: inspectSpatialDataset
+  method: POST
+  path: /spatial/datasets/inspect
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.spatial.dataset.inspect
+- operation_id: importSpatialDatasetDraft
+  method: POST
+  path: /spatial/datasets/import
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.spatial.dataset.import_draft
+- operation_id: planSpatialLayers
+  method: POST
+  path: /spatial/layers/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.spatial.layer.plan
+- operation_id: planSpatialFilters
+  method: POST
+  path: /spatial/filters/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.spatial.filter.plan
+- operation_id: convertSpatialDrawing
+  method: POST
+  path: /spatial/drawings/convert
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.spatial.drawing.convert
+- operation_id: createSpatialComparison
+  method: POST
+  path: /spatial/compare
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.spatial.compare.plan
+- operation_id: createSpatialPlaybackPlan
+  method: POST
+  path: /spatial/playback/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.spatial.playback.plan
+- operation_id: runSpatialAnalyticQuery
+  method: POST
+  path: /spatial/query
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.spatial.query.read
+- operation_id: createSpatialProjectSnapshot
+  method: POST
+  path: /spatial/projects/snapshot
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: DRAFT_MUTATION
+  tool: navipro.spatial.project.snapshot
+- operation_id: planSpatialExport
+  method: POST
+  path: /spatial/export/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.spatial.export.plan
+- operation_id: createSpatialAnnotationProposal
+  method: POST
+  path: /spatial/annotations
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: STAGING_MUTATION
+  tool: navipro.spatial.annotation.propose
+- operation_id: planSpatialLiveDataset
+  method: POST
+  path: /spatial/live-datasets/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: NONE
+  tool: navipro.spatial.live.plan
+- operation_id: inspectSpatialTileset
+  method: POST
+  path: /spatial/tilesets/inspect
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.spatial.tileset.inspect
 blocked_operations:
 - operation_id: healthCheck
   method: GET

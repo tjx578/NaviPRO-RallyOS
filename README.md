@@ -30,3 +30,15 @@ python tools/build_mcp_registry.py
 - `contracts/openapi/legacy-operation-migration.yaml`
 - `services/mcp/generated-tool-registry.yaml`
 - `docs/architecture/OPENAPI-VNEXT-MAPPING.md`
+
+## Spatial Intelligence REA baseline
+
+The repository now includes a capability-level REA of `tjx578/kepler.gl-_mapas_rally` (Kepler.gl `3.3.0-alpha.11`). See `docs/rea/KEPLER-GL-REA-v1.md`. The added `apps/map-lab-web/` workbench targets Kepler-grade PREP/REVIEW geospatial analytics while all rally authority remains in canonical NaviPRO contracts and human-reviewed revisions.
+
+Verification:
+
+```bash
+python tools/validate_spatial_rea.py
+python tools/validate_openapi.py
+python tools/build_mcp_registry.py
+```
