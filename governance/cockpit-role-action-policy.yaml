@@ -1,0 +1,56 @@
+policy_version: '1.0.0'
+name: NAVIPRO_FIVE_SURFACE_AUTHORITY
+status: DESIGN_ONLY
+modes: [PREP, REVIEW, CONFIRMED, LIVE]
+workspaces:
+  NAVIGATOR: [PAGE_1, PAGE_2, PAGE_3]
+  DRIVER: [DRIVER_1, DRIVER_2]
+actions:
+  parse_roadbook:
+    allow: [{surface: PAGE_1, modes: [PREP, REVIEW]}]
+    authority: SOURCE_INTERPRETATION_REVIEW_REQUIRED
+  set_start_override:
+    allow: [{surface: PAGE_1, modes: [PREP, REVIEW, CONFIRMED]}]
+    authority: NAVIGATOR_AUDITED
+  send_tsd_plan:
+    allow: [{surface: PAGE_1, modes: [PREP, REVIEW, CONFIRMED]}]
+    gates: [TIMING_PLAN_VALID, OCR_REVIEW_COMPLETE, TSD_ENDPOINT_AVAILABLE]
+    result_not_equivalent_to_ack: true
+  edit_route_draft:
+    allow: [{surface: PAGE_2, modes: [PREP, REVIEW]}]
+    mutates: DRAFT_REVISION_ONLY
+  confirm_route:
+    allow: [{surface: PAGE_2, modes: [REVIEW]}]
+    authority: AUTHENTICATED_HUMAN_NAVIGATOR
+    gates: [SOURCE_COVERAGE, LOCATION_VERIFICATION, TURN_TOPOLOGY, DISTANCE_CONSTRAINTS, TIMING_CONSTRAINTS, CHAINING, RELEASE_GATES]
+  send_driver_pack:
+    allow: [{surface: PAGE_2, modes: [CONFIRMED]}]
+    gates: [SIGNED_PACK_VALID, DRIVER_ACK_REQUIRED]
+  propose_candidate:
+    allow: [{surface: PAGE_3, modes: [PREP, REVIEW]}]
+    mutates: PROPOSAL_INBOX_ONLY
+  switch_driver_view:
+    allow: [{surface: DRIVER_1, modes: [CONFIRMED, LIVE]}, {surface: DRIVER_2, modes: [CONFIRMED, LIVE]}]
+    mutates: PRESENTATION_STATE_ONLY
+  advance_locked_cue:
+    allow: [{surface: DRIVER_2, modes: [LIVE]}]
+    authority: DETERMINISTIC_CUE_FSM_ONLY
+    freeze_when_off_route: true
+  live_route_reroute:
+    allow: []
+  agent_approve_route:
+    allow: []
+  driver_edit_route:
+    allow: []
+  driver_send_link:
+    allow: []
+  agent_publish_navipack:
+    allow: []
+nonnegotiables:
+  - ORIGINAL_SOURCE_ORDER_UNCHANGED
+  - NO_ALGORITHM_PROMOTES_CANDIDATE_TO_VERIFIED
+  - SOURCE_AND_GRAPH_DISTANCES_SEPARATE
+  - TIME_RULE_VERSION_REQUIRED
+  - OFFLINE_LIVE_NO_REMOTE_SERVICE
+  - BLOCKING_GATE_FAIL_OR_NOT_RUN_CAUSES_HOLD
+note: This file declares intended policies; it is not wired to runtime authorization.

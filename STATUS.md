@@ -55,3 +55,10 @@
 - Physical Location Intelligence / Route–Distance–Time SSOT: DOCUMENTED, policy and candidate assessment JSON Schema added; **NO physical resolver, imagery acquisition, travel-time solver, human approval backend, or runtime implementation**.
 - Route–Distance–Time source-of-truth rule: official ordered roadbook + separate distance domains + event-specific timing rules; AI/imagery/map pins remain non-authoritative.
 - React Native Maps source audit: report now INCLUDED in repo under docs/rea; renderer still NOT_BUILT/NOT_INTEGRATED.
+
+- Cockpit v3.0 UI architecture: FIVE_SURFACES_CONTRACTED (three Navigator pages, two Driver modes)
+- Cockpit source: NAVIPRO-MAPOS-COCKPIT-UNIFIED-V3.0, external attachment SHA-256 pinned in UI registry
+- Cockpit UI role/action policy: DECLARED_AND_CONTRACT_TESTED; NOT_RUNTIME_AUTH_ENFORCED
+- Navigator/Driver Android features: README_MODULE_SCAFFOLDS_ONLY, NO_ANDROID_BUILD
+- TSD Cadencer/Driver ACK adapters: DESIGN_ONLY, NOT_INTEGRATED
+- Driver overview/driving mode and cue FSM: NOT_BUILT

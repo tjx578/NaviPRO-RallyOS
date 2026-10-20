@@ -5,3 +5,6 @@ verify:
 
 verify-spatial:
 	python tools/validate_spatial_rea.py
+
+verify-cockpit:
+	python -m pytest -q tests/contracts/test_cockpit_five_surfaces.py

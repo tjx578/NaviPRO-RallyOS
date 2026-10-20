@@ -1,0 +1,3 @@
+# Page 1 — Data Rally (planned Android feature)
+
+Inputs: original roadbook bytes, manually reviewed OCR, starting list, hidden briefing evidence, versioned event timing rules. Outputs: immutable ordered source-step model, per-sub distance/time/actual numeric speed, cumulative schedule, TSD plan for external Cadencer with outbox/ACK. Manual start overrides Auto until navigator selects Auto again. Unresolved timing or OCR blocks TSD send. Core deterministic domain belongs in `python/src/navipro_rallyos/rally` and `timing` or platform-equivalent tested contracts. No code implementation yet.

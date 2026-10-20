@@ -4,6 +4,25 @@
 
 This repository continues the earlier NaviPRO RallyOS monorepo design and adds a concrete **Unified OpenAPI vNext** plus an **OpenAPI → MCP tool registry generator**.
 
+
+## Cockpit architecture: Page 1/2/3 + Driver 1/2 (2026-10-20)
+
+The canonical UI design now follows the user-approved v3.0 specification: **one Navigator app with three swipe pages** and **one separate Driver app with two switchable read-only modes**. This is a **design and contract alignment**, not a working Android build.
+
+- **Page 1 Data Rally:** source/OCR review, start & starting list, sub timing and numeric speeds, external TSD Cadencer with real ACK.
+- **Page 2 Offline Map & Route Editor:** selected-sub immutable source steps, map/evidence and draft-only route changes, human confirmation gates, driver NaviPack send.
+- **Page 3 Rally Agent:** research/voice/local search, evidence provenance, propose-only Page 2 inbox; no confirm/publish or generative LIVE.
+- **Driver 1 Overview:** selected sub full course, cue list and read-only TSD dashboard.
+- **Driver 2 Driving:** course-up lower-third look-ahead, cue FSM, offline OSM context, off-route freeze, read-only TSD.
+
+**Source and build guidance:** [Five-Surface Cockpit SSOT](docs/architecture/COCKPIT-FIVE-SURFACE-SSOT-v1.md) · [Build Plan](docs/implementation/COCKPIT-FIVE-SURFACE-BUILD-PLAN-v1.md) · [UI registry](contracts/ui/cockpit-surface-registry.yaml) · [Action authority policy](governance/cockpit-role-action-policy.yaml).
+
+```bash
+python -m pytest -q tests/contracts/test_cockpit_five_surfaces.py
+```
+
+Existing Kepler/Cesium/Routing Lab web scaffolds remain **supporting Page 2 PREP/REVIEW tools**, not additional navigator pages. Driver buttons shown in early mockups that send links are expressly excluded by the v3.0 Driver read-only requirements. The Rally engine's invariant remains **ordered roadbook + official distance/KM PAL + event-governed time**. No GitHub push or deployed runtime is implied by these docs.
+
 ## What is implemented in this artifact
 
 - Unified OpenAPI 3.1 contract across Rally, Location, Evidence, Route, Timing, Validation, Integration, Workflow, and Release.
