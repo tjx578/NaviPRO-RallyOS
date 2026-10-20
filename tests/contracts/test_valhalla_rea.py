@@ -12,11 +12,17 @@ from navipro_rallyos.route.valhalla_adapter import (
 ANCHORS = [RouteAnchor('A', -86749800, 1152041800), RouteAnchor('B', -86739900, 1152055000), RouteAnchor('C', -86722200, 1152110000)]
 # Encoded polyline6 for two coordinates: (0,0) -> (0.001,0.001).
 SHAPE = '??o}@o}@'
+PROVENANCE = {
+    'graph_dataset_id': 'osm-test',
+    'profile_digest': 'auto-test',
+    'valhalla_build': 'test-build',
+}
 
 
 def route_result(n=3):
     return {'trip': {'status': 0, 'units': 'kilometers',
-                     'locations': [{'lat': a.lat_e7/1e7, 'lon': a.lon_e7/1e7} for a in ANCHORS[:n]],
+                     'locations': [{'lat': a.lat_e7/1e7, 'lon': a.lon_e7/1e7,
+                                    'original_index': i} for i, a in enumerate(ANCHORS[:n])],
                      'summary': {'length': 1.2, 'time': 120},
                      'legs': [{'shape': SHAPE, 'maneuvers': [{'type': 1, 'street_names': ['Jl. Jawa']}]} for _ in range(n-1)]}}
 
@@ -82,7 +88,7 @@ def test_unsafe_polyline_rejected():
 
 
 def test_matrix_dimensions_units_and_meters_to_mm():
-    m = normalize_valhalla_matrix(matrix_result(), ANCHORS)
+    m = normalize_valhalla_matrix(matrix_result(), ANCHORS, **PROVENANCE)
     assert m['distances_mm_candidate'][0][1] == 1_125_000
     assert m['estimated_durations_s'][2][1] == 360.0
     assert m['unreachable_cells'] == []
@@ -93,7 +99,7 @@ def test_matrix_unreachable_remains_null():
     m = matrix_result()
     m['sources_to_targets'][0][2]['distance'] = None
     m['sources_to_targets'][0][2]['time'] = None
-    out = normalize_valhalla_matrix(m, ANCHORS)
+    out = normalize_valhalla_matrix(m, ANCHORS, **PROVENANCE)
     assert out['unreachable_cells'] == [[0, 2]]
     assert out['distances_mm_candidate'][0][2] is None
 
@@ -102,14 +108,14 @@ def test_matrix_reordered_index_rejected():
     m = matrix_result()
     m['sources_to_targets'][0][1]['from_index'] = 1
     with pytest.raises(ValhallaCandidateError):
-        normalize_valhalla_matrix(m, ANCHORS)
+        normalize_valhalla_matrix(m, ANCHORS, **PROVENANCE)
 
 
 def test_matrix_half_missing_rejected():
     m = matrix_result()
     m['sources_to_targets'][0][1]['time'] = None
     with pytest.raises(ValhallaCandidateError):
-        normalize_valhalla_matrix(m, ANCHORS)
+        normalize_valhalla_matrix(m, ANCHORS, **PROVENANCE)
 
 
 def test_prohibit_arbitrary_remote_endpoint():
@@ -133,7 +139,7 @@ def test_mock_provider_transport_only():
 
 def test_provider_matrix_mock_transport():
     adapter = ValhallaAdapter(transport=lambda url, body: matrix_result())
-    assert adapter.matrix(ANCHORS)['provider'] == 'VALHALLA'
+    assert adapter.matrix(ANCHORS, **PROVENANCE)['provider'] == 'VALHALLA'
 
 
 def test_native_alternate_endpoint_unimplemented_by_design():

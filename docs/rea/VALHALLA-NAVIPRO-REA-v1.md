@@ -1,11 +1,17 @@
 # Valhalla REA for NaviPRO RallyOS — routing provider #2
 
-**Audit date:** 2026-10-20  
-**Fork:** https://github.com/tjx578/valhalla-navipro  
-**Pinned commit:** `618cad5eb6a12c7787c3480851eda07c99eb5c74` (branch `master`)  
-**Original:** https://github.com/valhalla/valhalla  
-**Upstream comparison:** `valhalla/valhalla:master...tjx578/valhalla-navipro:master` = `identical`, 0 ahead/0 behind at audit. **No NaviPRO custom code found.**  
-**Code license:** MIT (`COPYING`); OSM dataset licenses and attribution are separate (ODbL).  
+**Audit date:** 2026-10-20
+
+**Fork:** https://github.com/tjx578/valhalla-navipro
+
+**Pinned commit:** `618cad5eb6a12c7787c3480851eda07c99eb5c74` (branch `master`)
+
+**Original:** https://github.com/valhalla/valhalla
+
+**Upstream comparison:** `valhalla/valhalla:master...tjx578/valhalla-navipro:master` = `identical`, 0 ahead/0 behind at audit. **No NaviPRO custom code found.**
+
+**Code license:** MIT (`COPYING`); OSM dataset licenses and attribution are separate (ODbL).
+
 **Status:** PREP/REVIEW request, native-result and provider-comparison **Python prototypes with mock/fixture tests**. Neither a compiled Valhalla engine nor a real OSM graph service has been installed or benchmarked by this integration.
 
 ## 1. Reverse-engineered layout (source evidence)
@@ -60,6 +66,21 @@ Input: ordered canonical anchor IDs + E7 WGS84, `graph_dataset_id`, `profile_dig
 Output: `source_anchor_order`, `graph_distance_mm_candidate`, `estimated_travel_seconds`, `geometry`, `provider_maneuvers_proposal`, `route_authority:false`, provenance and warnings.
 
 `format=json` retains native Valhalla; `alternates` deliberately disabled at adapter execution in this prototype until a native alternate-trip normalization contract is reviewed. Multipoint alternates are unsupported by the Valhalla API per documented constraints.
+
+### Integration review corrections
+
+The two supplied patches were replayed on the logo commit `af0f4e5`. Their 120 existing Python contract tests passed, but three additional negative/preservation tests exposed accepted reordered native locations, missing matrix values being interpreted as unreachable, and discarded matrix warnings.
+
+The separate correction commit:
+
+- Requires native `locations[].original_index` to be the exact ordered integer index before assigning source-anchor IDs. It does not equate snapped coordinates with official source coordinates.
+- Requires both `distance` and `time` keys in every matrix cell. Only explicit paired `null` values indicate an unreachable provider result; absent fields are malformed evidence.
+- Preserves route warnings from `trip.warnings` and matrix warnings from the top-level `warnings` array. A malformed warning array is rejected.
+- Requires `graph_dataset_id`, `profile_digest` and `valhalla_build` for both route and matrix calls, rejects empty provenance before transport, and retains it in normalized output. These caller-supplied labels do not independently attest the server's actual build.
+
+Native serialization was checked at pinned upstream commit `618cad5eb6a12c7787c3480851eda07c99eb5c74` in [`route_serializer_valhalla.cc`](https://github.com/tjx578/valhalla-navipro/blob/618cad5eb6a12c7787c3480851eda07c99eb5c74/src/tyr/route_serializer_valhalla.cc) and [`matrix_serializer.cc`](https://github.com/tjx578/valhalla-navipro/blob/618cad5eb6a12c7787c3480851eda07c99eb5c74/src/tyr/matrix_serializer.cc). Regression tests are in `tests/contracts/test_valhalla_response_integrity.py`.
+
+Local tests require the RFC3339 format checker used by the pre-existing location schema tests (for example `rfc3339-validator==0.1.4` and its `six` dependency). UTF-8 mode (`python -X utf8 -m pytest -q tests/contracts`) avoids locale-dependent reads on Windows. Neither local test success nor declaration-only PREP/REVIEW labels prove authenticated runtime enforcement.
 
 ### Known technical caveats
 

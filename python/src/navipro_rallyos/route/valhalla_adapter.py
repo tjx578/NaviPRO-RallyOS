@@ -31,6 +31,18 @@ def _distance_mm(km: Any) -> int:
     return int((_nonnegative_number(km, 'distance km') * 1_000_000).quantize(Decimal('1'), rounding=ROUND_HALF_UP))
 
 
+def _validate_provenance(graph_dataset_id: str, profile_digest: str, valhalla_build: str) -> None:
+    if not all(isinstance(s, str) and s.strip() for s in (graph_dataset_id, profile_digest, valhalla_build)):
+        raise ValhallaCandidateError('dataset, costing profile and Valhalla build identities required')
+
+
+def _provider_warnings(payload: Mapping[str, Any]) -> list[dict[str, Any]]:
+    warnings = payload.get('warnings', [])
+    if not isinstance(warnings, list) or any(not isinstance(w, Mapping) for w in warnings):
+        raise ValhallaCandidateError('provider warnings must be an array of objects')
+    return [dict(w) for w in warnings]
+
+
 def build_valhalla_route_request(anchors: Sequence[RouteAnchor], *, alternates: int = 0) -> dict[str, Any]:
     """Preserve official input order. Intermediate break_through disallows U-turns.
 
@@ -97,8 +109,7 @@ def normalize_valhalla_route(
     graph_dataset_id: str, profile_digest: str, valhalla_build: str,
 ) -> dict[str, Any]:
     ordered = validate_anchors(anchors)
-    if not all(isinstance(s, str) and s.strip() for s in (graph_dataset_id, profile_digest, valhalla_build)):
-        raise ValhallaCandidateError('dataset, costing profile and Valhalla build identities required')
+    _validate_provenance(graph_dataset_id, profile_digest, valhalla_build)
     if not isinstance(response, Mapping):
         raise ValhallaCandidateError('Valhalla returned an invalid response')
     trip = response.get('trip')
@@ -111,7 +122,7 @@ def normalize_valhalla_route(
     legs = trip.get('legs')
     if not isinstance(locations, list) or len(locations) != len(ordered):
         raise ValhallaCandidateError('route location count changed')
-    for loc in locations:
+    for index, loc in enumerate(locations):
         if not isinstance(loc, Mapping) or any(
             k not in loc or isinstance(loc[k], bool) or not isinstance(loc[k], (float, int)) or not isfinite(loc[k])
             for k in ('lat','lon')
@@ -119,8 +130,11 @@ def normalize_valhalla_route(
             raise ValhallaCandidateError('route location invalid')
         if abs(loc['lat']) > 90 or abs(loc['lon']) > 180:
             raise ValhallaCandidateError('route location outside WGS84 bounds')
+        if type(loc.get('original_index')) is not int or loc['original_index'] != index:
+            raise ValhallaCandidateError('route source location indices missing or reordered')
     # Valhalla may snap response locations to nearby edges. Do not compare snapped
-    # coordinates to source anchors for identity: preserve source-anchor IDs instead.
+    # coordinates to source anchors for identity: verify native original_index
+    # before binding the response to immutable source-anchor IDs.
     if not isinstance(legs, list) or len(legs) != len(ordered)-1:
         raise ValhallaCandidateError('route leg count differs from ordered input anchors')
     summary = trip.get('summary')
@@ -161,14 +175,18 @@ def normalize_valhalla_route(
             'geometry': {'type': 'LineString', 'coordinates': lines},
             'provider_maneuvers_proposal': maneuvers,
         }],
-        'provider_warnings': trip.get('warnings', []) if isinstance(trip.get('warnings', []), list) else [],
+        'provider_warnings': _provider_warnings(trip),
         'warnings': ['Candidate only; official KM PAL and timing require separate solver & navigator approval',
                      'Provider turn maneuvers are suggestions, not authoritative roadbook instructions'],
     }
 
 
-def normalize_valhalla_matrix(response: Mapping[str, Any], anchors: Sequence[RouteAnchor]) -> dict[str, Any]:
+def normalize_valhalla_matrix(
+    response: Mapping[str, Any], anchors: Sequence[RouteAnchor], *,
+    graph_dataset_id: str, profile_digest: str, valhalla_build: str,
+) -> dict[str, Any]:
     ordered = validate_anchors(anchors)
+    _validate_provenance(graph_dataset_id, profile_digest, valhalla_build)
     if not isinstance(response, Mapping) or response.get('units') != 'kilometers':
         raise ValhallaCandidateError('Valhalla matrix units missing or not kilometers')
     n = len(ordered)
@@ -186,7 +204,9 @@ def normalize_valhalla_matrix(response: Mapping[str, Any], anchors: Sequence[Rou
         for j, cell in enumerate(row):
             if not isinstance(cell, Mapping) or type(cell.get('from_index')) is not int or type(cell.get('to_index')) is not int or cell['from_index'] != i or cell['to_index'] != j:
                 raise ValhallaCandidateError('matrix source/target indices reordered')
-            d, t = cell.get('distance'), cell.get('time')
+            if 'distance' not in cell or 'time' not in cell:
+                raise ValhallaCandidateError('matrix distance and time fields required; null must be explicit')
+            d, t = cell['distance'], cell['time']
             if (d is None) != (t is None):
                 raise ValhallaCandidateError('partial unreachable cell not allowed')
             if d is None:
@@ -199,9 +219,12 @@ def normalize_valhalla_matrix(response: Mapping[str, Any], anchors: Sequence[Rou
         distances.append(drow)
         durations.append(trow)
     return {'mode': 'REVIEW', 'route_authority': False, 'provider': 'VALHALLA',
+            'graph_dataset_id': graph_dataset_id, 'profile_digest': profile_digest,
+            'provider_build': valhalla_build,
             'source_anchor_order': [a.anchor_id for a in ordered],
             'distances_mm_candidate': distances, 'estimated_durations_s': durations,
             'unreachable_cells': missing,
+            'provider_warnings': _provider_warnings(response),
             'warnings': ['Matrix estimates are graph costs, not official rally distances/times']}
 
 
@@ -229,12 +252,16 @@ class ValhallaAdapter:
               profile_digest: str, valhalla_build: str, alternates: int = 0) -> dict[str, Any]:
         if alternates:
             raise ValhallaCandidateError('alternate native trip normalization not enabled: review contract first')
+        _validate_provenance(graph_dataset_id, profile_digest, valhalla_build)
         payload = build_valhalla_route_request(anchors, alternates=alternates)
         response = self.transport(self.base_url + '/route', payload)
         return normalize_valhalla_route(response, anchors, graph_dataset_id=graph_dataset_id,
                                         profile_digest=profile_digest, valhalla_build=valhalla_build)
 
-    def matrix(self, anchors: Sequence[RouteAnchor]) -> dict[str, Any]:
+    def matrix(self, anchors: Sequence[RouteAnchor], *, graph_dataset_id: str,
+               profile_digest: str, valhalla_build: str) -> dict[str, Any]:
+        _validate_provenance(graph_dataset_id, profile_digest, valhalla_build)
         payload = build_valhalla_matrix_request(anchors)
         response = self.transport(self.base_url + '/sources_to_targets', payload)
-        return normalize_valhalla_matrix(response, anchors)
+        return normalize_valhalla_matrix(response, anchors, graph_dataset_id=graph_dataset_id,
+                                        profile_digest=profile_digest, valhalla_build=valhalla_build)
