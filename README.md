@@ -1,5 +1,7 @@
 # NaviPRO RallyOS vNext
 
+![NaviPRO RallyOS official logo — Engineered for TSD Precision](assets/brand/navipro-rallyos-official-logo.png)
+
 **Status:** WORKING_REPOSITORY_SKELETON / OPENAPI_VNEXT_DRAFT / NOT_RACE_READY
 
 This repository continues the earlier NaviPRO RallyOS monorepo design and adds a concrete **Unified OpenAPI vNext** plus an **OpenAPI → MCP tool registry generator**.
