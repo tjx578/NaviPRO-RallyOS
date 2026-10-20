@@ -1,5 +1,14 @@
 # Status
 
+- M1 ROTR Surabaya: PARSER_AND_DIAGNOSTIC_FOUNDATION_TESTED, ROUTE_UNRESOLVED.
+- Original Trayek 2 image preserved; visual transcription PENDING_OPERATOR_REVIEW.
+- B-D 19.60 km and A-E 120 minutes: ARITHMETIC_VALID; not route or timing-rule validation.
+- OSRM/Valhalla build recipes and pinned image manifests: PRESENT, REAL_BUILD_NOT_EXECUTED.
+- Local Docker engine: BLOCKED (backend memory failure observed 2026-10-20).
+- Exploratory Surabaya OSM extract: PREPARED; administrative/driving-side coverage NOT_VERIFIED.
+- M1 real provider comparison, directed-edge solver and Page 2 evidence GUI: NOT_EXECUTED / NOT_IMPLEMENTED.
+- M1 implementation and reproducible commands: `docs/implementation/M1-ROTR-SURABAYA.md`.
+
 - Repository skeleton: PRESENT
 - Git repository: LOCAL INITIALIZED
 - Unified OpenAPI vNext: DRAFT GENERATED
