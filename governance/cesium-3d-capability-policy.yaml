@@ -1,0 +1,47 @@
+policy_id: NAVIPRO-CESIUM-3D-INTELLIGENCE-POLICY-V1
+mode_allowlist:
+- PREP
+- REVIEW
+mode_denylist:
+- LIVE
+authoritative_sources:
+- confirmed_route_revision_from_navipro_core
+- signed_roadbook_and_approved_evidence
+forbidden_promotions:
+- visual_pick_to_verified_location
+- terrain_height_to_authoritative_distance
+- 3d_model_coordinate_to_survey_grade_ground_truth
+- 3d_line_to_confirmed_route
+- imagery_feature_to_reviewer_decision
+- camera_flight_to_driver_instruction
+- agent_tool_to_route_confirmation
+non_authoritative_inputs:
+- third_party_dem
+- imagery
+- 3d_tiles
+- i3s
+- point_cloud
+- gaussian_splats
+- terrain_sample
+- visual_line_of_sight
+- gpx_track
+- time_playback
+vertical_datum_rules:
+  require_explicit_vertical_datum: true
+  missing_height_means_unknown_not_zero: true
+  prohibit_mixed_orthometric_and_ellipsoidal_heights_without_transformation: true
+  terrain_sample_must_carry_provider_version_and_resolution: true
+network_rules:
+  default: DENY_ALL
+  prep_review_allowlisted_sources: true
+  no_unreviewed_remote_urls: true
+  no_embedded_credentials: true
+  offline_test_must_block_external_network: true
+ai_tools:
+  may_propose: true
+  may_inspect: true
+  may_confirm_route: false
+  may_mutate_live: false
+  may_publish_navipack: false
+visual_context_only: Cesium graphics, height samples and line-of-sight proposals must
+  carry provenance and cannot modify RallyOS route authority.

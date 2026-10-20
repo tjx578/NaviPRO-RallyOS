@@ -42,3 +42,17 @@ python tools/validate_spatial_rea.py
 python tools/validate_openapi.py
 python tools/build_mcp_registry.py
 ```
+
+## CesiumJS 3D / Terrain Intelligence REA
+
+`docs/rea/CESIUMJS-REA-v1.md` audits `tjx578/cesium_maps_rally` (`cesium@1.145.0`). This adds an isolated `apps/terrain-lab-web/` scaffold and **69 source-indexed Cesium capabilities** to the Kepler-grade PREP/REVIEW Map Lab architecture. It introduces explicit WGS84/ECEF numerical helpers, 3D asset/snapshot policy, 9 `spatial3d` OpenAPI definitions, and generated MCP registry entries. The rest of the authoritative route/timing/evidence/NaviPack system is unchanged. See `docs/rea/SPATIAL-RECONCILIATION-KEPLER-CESIUM-v1.md`.
+
+```bash
+python tools/validate_cesium_rea.py
+python tools/validate_spatial_rea.py
+python tools/validate_openapi.py
+python tools/build_mcp_registry.py
+python -m pytest -q tests/contracts
+```
+
+**Important:** neither Kepler nor Cesium WebGL frontend has been built in this environment, and OpenAPI/MCP service implementations are not present. The static Cesium app is a prototype; the numerical geodesy helper is tested. No dependency is added to Driver LIVE.

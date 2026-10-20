@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0-draft",
+  "project_id": "demo_3d_project",
+  "event_id": "DEMO_NO_REAL_ROUTE",
+  "mode": "PREP",
+  "revision": 1,
+  "map_project_id": "demo_kepler_project",
+  "route_revision_ref": null,
+  "camera": {
+    "longitude_deg": 115.2,
+    "latitude_deg": -8.6,
+    "height_m": 65000,
+    "height_datum": "WGS84_ELLIPSOID",
+    "heading_deg": 0,
+    "pitch_deg": -90,
+    "roll_deg": 0,
+    "scene_mode": "SCENE3D"
+  },
+  "asset_layers": [],
+  "proposals": [],
+  "authority": {
+    "route_authority": false,
+    "map_project_authority": "ANALYTIC_DRAFT"
+  },
+  "height_policy": {
+    "height_datum": "UNKNOWN",
+    "terrain_height_is_authoritative": false,
+    "geoid_model": null,
+    "notes": "Demonstration ellipsoid only; no DEM / measured altitude."
+  }
+}

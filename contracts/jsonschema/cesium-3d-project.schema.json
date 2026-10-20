@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.navipro.local/cesium-3d-project.schema.json",
+  "title": "NaviPRO Cesium Terrain Lab Snapshot (non-authoritative)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "event_id",
+    "mode",
+    "revision",
+    "camera",
+    "asset_layers",
+    "authority",
+    "height_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0-draft"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "enum": [
+        "PREP",
+        "REVIEW"
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "map_project_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "route_revision_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "camera": {
+      "$ref": "#/$defs/camera"
+    },
+    "asset_layers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_authority",
+        "map_project_authority"
+      ],
+      "properties": {
+        "route_authority": {
+          "const": false
+        },
+        "map_project_authority": {
+          "enum": [
+            "ANALYTIC_DRAFT",
+            "REVIEW_ARTIFACT"
+          ]
+        }
+      }
+    },
+    "height_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "height_datum",
+        "terrain_height_is_authoritative"
+      ],
+      "properties": {
+        "height_datum": {
+          "enum": [
+            "WGS84_ELLIPSOID",
+            "EGM96",
+            "EGM2008",
+            "OTHER_DECLARED",
+            "UNKNOWN"
+          ]
+        },
+        "terrain_height_is_authoritative": {
+          "const": false
+        },
+        "geoid_model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "camera": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "longitude_deg",
+        "latitude_deg",
+        "height_m",
+        "height_datum",
+        "heading_deg",
+        "pitch_deg",
+        "roll_deg",
+        "scene_mode"
+      ],
+      "properties": {
+        "longitude_deg": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "latitude_deg": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "height_m": {
+          "type": "number"
+        },
+        "height_datum": {
+          "enum": [
+            "WGS84_ELLIPSOID",
+            "UNKNOWN"
+          ]
+        },
+        "heading_deg": {
+          "type": "number"
+        },
+        "pitch_deg": {
+          "type": "number"
+        },
+        "roll_deg": {
+          "type": "number"
+        },
+        "scene_mode": {
+          "enum": [
+            "SCENE3D",
+            "SCENE2D",
+            "COLUMBUS_VIEW"
+          ]
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "kind",
+        "source_sha256",
+        "provider_id",
+        "authority"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "CESIUM_3D_TILES",
+            "I3S",
+            "GLTF",
+            "KML",
+            "KMZ",
+            "GPX",
+            "GEOJSON",
+            "CZML",
+            "TERRAIN_MESH",
+            "IMAGERY_WMS",
+            "IMAGERY_WMTS",
+            "IMAGERY_XYZ",
+            "POINT_CLOUD",
+            "GAUSSIAN_SPLAT",
+            "VOXEL"
+          ]
+        },
+        "source_uri": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "provider_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_terms_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vertical_datum": {
+          "enum": [
+            "WGS84_ELLIPSOID",
+            "EGM96",
+            "EGM2008",
+            "OTHER_DECLARED",
+            "UNKNOWN"
+          ]
+        },
+        "capture_utc": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "resolution_m": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "authority": {
+          "const": "VISUAL_ANALYTIC_ONLY"
+        }
+      }
+    }
+  }
+}

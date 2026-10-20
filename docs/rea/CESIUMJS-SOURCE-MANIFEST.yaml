@@ -1,0 +1,28 @@
+manifest_id: CESIUMJS-REA-20261020
+source_repo: tjx578/cesium_maps_rally
+fork_of: CesiumGS/cesium
+default_branch: main
+source_sha: 7f17be4c05c0cc2f4bc6405f16ce521f620b0112
+source_version: 1.145.0
+source_engine_version: 26.3.0
+source_widgets_version: 16.2.0
+license: Apache-2.0
+upstream_main_sha_at_audit: 621826db344eb7f1248f6bd50ed4770563127f12
+upstream_ahead_count_at_audit: 204
+custom_rally_fork_modifications_observed: false
+comparison_basis: 'GitHub compare: fork head is upstream main ancestor; not audit
+  of all tags/branches'
+source_modules_observed:
+- packages/engine/Source/Core
+- packages/engine/Source/Scene
+- packages/engine/Source/DataSources
+- packages/engine/Source/Renderer
+- packages/engine/Source/Workers
+- packages/widgets/Source
+- packages/sandcastle
+- Documentation/OfflineGuide/README.md
+license_obligations:
+- Preserve Apache-2.0 license and third-party notices when distributing copied/modified
+  code
+- Check Cesium ion, imagery, terrain, and third-party dataset rights separately
+- Do not ship API keys or vendor-specific cached data without authorization

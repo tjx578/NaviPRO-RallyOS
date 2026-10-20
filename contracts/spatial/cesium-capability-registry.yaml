@@ -1,0 +1,1115 @@
+registry_id: NAVIPRO-CESIUM-3D-CAPABILITY-REGISTRY-V1
+version: 1.0.0-draft
+source_repository: https://github.com/tjx578/cesium_maps_rally
+source_commit: 7f17be4c05c0cc2f4bc6405f16ce521f620b0112
+source_version: cesium@1.145.0
+license: Apache-2.0
+snapshot_at: '2026-10-20'
+source_scope: Indexed source modules and selected implementations; not full runtime
+  parity test
+target_scope: PREP/REVIEW-only 3D spatial intelligence; no route authority
+capabilities:
+- id: CESIUM-3D-001
+  group: geodesy
+  source_path: packages/engine/Source/Core/Cartesian3.js
+  capability: Geographic degrees to Earth-centered Earth-fixed Cartesian positions
+  priority: P0
+  target: spatial3d.coordinates.ecef
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-002
+  group: geodesy
+  source_path: packages/engine/Source/Core/Cartesian3.js
+  capability: Cartesian 3D coordinate vector operations
+  priority: P1
+  target: spatial3d.coordinates.cartesian
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-003
+  group: geodesy
+  source_path: packages/engine/Source/Core/Cartographic.js
+  capability: Geodetic longitude latitude and ellipsoidal height representation
+  priority: P0
+  target: spatial3d.coordinates.cartographic
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-004
+  group: geodesy
+  source_path: packages/engine/Source/Core/Ellipsoid.js
+  capability: WGS84 reference ellipsoid and cartographic/cartesian transforms
+  priority: P0
+  target: spatial3d.coordinates.ellipsoid
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-005
+  group: geodesy
+  source_path: packages/engine/Source/Core/EllipsoidGeodesic.js
+  capability: Surface geodesic interpolation and diagnostic distance
+  priority: P1
+  target: spatial3d.geodesic.inspect
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-006
+  group: geodesy
+  source_path: packages/engine/Source/Core/EllipsoidRhumbLine.js
+  capability: Rhumb-line representation and geometry comparison
+  priority: P2
+  target: spatial3d.rhumb.inspect
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-007
+  group: geodesy
+  source_path: packages/engine/Source/Core/Transforms.js
+  capability: Local ENU and Earth fixed reference frame transformations
+  priority: P0
+  target: spatial3d.frames
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-008
+  group: geodesy
+  source_path: packages/engine/Source/Scene/SceneTransforms.js
+  capability: 3D world coordinate to screen and back projection context
+  priority: P1
+  target: spatial3d.projection
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-009
+  group: geometry
+  source_path: packages/engine/Source/Core/CorridorGeometry.js
+  capability: 3D georeferenced corridor geometry and width styling
+  priority: P1
+  target: spatial3d.corridor.visualize
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-010
+  group: geometry
+  source_path: packages/engine/Source/Core/PolylineGeometry.js
+  capability: Georeferenced polyline geometry representation
+  priority: P0
+  target: spatial3d.route.overlay
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-011
+  group: geometry
+  source_path: packages/engine/Source/Core/PolygonGeometry.js
+  capability: 3D polygon geometry overlays
+  priority: P1
+  target: spatial3d.polygon
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-012
+  group: geometry
+  source_path: packages/engine/Source/Core/RectangleGeometry.js
+  capability: Bounding rectangle spatial region geometry
+  priority: P2
+  target: spatial3d.rectangle
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-013
+  group: geometry
+  source_path: packages/engine/Source/Core/IntersectionTests.js
+  capability: Geometric intersections and ray math primitives
+  priority: P1
+  target: spatial3d.intersections
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-014
+  group: geometry
+  source_path: packages/engine/Source/Scene/GroundPolylinePrimitive.js
+  capability: Terrain-draped 3D line rendering
+  priority: P0
+  target: spatial3d.route.ground_overlay
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-015
+  group: geometry
+  source_path: packages/engine/Source/Scene/GroundPrimitive.js
+  capability: Ground clamped geometric primitives
+  priority: P1
+  target: spatial3d.geometry.ground
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-016
+  group: terrain
+  source_path: packages/engine/Source/Core/CesiumTerrainProvider.js
+  capability: Quantized-mesh terrain streaming
+  priority: P0
+  target: spatial3d.terrain.provider
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-017
+  group: terrain
+  source_path: packages/engine/Source/Core/ArcGISTiledElevationTerrainProvider.js
+  capability: ArcGIS terrain elevation integration
+  priority: P1
+  target: spatial3d.terrain.arcgis
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-018
+  group: terrain
+  source_path: packages/engine/Source/Core/sampleTerrainMostDetailed.js
+  capability: Most-detailed elevation query respecting terrain tile availability
+  priority: P0
+  target: spatial3d.terrain.sample
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-019
+  group: terrain
+  source_path: packages/engine/Source/Scene/Terrain.js
+  capability: Asynchronous terrain-provider lifecycle
+  priority: P0
+  target: spatial3d.terrain.lifecycle
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-020
+  group: terrain
+  source_path: packages/engine/Source/Scene/Globe.js
+  capability: 3D globe terrain/imagery surface management
+  priority: P0
+  target: spatial3d.globe
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-021
+  group: terrain
+  source_path: packages/engine/Source/Scene/Globe.js
+  capability: Globe transparency and terrain/globe visibility
+  priority: P2
+  target: spatial3d.globe.transparency
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-022
+  group: terrain
+  source_path: packages/engine/Source/Scene/Scene.js
+  capability: Scene view and geometry picking against rendered surface
+  priority: P0
+  target: spatial3d.picking
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-023
+  group: terrain
+  source_path: packages/engine/Source/Scene/Scene.js
+  capability: Scene height sampling and camera-aware spatial inspection
+  priority: P1
+  target: spatial3d.scene.height
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-024
+  group: terrain
+  source_path: packages/engine/Source/Scene/Scene.js
+  capability: Request-render scheduling and scene resource lifecycle
+  priority: P0
+  target: spatial3d.scene.lifecycle
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-025
+  group: imagery
+  source_path: packages/engine/Source/Scene/ImageryLayer.js
+  capability: Raster imagery layer compositing opacity/order
+  priority: P0
+  target: spatial3d.imagery.layer
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-026
+  group: imagery
+  source_path: packages/engine/Source/Scene/UrlTemplateImageryProvider.js
+  capability: XYZ/URL template imagery provider
+  priority: P0
+  target: spatial3d.imagery.xyz
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-027
+  group: imagery
+  source_path: packages/engine/Source/Scene/WebMapServiceImageryProvider.js
+  capability: OGC WMS imagery and GetFeatureInfo handling
+  priority: P0
+  target: spatial3d.imagery.wms
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-028
+  group: imagery
+  source_path: packages/engine/Source/Scene/WebMapTileServiceImageryProvider.js
+  capability: OGC WMTS tiled imagery integration
+  priority: P1
+  target: spatial3d.imagery.wmts
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-029
+  group: imagery
+  source_path: packages/engine/Source/Scene/ArcGisMapServerImageryProvider.js
+  capability: ArcGIS MapServer imagery integration
+  priority: P1
+  target: spatial3d.imagery.arcgis
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-030
+  group: imagery
+  source_path: packages/engine/Source/Scene/OpenStreetMapImageryProvider.js
+  capability: OpenStreetMap imagery context provider
+  priority: P1
+  target: spatial3d.imagery.osm
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-031
+  group: imagery
+  source_path: packages/engine/Source/Scene/TimeDynamicImagery.js
+  capability: Time-varying imagery requests and playback
+  priority: P1
+  target: spatial3d.imagery.temporal
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-032
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/Cesium3DTileset.js
+  capability: 3D Tiles tileset loading and traversal
+  priority: P0
+  target: spatial3d.tiles.load
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-033
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/Cesium3DTileset.js
+  capability: 3D Tiles screen-space-error level-of-detail and streaming cache
+  priority: P0
+  target: spatial3d.tiles.lod
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-034
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/Cesium3DTileset.js
+  capability: 3D Tiles bounding volumes and culling
+  priority: P1
+  target: spatial3d.tiles.culling
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-035
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/Cesium3DTileStyle.js
+  capability: Feature-level 3D tile styling and filtering
+  priority: P1
+  target: spatial3d.tiles.style
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-036
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/ClippingPlaneCollection.js
+  capability: 3D geometry clipping with planes
+  priority: P1
+  target: spatial3d.tiles.clipping_plane
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-037
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/ClippingPolygonCollection.js
+  capability: 3D geometry clipping with polygons
+  priority: P1
+  target: spatial3d.tiles.clipping_polygon
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-038
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/I3SDataProvider.js
+  capability: I3S indexed 3D scene layer ingestion
+  priority: P2
+  target: spatial3d.tiles.i3s
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-039
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/GaussianSplatPrimitive.js
+  capability: 3D Gaussian splat scene rendering
+  priority: P2
+  target: spatial3d.splats
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-040
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/VoxelPrimitive.js
+  capability: Voxel data rendering and traversal
+  priority: P2
+  target: spatial3d.voxels
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-041
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/Model/Model.js
+  capability: glTF and 3D model display
+  priority: P1
+  target: spatial3d.models.gltf
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-042
+  group: tiles3d
+  source_path: packages/engine/Source/Scene/PointCloudShading.js
+  capability: Point-cloud shading/point sizes and visual classification
+  priority: P1
+  target: spatial3d.pointcloud
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-043
+  group: time_data
+  source_path: packages/engine/Source/DataSources/GpxDataSource.js
+  capability: GPS GPX track waypoints/routes loading
+  priority: P0
+  target: spatial3d.data.gpx
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-044
+  group: time_data
+  source_path: packages/engine/Source/DataSources/KmlDataSource.js
+  capability: KML and KMZ geospatial data ingestion
+  priority: P1
+  target: spatial3d.data.kml
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-045
+  group: time_data
+  source_path: packages/engine/Source/DataSources/GeoJsonDataSource.js
+  capability: GeoJSON feature loading into entities
+  priority: P0
+  target: spatial3d.data.geojson
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-046
+  group: time_data
+  source_path: packages/engine/Source/DataSources/CzmlDataSource.js
+  capability: CZML time-dynamic 3D scene description
+  priority: P1
+  target: spatial3d.data.czml
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-047
+  group: time_data
+  source_path: packages/engine/Source/DataSources/SampledPositionProperty.js
+  capability: Timestamped position interpolation
+  priority: P0
+  target: spatial3d.time.position
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-048
+  group: time_data
+  source_path: packages/engine/Source/DataSources/PathGraphics.js
+  capability: Animated spatial path/track visualization
+  priority: P0
+  target: spatial3d.time.path
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-049
+  group: time_data
+  source_path: packages/engine/Source/DataSources/VelocityOrientationProperty.js
+  capability: Orientation derived from motion data
+  priority: P1
+  target: spatial3d.time.orientation
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-050
+  group: time_data
+  source_path: packages/engine/Source/Core/JulianDate.js
+  capability: Precision time representation for scene timelines
+  priority: P1
+  target: spatial3d.time.julian
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-051
+  group: time_data
+  source_path: packages/engine/Source/Core/Clock.js
+  capability: Time-dependent playback clock and speed
+  priority: P0
+  target: spatial3d.time.clock
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-052
+  group: time_data
+  source_path: packages/engine/Source/DataSources/Entity.js
+  capability: Dynamic entity/graphics binding
+  priority: P0
+  target: spatial3d.entities
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-053
+  group: camera
+  source_path: packages/engine/Source/Scene/Camera.js
+  capability: 3D camera position heading pitch roll and flights
+  priority: P0
+  target: spatial3d.camera
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-054
+  group: camera
+  source_path: packages/engine/Source/Scene/ScreenSpaceCameraController.js
+  capability: 3D input interaction/pan/zoom/tilt constraints
+  priority: P1
+  target: spatial3d.camera.controls
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-055
+  group: camera
+  source_path: packages/engine/Source/Scene/SceneMode.js
+  capability: 2D/Columbus/3D scene modes
+  priority: P1
+  target: spatial3d.scene.modes
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-056
+  group: camera
+  source_path: packages/engine/Source/Scene/ShadowMap.js
+  capability: Shadow casting for visual context, not survey proof
+  priority: P2
+  target: spatial3d.lighting.shadow
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-057
+  group: camera
+  source_path: packages/engine/Source/Scene/SkyAtmosphere.js
+  capability: Atmospheric environment visual context
+  priority: P2
+  target: spatial3d.atmosphere
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-058
+  group: camera
+  source_path: packages/engine/Source/Scene/PostProcessStageCollection.js
+  capability: 3D scene post-processing effects
+  priority: P2
+  target: spatial3d.effects
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-059
+  group: camera
+  source_path: packages/engine/Source/Scene/Picking.js
+  capability: GPU picking and object interaction
+  priority: P0
+  target: spatial3d.pick_features
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-060
+  group: camera
+  source_path: packages/engine/Source/Scene/Snapping.js
+  capability: Interactive geometry snapping building blocks
+  priority: P1
+  target: spatial3d.snap.visual
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-061
+  group: widgets
+  source_path: packages/widgets/Source/Viewer/Viewer.js
+  capability: Viewer composition/controls
+  priority: P0
+  target: spatial3d.viewer
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-062
+  group: widgets
+  source_path: packages/widgets/Source/Timeline/Timeline.js
+  capability: Visual timeline scrub and preview
+  priority: P1
+  target: spatial3d.ui.timeline
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-063
+  group: widgets
+  source_path: packages/widgets/Source/Animation/Animation.js
+  capability: Animation controls
+  priority: P1
+  target: spatial3d.ui.animation
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-064
+  group: widgets
+  source_path: packages/widgets/Source/SceneModePicker/SceneModePicker.js
+  capability: Scene-mode picker controls
+  priority: P2
+  target: spatial3d.ui.modepicker
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-065
+  group: widgets
+  source_path: packages/widgets/Source/BaseLayerPicker/BaseLayerPicker.js
+  capability: Basemap and terrain layer selection
+  priority: P1
+  target: spatial3d.ui.basemap
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-066
+  group: offline
+  source_path: Documentation/OfflineGuide/README.md
+  capability: Offline 3D globe runtime with local imagery/3D assets and disabled geocoder
+  priority: P0
+  target: spatial3d.offline.assets
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-067
+  group: offline
+  source_path: packages/engine/Source/Core/RequestScheduler.js
+  capability: Network request scheduling and throttling
+  priority: P1
+  target: spatial3d.network.scheduler
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-068
+  group: offline
+  source_path: packages/engine/Source/Scene/Cesium3DTilesetCache.js
+  capability: 3D tiles eviction and memory cache management
+  priority: P1
+  target: spatial3d.performance.cache
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt
+- id: CESIUM-3D-069
+  group: offline
+  source_path: packages/engine/Source/Workers/createVerticesFromQuantizedTerrainMesh.js
+  capability: Worker-based terrain mesh processing
+  priority: P1
+  target: spatial3d.performance.worker
+  source_status: SOURCE_INDEXED_OR_INSPECTED
+  target_status: IMPLEMENTATION_PENDING
+  authority: VISUAL_ANALYTIC_ONLY
+  allowed_modes:
+  - PREP
+  - REVIEW
+  evidence_required:
+  - source_fixture
+  - functional_test
+  - render_or_numeric_receipt

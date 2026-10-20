@@ -333,6 +333,87 @@ tools:
   authority: READ
   side_effect: NONE
   tool: navipro.spatial.tileset.inspect
+- operation_id: cesiumGetCapabilities
+  method: GET
+  path: /spatial3d/capabilities
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.spatial3d.capabilities.get
+- operation_id: cesiumInspectAsset
+  method: POST
+  path: /spatial3d/assets/inspect
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.spatial3d.asset.inspect
+- operation_id: cesiumPlanScene
+  method: POST
+  path: /spatial3d/scenes/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: DRAFT_MUTATION
+  tool: navipro.spatial3d.scene.plan
+- operation_id: cesiumPlanTerrainProfile
+  method: POST
+  path: /spatial3d/terrain/profile/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: DRAFT_MUTATION
+  tool: navipro.spatial3d.terrain.profile.plan
+- operation_id: cesiumPlanVisibility
+  method: POST
+  path: /spatial3d/visibility/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: DRAFT_MUTATION
+  tool: navipro.spatial3d.visibility.plan
+- operation_id: cesiumPlanReplay
+  method: POST
+  path: /spatial3d/replay/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: DRAFT_MUTATION
+  tool: navipro.spatial3d.replay.plan
+- operation_id: cesiumPlanKeplerComparison
+  method: POST
+  path: /spatial3d/compare/kepler/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: DRAFT_MUTATION
+  tool: navipro.spatial3d.compare.kepler.plan
+- operation_id: cesiumInspectVerticalDatum
+  method: POST
+  path: /spatial3d/datum/inspect
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.spatial3d.datum.inspect
+- operation_id: cesiumDraftProject
+  method: POST
+  path: /spatial3d/projects/draft
+  modes:
+  - PREP
+  - REVIEW
+  authority: AGENT_PROPOSE
+  side_effect: DRAFT_MUTATION
+  tool: navipro.spatial3d.project.draft
 blocked_operations:
 - operation_id: healthCheck
   method: GET

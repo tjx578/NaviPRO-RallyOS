@@ -2,10 +2,11 @@ openapi: 3.1.0
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: NaviPRO RallyOS Unified API
-  version: 0.2.0-vnext-rea
+  version: 0.3.0-vnext-cesium-rea
   description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver LIVE
     runtime consumes confirmed offline packages and does not depend on this API. Spatial Intelligence REA baseline adds Kepler-grade
-    PREP/REVIEW mapping capabilities without granting route authority.
+    PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA defines PREP/REVIEW-only 3D
+    scene and terrain analytical plan contracts; definitions are not deployed API implementations.
 servers:
 - url: https://api.navipro.local/vnext
   description: Placeholder target; replace per deployment
@@ -24,6 +25,8 @@ tags:
 - name: Workflow
 - name: Release
 - name: Governance
+- name: Terrain3D
+  description: Non-authoritative 3D geospatial analysis planning and inspection
 paths:
   /health:
     get:
@@ -2250,6 +2253,405 @@ paths:
         '403': *id003
         '409': *id004
         '500': *id005
+  /spatial3d/capabilities:
+    get:
+      operationId: cesiumGetCapabilities
+      summary: List source-indexed CesiumJS 3D capabilities
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.capabilities.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpatialCapabilityRegistry'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial3d/assets/inspect:
+    post:
+      operationId: cesiumInspectAsset
+      summary: Inspect asset source, datum, license and 3D capabilities
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.asset.inspect
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cesium3DAssetInspectRequest'
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cesium3DAssetInspection'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial3d/scenes/plan:
+    post:
+      operationId: cesiumPlanScene
+      summary: Plan isolated Cesium 3D scene around a canonical route revision
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.scene.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: DRAFT_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cesium3DScenePlanRequest'
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cesium3DAnalyticPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial3d/terrain/profile/plan:
+    post:
+      operationId: cesiumPlanTerrainProfile
+      summary: Plan terrain sampling with declared vertical datum and provider
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.terrain.profile.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: DRAFT_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cesium3DTerrainProfilePlanRequest'
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cesium3DAnalyticPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial3d/visibility/plan:
+    post:
+      operationId: cesiumPlanVisibility
+      summary: Plan visual line-of-sight assessment (not survey evidence)
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.visibility.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: DRAFT_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cesium3DLineOfSightPlanRequest'
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cesium3DAnalyticPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial3d/replay/plan:
+    post:
+      operationId: cesiumPlanReplay
+      summary: Plan GPX or CZML timeline replay
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.replay.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: DRAFT_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cesium3DReplayPlanRequest'
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cesium3DAnalyticPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial3d/compare/kepler/plan:
+    post:
+      operationId: cesiumPlanKeplerComparison
+      summary: Plan synchronized Cesium 3D and Kepler map review
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.compare.kepler.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: DRAFT_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cesium3DKeplerCompareRequest'
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cesium3DAnalyticPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial3d/datum/inspect:
+    post:
+      operationId: cesiumInspectVerticalDatum
+      summary: Inspect vertical datum mismatch without silent conversion
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.datum.inspect
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cesium3DDatumInspectionRequest'
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cesium3DAnalyticPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /spatial3d/projects/draft:
+    post:
+      operationId: cesiumDraftProject
+      summary: Prepare non-authoritative Cesium scene snapshot
+      tags:
+      - Terrain3D
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.spatial3d.project.draft
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: AGENT_PROPOSE
+      x-navipro-side-effect: DRAFT_MUTATION
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cesium3DProjectDraftRequest'
+      responses:
+        '200':
+          description: Draft analytical response; cannot change route authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cesium3DAnalyticPlanResult'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden in LIVE or without adequate authority
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          description: Contract defined but server handler not implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
 components:
   securitySchemes:
     bearerAuth:
@@ -3699,3 +4101,320 @@ components:
         payload:
           type: object
           additionalProperties: true
+    Cesium3DAssetReference:
+      type: object
+      additionalProperties: false
+      required:
+      - asset_id
+      - kind
+      - provider_id
+      - source_sha256
+      - authority
+      properties:
+        asset_id:
+          $ref: '#/components/schemas/IdRef'
+        kind:
+          type: string
+          enum:
+          - TERRAIN_MESH
+          - CESIUM_3D_TILES
+          - I3S
+          - GLTF
+          - GEOJSON
+          - KML
+          - KMZ
+          - GPX
+          - CZML
+          - IMAGERY_WMS
+          - IMAGERY_WMTS
+          - IMAGERY_XYZ
+          - POINT_CLOUD
+          - GAUSSIAN_SPLAT
+          - VOXEL
+        provider_id:
+          $ref: '#/components/schemas/IdRef'
+        source_sha256:
+          $ref: '#/components/schemas/Sha256'
+        source_uri:
+          type:
+          - string
+          - 'null'
+        vertical_datum:
+          type: string
+          enum:
+          - WGS84_ELLIPSOID
+          - EGM96
+          - EGM2008
+          - OTHER_DECLARED
+          - UNKNOWN
+        authority:
+          type: string
+          const: VISUAL_ANALYTIC_ONLY
+        license_ref:
+          type:
+          - string
+          - 'null'
+        capture_utc:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    Cesium3DAssetInspectRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - asset
+      properties:
+        asset:
+          $ref: '#/components/schemas/Cesium3DAssetReference'
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+    Cesium3DAssetInspection:
+      type: object
+      additionalProperties: false
+      required:
+      - asset_id
+      - status
+      - route_authority
+      properties:
+        asset_id:
+          $ref: '#/components/schemas/IdRef'
+        status:
+          type: string
+          enum:
+          - DRAFT
+          - INSPECTED
+          - NEEDS_PROVIDER_REVIEW
+          - REJECTED
+        warnings:
+          type: array
+          items:
+            type: string
+        route_authority:
+          type: boolean
+          const: false
+    Cesium3DScenePlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - event_id
+      - route_revision_id
+      - asset_ids
+      - mode
+      properties:
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        asset_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdRef'
+        camera_bookmark:
+          $ref: '#/components/schemas/Cesium3DCamera'
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+    Cesium3DCamera:
+      type: object
+      additionalProperties: false
+      required:
+      - lon_deg
+      - lat_deg
+      - height_ellipsoid_m
+      properties:
+        lon_deg:
+          type: number
+          minimum: -180
+          maximum: 180
+        lat_deg:
+          type: number
+          minimum: -90
+          maximum: 90
+        height_ellipsoid_m:
+          type: number
+        heading_deg:
+          type: number
+        pitch_deg:
+          type: number
+        roll_deg:
+          type: number
+        height_reference:
+          type: string
+          const: WGS84_ELLIPSOID
+    Cesium3DTerrainProfilePlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - route_revision_id
+      - terrain_asset
+      - sample_interval_m
+      - mode
+      properties:
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        terrain_asset:
+          $ref: '#/components/schemas/Cesium3DAssetReference'
+        sample_interval_m:
+          type: number
+          exclusiveMinimum: 0
+          maximum: 1000
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+    Cesium3DLineOfSightPlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - origin
+      - target
+      - scene_asset_ids
+      - mode
+      properties:
+        origin:
+          $ref: '#/components/schemas/Cesium3DCamera'
+        target:
+          $ref: '#/components/schemas/Cesium3DCamera'
+        scene_asset_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdRef'
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+    Cesium3DReplayPlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - track_asset_id
+      - route_revision_id
+      - mode
+      properties:
+        track_asset_id:
+          $ref: '#/components/schemas/IdRef'
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        clock_start_utc:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        clock_end_utc:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+    Cesium3DKeplerCompareRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - kepler_map_project_id
+      - cesium_3d_project_id
+      - route_revision_id
+      - mode
+      properties:
+        kepler_map_project_id:
+          $ref: '#/components/schemas/IdRef'
+        cesium_3d_project_id:
+          $ref: '#/components/schemas/IdRef'
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+    Cesium3DDatumInspectionRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - source_vertical_datum
+      - target_vertical_datum
+      - provider_id
+      properties:
+        source_vertical_datum:
+          enum:
+          - WGS84_ELLIPSOID
+          - EGM96
+          - EGM2008
+          - OTHER_DECLARED
+          - UNKNOWN
+        target_vertical_datum:
+          enum:
+          - WGS84_ELLIPSOID
+          - EGM96
+          - EGM2008
+          - OTHER_DECLARED
+        provider_id:
+          $ref: '#/components/schemas/IdRef'
+        geoid_model_ref:
+          type:
+          - string
+          - 'null'
+    Cesium3DProjectDraftRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - scene_project_id
+      - event_id
+      - route_revision_id
+      - mode
+      properties:
+        scene_project_id:
+          $ref: '#/components/schemas/IdRef'
+        event_id:
+          $ref: '#/components/schemas/IdRef'
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        mode:
+          enum:
+          - PREP
+          - REVIEW
+        snapshot:
+          type: object
+          additionalProperties: true
+          description: Validated separately against cesium-3d-project.schema.json before persistence
+    Cesium3DAnalyticPlanResult:
+      type: object
+      additionalProperties: false
+      required:
+      - plan_id
+      - state
+      - route_authority
+      - mode
+      properties:
+        plan_id:
+          $ref: '#/components/schemas/IdRef'
+        state:
+          type: string
+          enum:
+          - DRAFT
+          - NEEDS_REVIEW
+          - REJECTED
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        route_authority:
+          type: boolean
+          const: false
+        source_refs:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdRef'
+        warnings:
+          type: array
+          items:
+            type: string
