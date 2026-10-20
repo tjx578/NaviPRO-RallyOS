@@ -51,3 +51,7 @@
 - OpenAPI context fusion: +3 CONTRACT_ONLY operations and generated MCP definitions; NO deployed endpoints.
 - Browser imagery comparison / environmental provider runtime / Android parity: NOT_BUILT.
 - React Native Maps REA: prior STANDALONE_ANALYSIS_ONLY, not integrated in local git repo.
+
+- Physical Location Intelligence / Route–Distance–Time SSOT: DOCUMENTED, policy and candidate assessment JSON Schema added; **NO physical resolver, imagery acquisition, travel-time solver, human approval backend, or runtime implementation**.
+- Route–Distance–Time source-of-truth rule: official ordered roadbook + separate distance domains + event-specific timing rules; AI/imagery/map pins remain non-authoritative.
+- React Native Maps source audit: report now INCLUDED in repo under docs/rea; renderer still NOT_BUILT/NOT_INTEGRATED.

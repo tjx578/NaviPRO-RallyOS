@@ -84,3 +84,13 @@ python -m pytest -q tests/contracts
 ### God's Eye View REA — Spatial Context Fusion
 
 See [`docs/rea/GODS-EYE-VIEW-REA-v1.md`](docs/rea/GODS-EYE-VIEW-REA-v1.md) and the [eight-source reconciliation](docs/rea/SPATIAL-RECONCILIATION-EIGHT-SOURCES-v1.md). A trusted-source PREP/REVIEW prototype adds context freshness/rights checks without route mutation. This **does not** install or duplicate the God's Eye View application and **does not** enable individual surveillance feeds, real-time Driver services, or authoritative route decisions.
+
+## Route–Distance–Time + Physical Location Intelligence SSOT (2026-10-20)
+
+The project decisions from the latest navigator review are now recorded in the [Route–Distance–Time & Physical Location SSOT](docs/architecture/ROUTE-DISTANCE-TIME-PHYSICAL-LOCATION-SSOT-v1.md), accompanied by a [fail-closed policy](governance/route-distance-time-location-policy.yaml) and a [non-authoritative physical location assessment JSON Schema](contracts/jsonschema/physical-location-assessment.schema.json).
+
+**Key invariant:** NaviPRO reasons over **official ordered route instructions + distance/KM PAL + event-governed time**, not a shortest or fastest map route. Satellite imagery helps evaluate physical POI plausibility, not verify place identity on its own. `POI_REFERENCE`, `PHYSICAL_LOCATION`, and `ROUTE_ACCESS_POINT` must be distinguished, with provenance, uncertainty and human review. Distance domains (`D_auth`, `D_graph`, `D_odo`, `D_geo`) are never conflated.
+
+The previously standalone [React Native Maps audit](docs/rea/REACT-NATIVE-MAPS-REA-v1.md) is now included **as documentation**, not as a mobile build or installed adapter.
+
+**Status:** governance + draft schema + schema unit tests only; no satellite POI matcher, time solver, REST/MCP endpoints or live Driver integration. `NOT_RACE_READY`.

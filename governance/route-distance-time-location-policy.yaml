@@ -1,0 +1,59 @@
+policy_version: 1.0.0
+decision_date: '2026-10-20'
+name: NAVIPRO_PHYSICAL_LOCATION_AND_ROUTE_DISTANCE_TIME
+status: DESIGN_ONLY
+source_of_route_authority: OFFICIAL_ROADBOOK
+route_invariants:
+  official_instruction_order: IMMUTABLE
+  official_anchor_order: IMMUTABLE
+  route_change_requires: HUMAN_REVIEWED_ROUTE_REVISION
+  roadbook_text_mutation: DENY
+  trip_optimizer_reorder: DENY
+  path_search_type: ORDERED_CONSTRAINED_CANDIDATES
+  shortest_fastest_only_routing: INSUFFICIENT
+independent_distance_domains:
+  D_auth: OFFICIAL_ROADBOOK_DISTANCE
+  D_graph: DIRECTED_GRAPH_DIAGNOSTIC
+  D_odo: INDEPENDENT_TRIPMETER_OBSERVATION
+  D_geo: GEODETIC_DIAGNOSTIC
+  never_overwrite_D_auth: true
+  unit_for_canonical_storage: MILLIMETRE
+time_constraints:
+  primary_domain: EVENT_REGULATION_AND_ROADBOOK
+  rule_version_required: true
+  multi_segment_speed_rules: true
+  neutralizations_and_controls_explicit: true
+  timing_source_required: true
+  universal_tolerance: NOT_DEFINED
+  missing_target_time: UNKNOWN_NOT_ZERO
+physical_location:
+  distinct_entity_types:
+    - POI_REFERENCE
+    - PHYSICAL_LOCATION
+    - ROUTE_ACCESS_POINT
+  map_pin_not_proof_of_physical_identity: true
+  visual_building_not_proof_of_name: true
+  candidate_review_required: true
+  missing_evidence_status: NEEDS_FIELD_CHECK
+  no_automatic_coordinate_correction: true
+  no_auto_verify: true
+satellite_imagery:
+  role: CONTEXT_EVIDENCE_ONLY
+  requires_source_attribution: true
+  capture_date_unknown_status: UNKNOWN
+  resolution_unknown_status: UNKNOWN
+  provider_rights_check: REQUIRED
+  no_real_time_assumption: true
+  no_landmark_identity_auto_proof: true
+allowed_modes:
+  - PREP
+  - REVIEW
+forbidden_actions:
+  - LIVE_SATELLITE_LOOKUP
+  - LIVE_ROUTE_RECALCULATION
+  - AUTOMATIC_ROUTE_APPROVAL
+  - AUTOMATIC_NAVIPACK_PUBLISH
+  - AGENT_REWRITE_OFFICIAL_DISTANCE
+  - AGENT_REWRITE_OFFICIAL_TIME
+  - AUTO_PROMOTE_VISUAL_POI
+runtime: NOT_IMPLEMENTED

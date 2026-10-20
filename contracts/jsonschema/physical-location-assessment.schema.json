@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://navipro.invalid/schemas/physical-location-assessment.v1.json",
+  "title": "Physical location / route-distance-time assessment proposal (non-authoritative)",
+  "description": "PREP/REVIEW design contract only; all candidates and comparisons require human review. Not an official location decision or LIVE payload.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["assessment_id", "mode", "route_revision_id", "source_instruction_id", "source_instruction_text", "official_anchor_ids", "location_references", "physical_candidates", "distance_time_checks", "status", "route_authority"],
+  "properties": {
+    "assessment_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "mode": {"enum": ["PREP", "REVIEW"]},
+    "route_revision_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "source_instruction_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "source_instruction_text": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "official_anchor_ids": {
+      "type": "array", "minItems": 2, "maxItems": 500, "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1, "maxLength": 160}
+    },
+    "location_references": {
+      "type": "array", "maxItems": 100,
+      "items": {"$ref": "#/$defs/locationReference"}
+    },
+    "physical_candidates": {
+      "type": "array", "maxItems": 100,
+      "items": {"$ref": "#/$defs/physicalCandidate"}
+    },
+    "distance_time_checks": {
+      "type": "array", "maxItems": 500,
+      "items": {"$ref": "#/$defs/distanceTimeCheck"}
+    },
+    "status": {"enum": ["DRAFT", "SUSPECT", "VISUALLY_PLAUSIBLE", "NEEDS_FIELD_CHECK", "HOLD", "REVIEWED_NON_AUTHORITATIVE"]},
+    "route_authority": {"const": false},
+    "confirmed": {"const": false},
+    "notes": {"type": "string", "maxLength": 4096}
+  },
+  "$defs": {
+    "coordE7": {
+      "type": "object", "additionalProperties": false,
+      "required": ["lat_e7", "lon_e7"],
+      "properties": {
+        "lat_e7": {"type": "integer", "minimum": -900000000, "maximum": 900000000},
+        "lon_e7": {"type": "integer", "minimum": -1800000000, "maximum": 1800000000}
+      }
+    },
+    "locationReference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reference_id", "kind", "name", "source_id", "coordinate", "verification_status"],
+      "properties": {
+        "reference_id": {"type": "string", "minLength": 1},
+        "kind": {"const": "POI_REFERENCE"},
+        "name": {"type": "string", "minLength": 1},
+        "source_id": {"type": "string", "minLength": 1},
+        "coordinate": {"$ref": "#/$defs/coordE7"},
+        "verification_status": {"enum": ["UNVERIFIED", "SUSPECT", "SOURCE_CLAIM_ONLY"]},
+        "source_capture_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_id", "kind", "provider", "capture_time", "source_ref", "rights_reviewed"],
+      "properties": {
+        "evidence_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["SATELLITE_IMAGE", "AERIAL_IMAGE", "FIELD_PHOTO", "OFFICIAL_DOCUMENT", "OSM_RECORD", "SURVEY_OBSERVATION"]},
+        "provider": {"type": "string", "minLength": 1},
+        "capture_time": {"type": ["string", "null"], "format": "date-time"},
+        "resolution_m": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "source_ref": {"type": "string", "minLength": 1, "maxLength": 2048},
+        "rights_reviewed": {"type": "boolean"},
+        "observation": {"type": "string", "maxLength": 2048}
+      }
+    },
+    "physicalCandidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidate_id", "kind", "coordinate", "physical_status", "access_status", "evidence"],
+      "properties": {
+        "candidate_id": {"type": "string", "minLength": 1},
+        "kind": {"const": "PHYSICAL_LOCATION"},
+        "coordinate": {"$ref": "#/$defs/coordE7"},
+        "physical_status": {"enum": ["UNVERIFIED", "VISUALLY_PLAUSIBLE", "NEEDS_FIELD_CHECK", "DISPUTED"]},
+        "access_point": {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "coordinate", "status"],
+          "properties": {
+            "kind": {"const": "ROUTE_ACCESS_POINT"},
+            "coordinate": {"$ref": "#/$defs/coordE7"},
+            "status": {"enum": ["UNVERIFIED", "GRAPH_CONNECTED_CANDIDATE", "NEEDS_FIELD_CHECK"]},
+            "graph_dataset_id": {"type": "string", "minLength": 1}
+          }
+        },
+        "access_status": {"enum": ["UNKNOWN", "CANDIDATE", "NEEDS_FIELD_CHECK"]},
+        "evidence": {"type": "array", "maxItems": 30, "items": {"$ref": "#/$defs/evidence"}}
+      }
+    },
+    "distanceTimeCheck": {
+      "type": "object", "additionalProperties": false,
+      "required": ["segment_id", "distance_domain", "timing_status", "status"],
+      "properties": {
+        "segment_id": {"type": "string", "minLength": 1},
+        "distance_domain": {"const": "D_graph_vs_D_auth"},
+        "d_auth_mm": {"type": ["integer", "null"], "minimum": 0},
+        "d_graph_mm": {"type": ["integer", "null"], "minimum": 0},
+        "delta_distance_mm": {"type": ["integer", "null"]},
+        "timing_status": {"enum": ["RULES_UNKNOWN", "TARGET_UNKNOWN", "COMPARABLE_MODEL_ONLY", "RULE_CONFLICT", "NOT_ASSESSED"]},
+        "target_time_ms": {"type": ["integer", "null"], "minimum": 0},
+        "candidate_time_ms": {"type": ["integer", "null"], "minimum": 0},
+        "delta_time_ms": {"type": ["integer", "null"]},
+        "rule_version": {"type": ["string", "null"]},
+        "graph_dataset_id": {"type": ["string", "null"]},
+        "profile_digest": {"type": ["string", "null"]},
+        "status": {"enum": ["UNKNOWN", "CANDIDATE", "INCONSISTENT", "HOLD"]}
+      }
+    }
+  }
+}
