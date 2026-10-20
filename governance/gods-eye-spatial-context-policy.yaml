@@ -1,0 +1,41 @@
+policy_version: 1.0.0
+module: SpatialContextFusion
+modes:
+- PREP
+- REVIEW
+rally_route_authority: false
+driver_live_allowed: false
+agent_publishes_route: false
+allowed_context_kinds:
+- WEATHER_OBSERVED
+- WEATHER_FORECAST
+- AIR_QUALITY
+- TERRAIN
+- IMAGERY
+- EARTHQUAKE
+- AGGREGATE_TRAFFIC
+- GEOJSON_ANNOTATION
+- RECORDED_ROUTE
+forbidden_context_kinds:
+- PERSON_TRACKING
+- CCTV
+- ALPR
+- INDIVIDUAL_VEHICLE_TRACKING
+- MILITARY_ASSET_TRACKING
+- REALTIME_SUBJECT_FOCUS
+requirements:
+- trusted_source_catalog_separate_from_client
+- provider_data_terms_review
+- explicit_observation_time_and_freshness
+- no_auto_promotion_to_route_authority
+- scene_snapshot_is_non_authoritative
+- no_network_dependency_in_live_driver
+- evidence_human_review
+- no_raw_third_party_data_copied
+distances:
+- D_auth_unchanged
+- D_graph_as_non_authoritative_candidate
+- D_odo_driver_sensor_only
+- D_geo_diagnostic_only
+integration: Existing Cesium Terrain Lab/Kepler Map Lab host source-adapter; do not
+  fork another Cesium renderer

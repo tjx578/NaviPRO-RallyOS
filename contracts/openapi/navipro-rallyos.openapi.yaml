@@ -2,16 +2,17 @@ openapi: 3.1.0
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: NaviPRO RallyOS Unified API
-  version: 0.6.0-vnext-lrm-rea
+  version: 0.7.0-vnext-context-rea
   description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver
     LIVE runtime consumes confirmed offline packages and does not depend on this API. Spatial Intelligence REA baseline
-    adds Kepler-grade PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA
-    defines PREP/REVIEW-only 3D scene and terrain analytical plan contracts; definitions are not deployed API implementations.
-    StreetComplete REA adds clean-room, PREP/REVIEW-only field-survey contracts; observational data is not OSM-tag
-    editing, verified road truth, or route authority. OSRM REA adds PREP/REVIEW-only routing candidate, directed
-    graph, matrix and map-matching planning contracts. OSRM Trip/TSP explicitly excluded from official route sequence.
-    Leaflet Routing Machine REA adds UI review proposal-only contracts; LRM is a presentation/control library, not
-    a trusted routing algorithm or authority. UI-only alternative selection is not an MCP action.
+    adds Kepler-grade PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA defines
+    PREP/REVIEW-only 3D scene and terrain analytical plan contracts; definitions are not deployed API implementations.
+    StreetComplete REA adds clean-room, PREP/REVIEW-only field-survey contracts; observational data is not OSM-tag editing,
+    verified road truth, or route authority. OSRM REA adds PREP/REVIEW-only routing candidate, directed graph, matrix
+    and map-matching planning contracts. OSRM Trip/TSP explicitly excluded from official route sequence. Leaflet Routing
+    Machine REA adds UI review proposal-only contracts; LRM is a presentation/control library, not a trusted routing
+    algorithm or authority. UI-only alternative selection is not an MCP action. Gods Eye View REA adds non-authoritative
+    context-fusion planning; no live monitoring, CCTV/ALPR, individual tracking or Driver online dependency.
 servers:
 - url: https://api.navipro.local/vnext
   description: Placeholder target; replace per deployment
@@ -38,6 +39,8 @@ tags:
   description: OSRM graph and candidate only; never confirms roadbook official route
 - name: RoutingUI
   description: LRM-inspired Route Editor UI plans; proposed changes do not change source order/confirm route
+- name: SpatialContextFusion
+  description: PREP/REVIEW environmental geospatial context (non-authoritative) inspired by Gods Eye View
 paths:
   /health:
     get:
@@ -3133,8 +3136,8 @@ paths:
       summary: Inspect graph manifest and provenance
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.graph.inspect
@@ -3180,8 +3183,8 @@ paths:
       summary: Inspect Lua profile and access flags
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.profile.inspect
@@ -3227,8 +3230,8 @@ paths:
       summary: Plan nearest road snapping candidates
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.nearest.plan
@@ -3274,8 +3277,8 @@ paths:
       summary: Compute ordered non-authoritative OSRM route candidates
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.route.candidates
@@ -3321,8 +3324,8 @@ paths:
       summary: Compute asymmetric road graph matrix (no geodesic fallback)
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.matrix.calculate
@@ -3368,8 +3371,8 @@ paths:
       summary: Propose map matching of GPS trace to road graph
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.trace.match
@@ -3415,8 +3418,8 @@ paths:
       summary: Assess match gaps/outliers and residuals for review
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.trace.assess
@@ -3462,8 +3465,8 @@ paths:
       summary: Plan debug vector tile overlay from correct OSRM graph
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.debug.tiles.plan
@@ -3509,8 +3512,8 @@ paths:
       summary: Plan interactive frontend review without changing official order
       tags:
       - RoutingGraph
-      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable.
-        Do not use Trip/TSP.
+      description: PREP/REVIEW only. Only a candidate/plan. Official source event and order must remain immutable. Do
+        not use Trip/TSP.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.frontend.session.plan
@@ -3556,8 +3559,8 @@ paths:
       summary: Inspect Leaflet Routing Machine review UI capabilities
       tags:
       - RoutingUI
-      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
-        ACL; LIVE prohibited.
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and ACL;
+        LIVE prohibited.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.ui.lrm.capabilities.get
@@ -3591,8 +3594,8 @@ paths:
       summary: Build locked source-order route review session plan
       tags:
       - RoutingUI
-      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
-        ACL; LIVE prohibited.
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and ACL;
+        LIVE prohibited.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.ui.lrm.session.plan
@@ -3632,8 +3635,8 @@ paths:
       summary: Plan separate shaping-point proposal without altering official anchors
       tags:
       - RoutingUI
-      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
-        ACL; LIVE prohibited.
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and ACL;
+        LIVE prohibited.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.ui.lrm.shaping.propose
@@ -3673,8 +3676,8 @@ paths:
       summary: Preview non-authoritative maneuver instructions for candidate
       tags:
       - RoutingUI
-      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
-        ACL; LIVE prohibited.
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and ACL;
+        LIVE prohibited.
       x-navipro-mcp:
         enabled: true
         tool: navipro.routing.ui.lrm.itinerary.preview
@@ -3714,8 +3717,8 @@ paths:
       summary: Local UI alternative selection only; not an agent action
       tags:
       - RoutingUI
-      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and
-        ACL; LIVE prohibited.
+      description: CONTRACT_ONLY; PREP/REVIEW. UI is not route authority. Backend must check trusted snapshot and ACL;
+        LIVE prohibited.
       x-navipro-mcp:
         enabled: false
       x-navipro-mode:
@@ -3744,6 +3747,123 @@ paths:
                 $ref: '#/components/schemas/ApiError'
         '409':
           description: Revision, graph or official source order conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /context-fusion/capabilities:
+    get:
+      operationId: getContextFusionCapabilities
+      summary: List safe PREP/REVIEW context capabilities
+      tags:
+      - SpatialContextFusion
+      description: CONTRACT_ONLY; trusted-source registry and authentication required; PREP/REVIEW only. No web side
+        effects, no route authority, not deployed.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.context.capabilities.get
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      responses:
+        '200':
+          description: Non-authoritative proposal/result (runtime not implemented)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextCapabilitiesResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Unapproved source terms or mode
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /context-fusion/layers/assess:
+    post:
+      operationId: assessContextFusionLayers
+      summary: Assess non-authoritative source freshness and attribution
+      tags:
+      - SpatialContextFusion
+      description: CONTRACT_ONLY; trusted-source registry and authentication required; PREP/REVIEW only. No web side
+        effects, no route authority, not deployed.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.context.layers.assess
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContextAssessRequest'
+      responses:
+        '200':
+          description: Non-authoritative proposal/result (runtime not implemented)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextAssessResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Unapproved source terms or mode
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /context-fusion/scenes/plan:
+    post:
+      operationId: planContextFusionScene
+      summary: Plan bounded route context scene without changing source order
+      tags:
+      - SpatialContextFusion
+      description: CONTRACT_ONLY; trusted-source registry and authentication required; PREP/REVIEW only. No web side
+        effects, no route authority, not deployed.
+      x-navipro-mcp:
+        enabled: true
+        tool: navipro.context.scene.plan
+      x-navipro-mode:
+      - PREP
+      - REVIEW
+      x-navipro-authority: READ
+      x-navipro-side-effect: NONE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContextScenePlanRequest'
+      responses:
+        '200':
+          description: Non-authoritative proposal/result (runtime not implemented)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextScenePlanResult'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Unapproved source terms or mode
           content:
             application/json:
               schema:
@@ -6513,3 +6633,221 @@ components:
           type: array
           items:
             type: string
+    ContextLayerObservation:
+      type: object
+      additionalProperties: false
+      required:
+      - source_id
+      - kind
+      - observed_at
+      properties:
+        source_id:
+          $ref: '#/components/schemas/IdRef'
+        kind:
+          type: string
+          enum:
+          - AGGREGATE_TRAFFIC
+          - AIR_QUALITY
+          - EARTHQUAKE
+          - GEOJSON_ANNOTATION
+          - IMAGERY
+          - RECORDED_ROUTE
+          - TERRAIN
+          - WEATHER_FORECAST
+          - WEATHER_OBSERVED
+        observed_at:
+          type: string
+          format: date-time
+        issued_at:
+          type: string
+          format: date-time
+        valid_until:
+          type: string
+          format: date-time
+    ContextScenePlanRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - route_revision_id
+      - official_anchor_ids
+      - layers
+      properties:
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        official_anchor_ids:
+          type: array
+          minItems: 2
+          maxItems: 500
+          items:
+            $ref: '#/components/schemas/IdRef'
+        layers:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/ContextLayerObservation'
+    ContextLayerAssessment:
+      type: object
+      additionalProperties: false
+      required:
+      - source_id
+      - kind
+      - observed_at
+      - freshness
+      - age_seconds
+      - attribution
+      - route_authority
+      - data_status
+      - model_status
+      properties:
+        source_id:
+          $ref: '#/components/schemas/IdRef'
+        kind:
+          type: string
+          enum:
+          - AGGREGATE_TRAFFIC
+          - AIR_QUALITY
+          - EARTHQUAKE
+          - GEOJSON_ANNOTATION
+          - IMAGERY
+          - RECORDED_ROUTE
+          - TERRAIN
+          - WEATHER_FORECAST
+          - WEATHER_OBSERVED
+        observed_at:
+          type: string
+          format: date-time
+        freshness:
+          type: string
+          enum:
+          - CURRENT
+          - STALE
+        age_seconds:
+          type: integer
+          minimum: 0
+        attribution:
+          type: string
+          minLength: 1
+        route_authority:
+          type: boolean
+          const: false
+        data_status:
+          type: string
+          const: CONTEXT_ONLY
+        model_status:
+          type: string
+    ContextScenePlanResult:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - mode
+      - route_revision_id
+      - official_anchor_ids
+      - route_authority
+      - confirmed
+      - as_of
+      - layers
+      - warnings
+      properties:
+        status:
+          const: DRAFT_CONTEXT_SCENE
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        route_revision_id:
+          $ref: '#/components/schemas/IdRef'
+        official_anchor_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdRef'
+        route_authority:
+          const: false
+        confirmed:
+          const: false
+        as_of:
+          type: string
+          format: date-time
+        layers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContextLayerAssessment'
+        warnings:
+          type: array
+          items:
+            type: string
+    ContextAssessRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - mode
+      - layers
+      properties:
+        mode:
+          type: string
+          enum:
+          - PREP
+          - REVIEW
+        layers:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/ContextLayerObservation'
+    ContextAssessResult:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - route_authority
+      - as_of
+      - layers
+      properties:
+        status:
+          const: CONTEXT_ONLY
+        route_authority:
+          const: false
+        as_of:
+          type: string
+          format: date-time
+        layers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContextLayerAssessment'
+    ContextCapabilitiesResult:
+      type: object
+      additionalProperties: false
+      required:
+      - modes
+      - authoritative
+      - allowed_kinds
+      properties:
+        modes:
+          type: array
+          items:
+            type: string
+            enum:
+            - PREP
+            - REVIEW
+        authoritative:
+          const: false
+        allowed_kinds:
+          type: array
+          items:
+            type: string
+            enum:
+            - AGGREGATE_TRAFFIC
+            - AIR_QUALITY
+            - EARTHQUAKE
+            - GEOJSON_ANNOTATION
+            - IMAGERY
+            - RECORDED_ROUTE
+            - TERRAIN
+            - WEATHER_FORECAST
+            - WEATHER_OBSERVED

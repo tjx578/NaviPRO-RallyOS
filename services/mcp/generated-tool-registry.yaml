@@ -612,6 +612,33 @@ tools:
   authority: READ
   side_effect: NONE
   tool: navipro.routing.ui.lrm.itinerary.preview
+- operation_id: getContextFusionCapabilities
+  method: GET
+  path: /context-fusion/capabilities
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.context.capabilities.get
+- operation_id: assessContextFusionLayers
+  method: POST
+  path: /context-fusion/layers/assess
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.context.layers.assess
+- operation_id: planContextFusionScene
+  method: POST
+  path: /context-fusion/scenes/plan
+  modes:
+  - PREP
+  - REVIEW
+  authority: READ
+  side_effect: NONE
+  tool: navipro.context.scene.plan
 blocked_operations:
 - operation_id: healthCheck
   method: GET

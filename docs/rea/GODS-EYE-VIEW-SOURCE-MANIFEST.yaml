@@ -1,0 +1,33 @@
+rea: GODS_EYE_VIEW_SPATIAL_CONTEXT
+audited_on: '2026-10-20'
+source_repository: tjx578/gods-eye-view-maps
+source_url: https://github.com/tjx578/gods-eye-view-maps
+parent: bilawalsidhu/gods-eye-view
+source_commit: de2138e84c1778fd98a48b7c9fd0b9788c318946
+upstream_head_at_audit: de2138e84c1778fd98a48b7c9fd0b9788c318946
+ahead_by: 0
+behind_by: 0
+package_version: 0.2.1
+license_code: MIT
+data_rights: separate third-party license review required
+scene_doc_version_discrepancy:
+  source_file_code: src/director/document.js
+  scene_doc_version_code: 6
+  source_doc: docs/SCENE-DOCUMENT.md
+  described_doc_version: 5
+audited_evidence:
+- package.json
+- LICENSE
+- docs/CODE-BOUNDARIES.md
+- docs/SCENE-DOCUMENT.md
+- src/director/document.js
+- src/data/feedState.js
+- src/maps/imageryComparison.js
+- src/ui/imagerySplit.js
+- src/annotations/drawTool.js
+- src/layers/weather/clock.js
+- src/agent/worldPacket.js
+- docs/PERFORMANCE.md
+integration_status: SOURCE_MAPPED_+_CLEAN_ROOM_PROTOTYPE_AND_CONTRACT_ONLY
+source_files_copied: false
+live_driver_integration: false

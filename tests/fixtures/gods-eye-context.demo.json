@@ -1,0 +1,37 @@
+{
+  "description": "Illustrative non-authoritative demonstration; provider is fictional test fixture, not a verified weather feed",
+  "trusted_route_snapshot": {
+    "route_revision_id": "DEMO-RR-1",
+    "official_anchor_ids": [
+      "START",
+      "LANDMARK",
+      "FINISH"
+    ]
+  },
+  "trusted_source_catalog": {
+    "example-weather": {
+      "kind": "WEATHER_OBSERVED",
+      "terms_approved": true,
+      "data_rights_reviewed": true,
+      "attribution": "DEMO ONLY\u2014synthetic fixture",
+      "max_age_seconds": 3600
+    }
+  },
+  "request": {
+    "mode": "REVIEW",
+    "route_revision_id": "DEMO-RR-1",
+    "official_anchor_ids": [
+      "START",
+      "LANDMARK",
+      "FINISH"
+    ],
+    "layers": [
+      {
+        "source_id": "example-weather",
+        "kind": "WEATHER_OBSERVED",
+        "observed_at": "2026-10-20T04:00:00Z"
+      }
+    ]
+  },
+  "as_of": "2026-10-20T05:30:00Z"
+}

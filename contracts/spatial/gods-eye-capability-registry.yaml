@@ -1,0 +1,346 @@
+registry_version: 1.0.0
+source:
+  repository: tjx578/gods-eye-view-maps
+  upstream: bilawalsidhu/gods-eye-view
+  commit: de2138e84c1778fd98a48b7c9fd0b9788c318946
+  code_license: MIT
+  app_version: 0.2.1
+scope: SOURCE_MAPPED_NOT_IMPLEMENTATION_PARITY
+adoption_policy:
+  modes:
+  - PREP
+  - REVIEW
+  authoritative: false
+  driver_live: false
+  no_individual_tracking: true
+  datasets_require_separate_terms_review: true
+capabilities:
+- id: gev.sources.catalog
+  label: Modular provider and source catalog
+  source_file: src/app/constructCatalog.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/app/constructCatalog.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.sources.boundaries
+  label: Browser/provider/service module boundaries
+  source_file: docs/CODE-BOUNDARIES.md
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/docs/CODE-BOUNDARIES.md
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.sources.feed_state
+  label: Honest feed health states including stale and fallback
+  source_file: src/data/feedState.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/data/feedState.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.sources.pack_provenance
+  label: Data source licensing and attribution inventory
+  source_file: DATA_SOURCES.md
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/DATA_SOURCES.md
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.maps.stacks
+  label: Map stack and imagery selection
+  source_file: src/maps/catalog.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/maps/catalog.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.maps.comparison
+  label: Imagery before/after comparison
+  source_file: src/maps/imageryComparison.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/maps/imageryComparison.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.maps.split
+  label: Interactive split comparison viewport
+  source_file: src/ui/imagerySplit.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/ui/imagerySplit.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.maps.terrain
+  label: Terrain providers and retry policy
+  source_file: src/maps/terrain.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/maps/terrain.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.maps.3d
+  label: 3D Tiles hosted world
+  source_file: src/maps/google3d.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/maps/google3d.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.maps.camera
+  label: Camera controller and transitions
+  source_file: src/camera.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/camera.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.maps.ground_guard
+  label: Terrain camera-floor safety guard
+  source_file: src/cameraGroundGuard.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/cameraGroundGuard.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.maps.source_lifecycle
+  label: Map-source subscription and disposal
+  source_file: src/maps/controller.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/maps/controller.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.import.geo_files
+  label: Local geospatial file import and abort handling
+  source_file: src/ui/geoFileImport.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/ui/geoFileImport.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.annotations.draw
+  label: Interactive geospatial annotation drawing
+  source_file: src/annotations/drawTool.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/annotations/drawTool.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.annotations.engine
+  label: Annotation engine and mutation boundary
+  source_file: src/annotations/annotationEngine.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/annotations/annotationEngine.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.director.scene_document
+  label: Versioned scene document validation and migration
+  source_file: src/director/document.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/director/document.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.director.scene_camera
+  label: Scene camera geometry and altitude semantics
+  source_file: docs/SCENE-DOCUMENT.md
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/docs/SCENE-DOCUMENT.md
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.director.playback
+  label: Cancellable scene playback queue
+  source_file: src/director/playback.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/director/playback.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.director.data_packs
+  label: Scene data packs and source separation
+  source_file: docs/DIRECTOR-DATA-PACKS.md
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/docs/DIRECTOR-DATA-PACKS.md
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.weather.clock
+  label: Observation/forecast timeline and gap constraints
+  source_file: src/layers/weather/clock.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/layers/weather/clock.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.weather.raster
+  label: Raster weather overlays and imagery playback
+  source_file: src/layers/weather/rasterTiles.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/layers/weather/rasterTiles.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.environment.air_quality
+  label: Environmental air quality layer
+  source_file: src/layers/airQuality/index.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/layers/airQuality/index.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.environment.earthquakes
+  label: Earthquake layer for contextual analysis
+  source_file: src/layers/earthquakes/index.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/layers/earthquakes/index.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.traffic.aggregate
+  label: Aggregate road traffic visualization
+  source_file: src/layers/traffic/index.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/layers/traffic/index.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.terrain.height
+  label: Height data cache and terrain proxy
+  source_file: src/services/terrainHeights.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/services/terrainHeights.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.search.coordinates
+  label: Coordinate parsing and geographic input
+  source_file: src/search/coordinateParser.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/search/coordinateParser.js
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.search.places
+  label: Keyless geocoder fallback support
+  source_file: src/search/keylessGeocoder.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/search/keylessGeocoder.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.hud.readability
+  label: On-screen HUD layout and information structure
+  source_file: src/hudLayoutPolicy.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/hudLayoutPolicy.js
+  priority: P2
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.performance.measure
+  label: Hardware-specific performance baseline methodology
+  source_file: docs/PERFORMANCE.md
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/docs/PERFORMANCE.md
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.security.source_terms
+  label: Third-party data and asset rights separation
+  source_file: LICENSE
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/LICENSE
+  priority: P0
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.agent.world_packet
+  label: Bounded map context packet representation
+  source_file: src/agent/worldPacket.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/src/agent/worldPacket.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+- id: gev.mcp.local_boundary
+  label: Local MCP request and transport boundary
+  source_file: server/mcp/plugin.js
+  source_url: https://github.com/tjx578/gods-eye-view-maps/blob/de2138e84c1778fd98a48b7c9fd0b9788c318946/server/mcp/plugin.js
+  priority: P1
+  modes:
+  - PREP
+  - REVIEW
+  authority: CONTEXT_ONLY
+  implementation_status: MAPPED
+explicitly_excluded:
+- personal_or_vehicle_realtime_tracking
+- cctv_and_alpr_feeds
+- individual_identification_or_monitoring
+- military_or_sensitive_installation_monitoring
+- automatic_route_confirmation
+- driver_live_online_feed
+- unreviewed_third_party_assets
+- direct_import_of_third_party_datasets

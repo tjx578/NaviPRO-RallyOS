@@ -44,3 +44,10 @@
 - LRM OpenAPI: +5 CONTRACT_ONLY operations, +4 agent-safe MCP definitions, +1 UI-only excluded operation.
 - Version compatibility (separate OSRM Frontend LRM v3.2.12 vs v3.3.0): NOT_TESTED.
 - Route confirmation permission service: NOT_IMPLEMENTED. LIVE LRM calls: FORBIDDEN.
+
+- God's Eye View REA: DIRECT_SOURCE_INSPECTED at `de2138e84c1778fd98a48b7c9fd0b9788c318946` (fork matches upstream at audit; MIT source but third-party data rights vary).
+- God's Eye View capability registry: 32 SOURCE_MAPPED, non-authoritative PREP/REVIEW only; no CCTV, ALPR or individual tracking imported.
+- Spatial Context Fusion: CLEAN_ROOM_PYTHON_PROTOTYPE_TESTED for source age, rights, forecast validity, trusted route anchors, and privacy/authority policy.
+- OpenAPI context fusion: +3 CONTRACT_ONLY operations and generated MCP definitions; NO deployed endpoints.
+- Browser imagery comparison / environmental provider runtime / Android parity: NOT_BUILT.
+- React Native Maps REA: prior STANDALONE_ANALYSIS_ONLY, not integrated in local git repo.

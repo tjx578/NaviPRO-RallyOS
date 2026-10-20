@@ -80,3 +80,7 @@ python -m pytest -q tests/contracts
 - Source `tjx578/leaflet-routing-machine-rally` is identical to upstream `perliedman/leaflet-routing-machine` at `8dc939a314...` (LRM `3.3.0`, ISC license); not a rally-specific codebase. The separate OSRM Frontend uses LRM `3.2.12`; no dependency upgrade was done.
 - A clean-room LRM review-state prototype in `apps/routing-lab-web/src/lrm-rally-review.mjs` and a server-side proposal validator in `python/src/navipro_rallyos/route/lrm_review.py` **reject official anchor edits/changes to graph/revision ID and LIVE**. New UI contract only adds 5 OpenAPI operations, with UI-only alternative selection blocked from MCP.
 - No Leaflet browser application, backend endpoint, authenticated review service or official route confirmation is implemented. Driver LIVE uses only previously confirmed offline NaviPack; **NOT_RACE_READY**.
+
+### God's Eye View REA — Spatial Context Fusion
+
+See [`docs/rea/GODS-EYE-VIEW-REA-v1.md`](docs/rea/GODS-EYE-VIEW-REA-v1.md) and the [eight-source reconciliation](docs/rea/SPATIAL-RECONCILIATION-EIGHT-SOURCES-v1.md). A trusted-source PREP/REVIEW prototype adds context freshness/rights checks without route mutation. This **does not** install or duplicate the God's Eye View application and **does not** enable individual surveillance feeds, real-time Driver services, or authoritative route decisions.
