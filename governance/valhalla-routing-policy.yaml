@@ -1,0 +1,36 @@
+policy_id: VALHALLA_PREP_REVIEW_v1
+status: PROTOTYPE_NOT_RACE_READY
+source:
+  repository: https://github.com/tjx578/valhalla-navipro
+  commit: 618cad5eb6a12c7787c3480851eda07c99eb5c74
+  upstream_identical_at_audit: true
+  code_license: MIT
+  osm_data_license: ODbL-1.0
+modes_allowed: [PREP, REVIEW]
+modes_denied: [LIVE]
+owner: navigator_page_2
+allowed_actions:
+  - route_candidate
+  - time_distance_matrix_candidate
+forbidden_actions:
+  - optimized_route_for_official_roadbook_anchors
+  - reorder_source_anchor_ids
+  - mutate_authoritative_distance_or_target_time
+  - confirm_route
+  - publish_navipack
+  - driver_live_reroute
+  - accept_agent_supplied_provider_origin
+  - use_third_party_demo_server_as_production_dependency
+required_provenance:
+  - graph_dataset_id
+  - profile_digest
+  - valhalla_build
+  - original_anchor_ids
+  - provider_warnings
+  - route_authority_false
+review_requirements:
+  - directed_topology_verified
+  - route_distance_time_reconciled
+  - roadbook_turns_and_landmarks_reviewed
+  - event_regulation_clock_rules_verified
+  - navigator_authorization_recorded

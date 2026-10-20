@@ -1,0 +1,39 @@
+source_id: valhalla_navipro
+source_sha: 618cad5eb6a12c7787c3480851eda07c99eb5c74
+adaptation_scope: read_only_prep_review_provider_adapter
+runtime_status: fixture_tested_not_deployed
+capabilities:
+  - action: route
+    valhalla_endpoint: POST /route
+    status: adapter_implemented_mock_tested
+    output_authority: proposal_only
+  - action: matrix
+    valhalla_endpoint: POST /sources_to_targets
+    status: adapter_implemented_mock_tested
+    output_authority: proposal_only
+  - action: locate
+    valhalla_endpoint: POST /locate
+    status: REA_documented_not_implemented
+  - action: trace_route
+    valhalla_endpoint: POST /trace_route
+    status: REA_documented_not_implemented
+  - action: trace_attributes
+    valhalla_endpoint: POST /trace_attributes
+    status: REA_documented_not_implemented
+  - action: isochrone
+    valhalla_endpoint: POST /isochrone
+    status: REA_documented_not_implemented
+  - action: optimized_route
+    valhalla_endpoint: POST /optimized_route
+    status: forbidden_for_authoritative_roadbook_anchor_order
+  - action: route_alternates
+    valhalla_endpoint: POST /route
+    status: deferred_until_native_response_contract_verified
+comparison:
+  osrm_backend: coexist_candidate_provider
+  lrm_frontend: route_editor_interaction_pattern_only
+  maplibre: display_only
+  cesium_gods_eye: imagery_terrain_evidence_only
+  kepler: diagnostic_analysis_only
+  streetcomplete: field_evidence_only
+  react_native_maps: mobile_UI_donor_only
