@@ -1,0 +1,131 @@
+registry_version: 1.0.0
+status: CONTRACT_ONLY
+runtime: NOT_IMPLEMENTED
+canonical_gate_names: contracts/openapi/navipro-rallyos.openapi.yaml#/components/schemas/GateResult/properties/gate/enum
+division_registry: governance/agent-divisions.yaml
+evaluation_policy:
+  authoritative_evaluator: DETERMINISTIC_VALIDATOR
+  agent_role: EVIDENCE_AND_PROPOSALS_ONLY
+  all_gates_blocking: true
+  required_gate_count: 16
+  each_gate_exactly_once: true
+  results: [PASS, FAIL, NOT_RUN]
+  invalid_evidence: FAIL
+  missing_input_or_unavailable_evaluator: NOT_RUN
+  release_on_fail_or_not_run: HOLD
+  invalid_or_incomplete_report: HOLD
+  valid_report_is_release_authorization: false
+  human_review: AUTHENTICATED_REVIEW_BOUND_TO_EXACT_INPUT_REVISION
+  compile_and_publish: RELEASE_MANAGER_ONLY
+  runtime_authorization_enforcement: NOT_IMPLEMENTED
+threshold_policy:
+  source: VERSIONED_EVENT_RULES_AND_ENGINEERING_PROFILE
+  universal_distance_residual_percent: null
+  universal_inter_sub_gap_mm: null
+  missing_required_profile: HOLD
+  cross_sub_residual_compensation: DENY
+revision_policy:
+  inputs: [source_bytes, roadbook_revision, route_revision, graph_release, location_decisions, timing_rules, tolerance_profile, reviewer_authorization]
+  any_input_change: INVALIDATE_PRIOR_REPORT_AND_REVIEW_BINDING
+  before_compile: RERUN_ALL_16_ON_SAME_FROZEN_INPUTS
+  missing_dependency: NOT_RUN
+  stale_report: HOLD
+  official_distance_and_time: PRESERVE_SOURCE_AUTHORITY
+  active_pack: IMMUTABLE
+gates:
+  - id: QG-01
+    name: SCHEMA_DOMAIN
+    evidence_lead_role_id: 8
+    supporting_role_ids: [2, 3, 4, 5, 9]
+    required_evidence: [canonical_schema_version, typed_input_snapshot, explicit_units_and_clock_domain]
+    checks: Reject malformed or out-of-domain input without coercion; report schema validity alone does not validate a route.
+  - id: QG-02
+    name: SOURCE_INTEGRITY
+    evidence_lead_role_id: 2
+    supporting_role_ids: [9]
+    required_evidence: [source_bytes, trusted_source_record, calculated_sha256, briefing_revision]
+    checks: Compare actual bytes with the trusted digest and provenance; a digest is neither encryption nor a publisher signature.
+  - id: QG-03
+    name: RELEASE_BINDING
+    evidence_lead_role_id: 9
+    supporting_role_ids: [3, 4, 5]
+    required_evidence: [event_id, roadbook_revision, route_revision, graph_release, location_snapshot, timing_rule_version]
+    checks: Resolve and bind compatible immutable dependency versions; ID presence alone is insufficient.
+  - id: QG-04
+    name: REVIEW_AUTHORIZATION
+    evidence_lead_role_id: 8
+    supporting_role_ids: [9]
+    required_evidence: [authenticated_reviewer_identity, reviewer_permission, reviewed_input_revision, review_receipt]
+    checks: Verify external human review authority and exact revision binding; an agent cannot approve itself or supply a trusted boolean.
+  - id: QG-05
+    name: SOURCE_ORDER
+    evidence_lead_role_id: 2
+    supporting_role_ids: [4]
+    required_evidence: [source_instruction_ledger, canonical_instruction_order, ordered_route_occurrences]
+    checks: Preserve official instruction order; do not TSP-sort or silently delete official steps.
+  - id: QG-06
+    name: SOURCE_COVERAGE
+    evidence_lead_role_id: 2
+    supporting_role_ids: [4, 5, 7]
+    required_evidence: [reviewed_source_ledger, mandatory_instruction_ids, final_coverage_bindings]
+    checks: Map each required instruction exactly once to a final MAPPED binding; source-ledger completeness also needs source review.
+  - id: QG-07
+    name: MANDATORY_LANDMARK
+    evidence_lead_role_id: 5
+    supporting_role_ids: [2, 4, 6]
+    required_evidence: [mandatory_landmark_ids, location_identity_evidence, route_occurrence_bindings]
+    checks: Check required landmark coverage against evidence; a compiler cannot independently detect a real-world building or sign.
+  - id: QG-08
+    name: SPATIAL_VERIFICATION
+    evidence_lead_role_id: 5
+    supporting_role_ids: [4, 6, 9]
+    required_evidence: [active_node_ids, location_decisions, reviewer_receipts, evidence_provenance]
+    checks: Require authorized decisions for the active nodes; CANDIDATE or UNVERIFIED evidence cannot be promoted by confidence score.
+  - id: QG-09
+    name: ROUTE_CONTINUITY
+    evidence_lead_role_id: 4
+    supporting_role_ids: [8]
+    required_evidence: [directed_edge_sequence, graph_release, access_profile, route_geometry]
+    checks: Verify connected directed traversals and applicable access restrictions; chord proximity alone is not road continuity.
+  - id: QG-10
+    name: LANDMARK_ROUTE_BINDING
+    evidence_lead_role_id: 4
+    supporting_role_ids: [5]
+    required_evidence: [physical_landmark_identity, route_access_point, directed_edge_occurrence, offset_mm]
+    checks: Bind the correct physical landmark access to the traversed occurrence; proximity to a parallel road is insufficient.
+  - id: QG-11
+    name: DENSE_GEOMETRY_MEASURE
+    evidence_lead_role_id: 4
+    supporting_role_ids: [3]
+    required_evidence: [dense_geometry, cumulative_offsets_mm, distance_method_version, geometry_tolerance_profile]
+    checks: Compare segment measures and accumulated offsets using the declared model and precision; never replace official distance.
+  - id: QG-12
+    name: MONOTONIC_SEQUENCE
+    evidence_lead_role_id: 4
+    supporting_role_ids: [2, 6, 7]
+    required_evidence: [ordered_event_occurrences, cumulative_offsets_mm, same_offset_event_order]
+    checks: Require nondecreasing route-progress offsets and stable ties; legitimate U-turns and repeated coordinates use distinct occurrences.
+  - id: QG-13
+    name: DISTANCE_RESIDUAL_PER_SUB
+    evidence_lead_role_id: 3
+    supporting_role_ids: [4]
+    required_evidence: [authority_distance_mm, graph_distance_mm, sub_trayek_id, distance_tolerance_profile]
+    checks: Evaluate each sub separately against its declared tolerance with signed residuals; no cross-sub cancellation or universal two-percent default.
+  - id: QG-14
+    name: INTER_SUB_CHAINING
+    evidence_lead_role_id: 4
+    supporting_role_ids: [2, 5]
+    required_evidence: [ordered_subs, finish_start_node_bindings, transition_rules, inter_sub_gap_profile]
+    checks: Validate adjacent finish/start identity and geometry under the declared transition rule; no universal twenty-metre default.
+  - id: QG-15
+    name: ROUTE_ENDPOINT_BINDING
+    evidence_lead_role_id: 4
+    supporting_role_ids: [2, 5, 6]
+    required_evidence: [start_finish_events, endpoint_location_decisions, endpoint_edge_occurrences]
+    checks: Bind both endpoints to valid reviewed source events and graph positions; geometric closeness alone is insufficient.
+  - id: QG-16
+    name: TIMING_CONSISTENCY
+    evidence_lead_role_id: 3
+    supporting_role_ids: [2, 6, 7, 9]
+    required_evidence: [official_time_authority, local_start_and_zone, event_date_or_no_rollover_constraint, speed_rules, neutralizations, precision_profile]
+    checks: Validate exact timing under versioned event rules; date-less midnight rollover remains HOLD until explicitly modeled.

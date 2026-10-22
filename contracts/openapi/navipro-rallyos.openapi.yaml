@@ -2,7 +2,7 @@ openapi: 3.1.0
 jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
 info:
   title: NaviPRO RallyOS Unified API
-  version: 0.7.0-vnext-context-rea
+  version: 0.7.1-vnext-quality-gates
   description: Unified PREP/REVIEW contract consolidating legacy NaviPRO APIs into canonical RallyOS domains. Driver
     LIVE runtime consumes confirmed offline packages and does not depend on this API. Spatial Intelligence REA baseline
     adds Kepler-grade PREP/REVIEW mapping capabilities without granting route authority. CesiumJS capability REA defines
@@ -4662,6 +4662,12 @@ components:
           - 'null'
     ValidationReport:
       type: object
+      description: >-
+        A complete report contains each canonical gate exactly once. PASS is valid only
+        when every gate is PASS; FAIL or NOT_RUN requires HOLD. This schema validates
+        report structure, not source truth, evaluator identity or publication authority.
+        Results must be computed by the deterministic validator for the reviewed input
+        revision; agent proposals and syntactically valid reports cannot authorize release.
       required:
       - report_id
       - subject_id
@@ -4684,6 +4690,132 @@ components:
           maxItems: 16
           items:
             $ref: '#/components/schemas/GateResult'
+          allOf:
+          - contains:
+              properties:
+                gate:
+                  const: SCHEMA_DOMAIN
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: SOURCE_INTEGRITY
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: RELEASE_BINDING
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: REVIEW_AUTHORIZATION
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: SOURCE_ORDER
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: SOURCE_COVERAGE
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: MANDATORY_LANDMARK
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: SPATIAL_VERIFICATION
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: ROUTE_CONTINUITY
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: LANDMARK_ROUTE_BINDING
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: DENSE_GEOMETRY_MEASURE
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: MONOTONIC_SEQUENCE
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: DISTANCE_RESIDUAL_PER_SUB
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: INTER_SUB_CHAINING
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: ROUTE_ENDPOINT_BINDING
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+          - contains:
+              properties:
+                gate:
+                  const: TIMING_CONSISTENCY
+              required: [gate]
+            minContains: 1
+            maxContains: 1
+      allOf:
+      - if:
+          properties:
+            release_status:
+              const: PASS
+          required: [release_status]
+        then:
+          properties:
+            gates:
+              items:
+                properties:
+                  result:
+                    const: PASS
     MapsLinkRequest:
       type: object
       required:

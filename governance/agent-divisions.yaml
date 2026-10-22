@@ -1,0 +1,146 @@
+registry_version: 1.0.0
+status: CONTRACT_ONLY
+runtime: NOT_IMPLEMENTED
+role_source: navipro-orchestrator@1.2.0
+api_contract: contracts/openapi/navipro-rallyos.openapi.yaml
+gate_registry: governance/release-gates.yaml
+# Role IDs follow Skill 1: one orchestrator and eight specialists.
+# Division 1 is role 2, not the orchestrator. IDs never prescribe execution order.
+orchestrator:
+  role_id: 1
+  name: Orchestrator & Navigator Companion
+  scheduling: DEPENDENCY_GRAPH
+  state_integration: SINGLE_WRITER_WITH_REVISION_CHECK
+  operations: [getEvent, listSubTrayeks, getSubTrayek, reviewRouteWorkflow, getValidationReport]
+shared_agent_policy:
+  modes: [PREP, REVIEW]
+  authority: PROPOSE_ONLY
+  may_set_authoritative_gate_result: false
+  may_mutate_active_pack: false
+  missing_service_result: UNAVAILABLE
+  operation_lists: PROPOSED_ALLOWLISTS_NOT_RUNTIME_AUTHORIZATION
+  forbidden_operations:
+    - createLocationDecision
+    - confirmRouteRevision
+    - decideSurveyEvidence
+    - captureSurveyObservation
+    - commitSurveySync
+    - deliverTsdPlan
+    - deliverDriverPackage
+    - compileWorkflow
+    - publishRelease
+  live:
+    generative_agent_execution: DENY
+    gps_timer_cue_execution: DETERMINISTIC_DEVICE_SERVICES_ONLY
+    route_source: CONFIRMED_OFFLINE_ACTIVE_PACK
+    off_route: FREEZE_CUE_NO_REROUTE
+divisions:
+  - division_id: 1
+    role_id: 2
+    name: Roadbook Interpretation
+    surfaces: [PAGE_1, PAGE_3]
+    output: SOURCE_LEDGER_AND_INTERPRETATION_PROPOSAL
+    operations: [getEvent, getSubTrayek, parseRoadbook]
+  - division_id: 2
+    role_id: 3
+    name: TSD, Distance & Calibration
+    surfaces: [PAGE_1, PAGE_3]
+    output: TIMING_AND_CALIBRATION_DIAGNOSTICS
+    operations: [getSubTrayek, getRoute, computeTiming, createTimingPlan, validateTiming]
+  - division_id: 3
+    role_id: 4
+    name: Route Puzzle & Geometry Solver
+    surfaces: [PAGE_2, PAGE_3]
+    output: ORDERED_ROUTE_REVISION_PROPOSAL
+    operations:
+      - resolveRoute
+      - getRoute
+      - compareRoutes
+      - createRouteRevision
+      - inspectRoutingGraph
+      - inspectRoutingProfile
+      - calculateOrderedRouteCandidates
+      - planLrmReviewSession
+      - proposeLrmShapingPoint
+  - division_id: 4
+    role_id: 5
+    name: Location & Geospatial Evidence
+    surfaces: [PAGE_2, PAGE_3]
+    output: LOCATION_CANDIDATES_WITH_PROVENANCE
+    operations:
+      - searchLocations
+      - parseKmPal
+      - estimateKmPal
+      - assessKmPal
+      - createLocationObservation
+      - planSurveyTasks
+      - assessSurveyObservation
+      - assessContextFusionLayers
+  - division_id: 5
+    role_id: 6
+    name: Live Position & Rally Progress
+    surfaces: [PAGE_3]
+    output: PREP_REVIEW_TELEMETRY_REPLAY_ASSESSMENT
+    operations: [getRoute, getRelease, matchReviewTrace, assessMatchedTrace]
+    live_counterpart: DETERMINISTIC_POSITION_PROGRESS_SERVICE_NOT_IMPLEMENTED
+  - division_id: 6
+    role_id: 7
+    name: Navigation Guidance & Voice
+    surfaces: [PAGE_3]
+    output: CUE_REVIEW_PROPOSAL
+    operations: [getRoute, getRelease, previewLrmItinerary]
+    live_counterpart: DETERMINISTIC_CUE_FSM_AND_TTS_NOT_IMPLEMENTED
+  - division_id: 7
+    role_id: 8
+    name: Road Legality, Access & Quality
+    surfaces: [PAGE_2, PAGE_3]
+    output: CONSTRAINT_FINDINGS_AND_VALIDATION_REQUEST
+    operations:
+      - inspectRoutingGraph
+      - inspectRoutingProfile
+      - assessSurveyConflict
+      - validateRoute
+      - runRouteValidation
+      - getValidationReport
+  - division_id: 8
+    role_id: 9
+    name: Session, Evidence & Rally Journal
+    surfaces: [PAGE_3]
+    output: REVISION_EVIDENCE_AND_DELIVERY_RECEIPT_LEDGER
+    operations: [getEvent, getRoute, getRelease, getDeliveryState, getSurveyObservation]
+    persistence: NO_JOURNAL_API_IMPLEMENTED_DO_NOT_CLAIM_SAVED
+handoff:
+  status: DESIGN_ONLY
+  required_request_fields:
+    - task_id
+    - trace_id
+    - session_id
+    - role_id
+    - event_id
+    - sub_trayek_id
+    - input_revision
+    - source_refs
+    - evidence_refs
+    - graph_refs
+    - known_facts
+    - unknowns
+    - required_constraints
+    - allowed_operations
+    - expected_output
+    - idempotency_key
+  response_statuses: [COMPLETE, PARTIAL, CONFLICT, UNAVAILABLE]
+  required_response_fields:
+    - task_id
+    - input_revision
+    - status
+    - facts
+    - proposals
+    - evidence_refs
+    - unresolved
+    - constraint_results
+    - method_version
+    - revision_dependencies
+    - next_evidence_needed
+  stale_revision: REJECT_AND_REPLAN
+  retry: SAME_IDEMPOTENCY_KEY_NO_DUPLICATE_COMMIT
+  active_pack_revision: NEVER_CHANGED_BY_HANDOFF

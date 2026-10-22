@@ -10,6 +10,14 @@
 - Android runtime: NOT_BUILT
 - Race readiness: NOT_RACE_READY
 
+- Canonical 16 gate identities: PRESENT_IN_OPENAPI
+- Gate-to-eight-division mapping and operation allowlists: CONTRACT_ONLY, governance registries added
+- ValidationReport schema: EXACTLY_ONE_OF_EACH_GATE; FAIL/NOT_RUN cannot claim PASS
+- Deterministic 16-gate evaluators / compiler: NOT_IMPLEMENTED
+- Eight specialist agents and revision-bound handoff: DECLARED_ONLY, NO_AGENT_RUNTIME
+- Agent permissions / reviewer authentication / release enforcement: NOT_RUNTIME_ENFORCED
+- Gate assessment: docs/architecture/QUALITY-GATES-EIGHT-DIVISIONS-v1.md
+
 - Kepler capability REA: SCAFFOLDED (capability registry + Map Lab web adapter)
 - Spatial PREP/REVIEW capability policy: PRESENT
 - Spatial runtime parity verification: NOT_MEASURED
