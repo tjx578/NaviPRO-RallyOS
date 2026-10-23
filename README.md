@@ -44,6 +44,8 @@ The [gate assessment and division mapping](docs/architecture/QUALITY-GATES-EIGHT
 
 `ValidationReport` now requires each canonical gate exactly once and rejects `PASS` if any gate is `FAIL` or `NOT_RUN`. Missing profiles and stale revisions remain HOLD requirements; neither ±2% nor 20 m is introduced as a universal tolerance. These are **contracts and schema tests**, not an implemented 16-gate compiler or eight-agent service.
 
+The [Time Rally Navigator prompt pack](knowledge/prompts/time-rally-navigator-v1/README.md) provides shared Indonesian instructions, an orchestrator prompt, eight specialist prompts, a corrected proposal example and behavioral evaluation scenarios. It follows these division/gate boundaries and the current cockpit policy. **TEMPLATE_ONLY**: no agent loader or model/field evaluation is included.
+
 ```bash
 python -m pip install -r requirements-test.txt
 make verify-gates

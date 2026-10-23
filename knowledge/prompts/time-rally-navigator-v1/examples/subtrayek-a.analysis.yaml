@@ -1,0 +1,123 @@
+# Contoh analisis atas teks pengguna; bukan survei rute Solo atau payload API produksi.
+artifact_type: ANALYSIS_PROPOSAL_EXAMPLE
+prompt_pack_version: 1.0.0
+task_id: DEMO-TASK-A
+trace_id: DEMO-TRACE-A
+session_id: DEMO-SESSION
+role_id: 1
+input_revision: DEMO-INPUT-REV-A
+status: PARTIAL
+authority: PROPOSE_ONLY
+workspace_mode: PREP
+scope:
+  event_id: null
+  event_year: null
+  trayek_id: null
+  source_sub_label: Trayek A
+  sub_trayek_id: A
+  allowed_area: null
+  event_rule_version: null
+facts:
+  - claim: Contoh menyebut start Horison Aziza Solo dan end Pasar Kliwon.
+    evidence_type: SOURCE_ASSERTED
+    evidence_ref: USER_EXAMPLE
+  - claim: Contoh memberikan jarak 0.11 km, durasi 1 menit dan teks instruksi SL.
+    evidence_type: SOURCE_ASSERTED
+    evidence_ref: USER_EXAMPLE
+assumptions:
+  - id: ASSUMPTION-SAME-SEGMENT
+    statement: Jarak dan durasi tersebut berlaku pada segmen yang sama.
+    status: REQUIRES_EVENT_SOURCE_REVIEW
+source_events:
+  - source_event_id: DEMO-A-001
+    source_sequence: 1
+    raw_text: SL di Jl. Kapten Mulyadi ke Pasar Kliwon (Zero Point)
+    dsl:
+      token: SL
+      interpretation: null
+      status: UNRESOLVED
+    source_status: EXTRACTED
+parameters:
+  source_distance_mm: 110000
+  source_duration_ms: 60000
+  source_target_speed_kmh: null
+  official_authority_status: NOT_VERIFIED
+  start_time: null
+  event_date: null
+  time_zone: null
+  finish_time: null
+calculations:
+  mean_speed_kmh:
+    numerator: 33
+    denominator: 5
+    display_value: 6.6
+    basis: 60 * 0.11 / 1
+    condition_ref: ASSUMPTION-SAME-SEGMENT
+    meaning: ARITHMETIC_AVERAGE_ONLY_NOT_DRIVING_INSTRUCTION
+locations:
+  - mention_id: DEMO-START
+    name: Horison Aziza Solo
+    coordinate: null
+    location_status: UNRESOLVED
+    physical_evidence_status: PENDING
+    verification_status: NOT_VERIFIED
+  - mention_id: DEMO-FINISH
+    name: Pasar Kliwon
+    coordinate: null
+    location_status: UNRESOLVED
+    physical_evidence_status: PENDING
+    verification_status: NOT_VERIFIED
+route_binding_status: UNBOUND
+coverage:
+  basis: USER_EXAMPLE_EXTRACT_ONLY
+  source_ledger:
+    recorded: 1
+    expected_from_reviewed_original: null
+  route_binding:
+    mapped: 0
+    expected_from_reviewed_original: null
+  physical_evidence:
+    documented: 0
+    expected_from_reviewed_original: null
+constraint_results:
+  - constraint: J_W_RATIO
+    status: COMPUTED_UNDER_ASSUMPTION
+    result_ref: calculations.mean_speed_kmh
+validation:
+  evaluation_status: NOT_EXECUTED
+  authoritative_report: null
+  release_eligibility: HOLD
+  # Ini bukan ValidationReport yang mensyaratkan seluruh 16 gate kanonis.
+  blockers:
+    - EVENT_RULES_UNAVAILABLE
+    - DSL_SL_UNRESOLVED
+    - START_FINISH_UNVERIFIED
+    - ROUTE_BINDING_UNAVAILABLE
+    - ABSOLUTE_START_TIME_UNAVAILABLE
+    - VALIDATOR_RECEIPT_UNAVAILABLE
+references:
+  - kind: UNVERIFIED_SEARCH_LINK
+    url: https://maps.google.com/?q=Pasar+Kliwon+Surakarta
+    opened: false
+    proves_physical_location: false
+proposals:
+  - Periksa leksikon SL serta aturan start-ke-zero point pada sumber event.
+  - Cari identitas start/finish dan akses jalan, kemudian susun kandidat sesuai urutan.
+evidence_refs:
+  - USER_EXAMPLE
+unresolved:
+  - Identitas dan revisi roadbook resmi belum diberikan.
+  - Tanggal, zona waktu dan jam start peserta belum diberikan.
+  - Bukti fisik lokasi dan lintasan berurutan belum tersedia.
+method_version: navipro-prompt-pack-1.0.0-rational-arithmetic-example
+revision_dependencies:
+  - DEMO-INPUT-REV-A
+next_evidence_needed:
+  - Roadbook dan briefing event, termasuk definisi SL dan aturan zero point.
+  - Bukti identitas, koordinat dan akses start/finish.
+  - Starting list atau jam start peserta yang berwenang.
+storage:
+  commit_receipt: null
+  server_ack: null
+  status: NOT_SAVED_TO_SYSTEM_DATABASE
+active_pack_revision: null
