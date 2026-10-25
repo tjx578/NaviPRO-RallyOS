@@ -38,6 +38,19 @@ Existing Kepler/Cesium/Routing Lab web scaffolds remain **supporting Page 2 PREP
 
 This is not yet a production implementation. The contract exists; endpoint business logic, real authentication, road graph resolver, reviewer service, Android build, NaviPack publication, and field validation still require implementation and evidence.
 
+## 16 quality gates and eight specialist divisions (2026-10-22)
+
+The [gate assessment and division mapping](docs/architecture/QUALITY-GATES-EIGHT-DIVISIONS-v1.md) binds the existing 16 OpenAPI gate names to [eight evidence-producing specialist divisions](governance/agent-divisions.yaml), coordinated by role 1. The [gate registry](governance/release-gates.yaml) keeps authoritative evaluation with the deterministic validator and human authorization with the existing review/release roles.
+
+`ValidationReport` now requires each canonical gate exactly once and rejects `PASS` if any gate is `FAIL` or `NOT_RUN`. Missing profiles and stale revisions remain HOLD requirements; neither ±2% nor 20 m is introduced as a universal tolerance. These are **contracts and schema tests**, not an implemented 16-gate compiler or eight-agent service.
+
+The [Time Rally Navigator prompt pack](knowledge/prompts/time-rally-navigator-v1/README.md) provides shared Indonesian instructions, an orchestrator prompt, eight specialist prompts, a corrected proposal example and behavioral evaluation scenarios. It follows these division/gate boundaries and the current cockpit policy. **TEMPLATE_ONLY**: no agent loader or model/field evaluation is included.
+
+```bash
+python -m pip install -r requirements-test.txt
+make verify-gates
+```
+
 ## Verify
 
 ```bash

@@ -8,3 +8,7 @@ verify-spatial:
 
 verify-cockpit:
 	python -m pytest -q tests/contracts/test_cockpit_five_surfaces.py
+
+verify-gates:
+	python tools/validate_openapi.py
+	python -m pytest -q tests/contracts/test_release_gate_divisions.py
