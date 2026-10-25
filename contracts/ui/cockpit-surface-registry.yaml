@@ -1,11 +1,12 @@
-schema_version: '1.0.0'
+schema_version: '1.1.0'
 artifact: NAVIPRO_COCKPIT_FIVE_SURFACE_REGISTRY
 status: DESIGN_ONLY
 source_spec: NAVIPRO-MAPOS-COCKPIT-UNIFIED-V3.0
 source_sha256: 74594f143481b953e9fb8b62486069f3244eb83627b650d368e8780e020d1c5a
+platform_decision: docs/architecture/ADR-0001-HYBRID-PLATFORMS.md
 product: NaviPRO_RallyOS
 layout:
-  target: ANDROID_TABLET_LANDSCAPE_16_9
+  target: HYBRID_TABLET_LANDSCAPE_16_9
   language: id
   main_navigation: HORIZONTAL_SWIPE_THREE_PAGES
   protected_gestures: [MAP_PAN, MAP_ZOOM, MAP_ROTATE, WAYPOINT_DRAG]
@@ -13,11 +14,13 @@ layout:
   deprecated_brand_text: Muted Cockpit Style
 roles:
   navigator:
-    app: android/apps/navigator
+    app: apps/navigator-web
+    platform: WEB_PWA
     surfaces: [PAGE_1, PAGE_2, PAGE_3]
     navigation: SWIPE
   driver:
     app: android/apps/driver
+    platform: ANDROID_NATIVE
     surfaces: [DRIVER_1, DRIVER_2]
     navigation: MODE_TOGGLE
     verified_navipack_required: true
@@ -26,7 +29,7 @@ surface_order: [PAGE_1, PAGE_2, PAGE_3, DRIVER_1, DRIVER_2]
 surfaces:
   PAGE_1:
     title: Data Rally
-    owner: android/features/data-rally
+    owner: apps/navigator-web/features/data-rally
     app: navigator
     role: navigator
     modes: [PREP, REVIEW, CONFIRMED, LIVE]
@@ -50,7 +53,7 @@ surfaces:
     forbidden: [AUTOMATIC_SOURCE_REORDER, TSD_ACK_FABRICATION]
   PAGE_2:
     title: Offline Map & Route Editor
-    owner: android/features/offline-map-editor
+    owner: apps/navigator-web/features/offline-map-editor
     app: navigator
     role: navigator
     modes: [PREP, REVIEW, CONFIRMED, LIVE]
@@ -77,7 +80,7 @@ surfaces:
     forbidden: [SILENT_DELETE_OFFICIAL_STEP, LIVE_DYNAMIC_REROUTING, THIRD_PARTY_MAP_AS_AUTHORITY]
   PAGE_3:
     title: NaviPRO Rally Agent
-    owner: android/features/rally-agent
+    owner: apps/navigator-web/features/rally-agent
     app: navigator
     role: navigator
     modes: [PREP, REVIEW]
@@ -128,13 +131,15 @@ integration_boundaries:
   tsd_cadencer:
     system: EXTERNAL_INDEPENDENT_APP
     sender: PAGE_1_NAVIGATOR
-    adapter: android/integrations/tsd-cadencer
+    adapter: services/integrations/tsd-cadencer
+    device_adapter: android/integrations/tsd-cadencer
     contract_status: NOT_IMPLEMENTED
     delivery: IDEMPOTENT_ENVELOPE_PLUS_ACK
     driver_consumer: READONLY_CONNECTION_AND_TELEMETRY
   driver_navipack:
     sender: PAGE_2_NAVIGATOR_AFTER_CONFIRMATION
-    adapter: android/integrations/device-transfer
+    adapter: services/integrations/device-transfer
+    device_adapter: android/integrations/device-transfer
     contract_status: NOT_IMPLEMENTED
     delivery: REVISION_HASH_PLUS_ACK
   osm_routing:
@@ -145,6 +150,8 @@ integration_boundaries:
     consumer: PAGE_3_PREP_REVIEW
     server_status: NOT_IMPLEMENTED
   offline_map:
-    renderer_target: MAPLIBRE_NATIVE
+    renderer_targets:
+      navigator: MAPLIBRE_GL_JS
+      driver: MAPLIBRE_NATIVE
     assets: [PMTILES, LOCAL_STYLE_JSON, LOCAL_GLYPHS, LOCAL_SPRITES, LOCAL_FONTS, LOCATION_SQLITE_RTREE]
     asset_runtime_status: NOT_BUILT

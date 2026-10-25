@@ -137,3 +137,6 @@ References:
 - [Valhalla image and administrative-data documentation](https://github.com/valhalla/valhalla/blob/master/docker/README.md)
 - [Geofabrik Java regional source](https://download.geofabrik.de/asia/indonesia/java.html)
 - [OpenStreetMap attribution and ODbL](https://www.openstreetmap.org/copyright)
+# Timing diagnostic extension — 2026-10-25
+
+`tools/m1_benchmark.py --mode REVIEW --start-time 10:00:00 --output .local/m1-draft` optionally adds an exact cumulative schedule. The start is caller-supplied and unverified; the output remains DRAFT/HOLD, timing rules NOT_VERIFIED and ROUTE_UNRESOLVED. Unknown A/E distances stay null. Without `--start-time`, no start/finish time is invented. A date-less midnight rollover is rejected. This kernel does not implement event clock scales, neutralizations, scoring, all timing modes, authenticated TSD delivery or the OpenAPI timing endpoint.

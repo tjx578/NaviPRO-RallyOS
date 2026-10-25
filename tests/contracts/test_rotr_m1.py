@@ -134,8 +134,26 @@ def test_cli_core_writes_evidence_and_refuses_overwrite(tmp_path):
     result = runner.run(FIXTURE, target, 'REVIEW')
     assert (target / 'benchmark.json').is_file()
     assert result['status'] == 'ROUTE_UNRESOLVED'
+    assert result['draft_timing_schedule'] is None
+    assert result['start_time_authority'] == 'NOT_PROVIDED'
     with pytest.raises(FileExistsError):
         runner.run(FIXTURE, target, 'REVIEW')
+
+
+def test_cli_draft_schedule_never_upgrades_unverified_start(tmp_path):
+    result = load_runner().run(FIXTURE, tmp_path / 'draft', 'REVIEW', start_time='10:00:00')
+    assert result['start_time_authority'] == 'CALLER_SUPPLIED_UNVERIFIED'
+    assert result['draft_timing_schedule']['arrival_time'] == '12:00:00.000'
+    assert result['draft_timing_schedule']['release_status'] == 'HOLD'
+    assert result['provider_benchmark_status'] == 'NOT_EXECUTED'
+
+
+def test_cli_midnight_failure_does_not_write_a_partial_schedule(tmp_path):
+    from navipro_rallyos.timing.core import TimingError
+    target = tmp_path / 'midnight'
+    with pytest.raises(TimingError, match='midnight'):
+        load_runner().run(FIXTURE, target, 'REVIEW', start_time='23:00:00')
+    assert not target.exists()
 
 
 def test_candidate_bindings_preserve_occurrence_ids_and_require_evidence():

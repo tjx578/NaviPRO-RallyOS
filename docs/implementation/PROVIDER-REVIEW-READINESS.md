@@ -1,5 +1,15 @@
 # Provider review and execution boundary
 
+## Integration follow-up (2026-10-25)
+
+The consolidation branch fixes the disconnected/swapped Valhalla leg defect. Joined polyline6 endpoints must be identical; no synthetic bridge is inserted. Each leg's start/end must be near the corresponding ordered input anchors. `max_anchor_snap_m` is a configurable **candidate-ingestion** policy (default 50 m, an engineering choice), not QG-14's event tolerance, a universal rally rule, a physical verification or a directed-edge proof. It is checked before IO and recorded with endpoint residuals in the result. A stricter reviewed policy can be supplied by the caller. Same-endpoint loops cannot be certified by proximity and remain subject to graph occurrence checks.
+
+Old fixtures repeated a shape near (0,0) for Bali input anchors. Fixtures now use ordered input coordinates, with negative cases for gaps, reversed legs and wrong-region geometry. This corrects test evidence, not real-engine evidence. The Valhalla source serializer was inspected at `tjx578/valhalla-navipro@618cad5`, `src/tyr/route_serializer_valhalla.cc` (blob `1e0857a6edbf7d24a2d1ee292ae64f3b50493277`); response indices alone do not bind geometry. API reference: https://valhalla.github.io/valhalla/api/route/api-reference/ .
+
+This environment has no Docker executable. No graph/server benchmark ran. Keep the integration PR draft and retain the real-engine merge blocker. The older PR #1 metadata is now non-draft, despite its body still requesting draft status; this work does not change that remote state.
+
+## Historical PR #1 evidence
+
 Review base: `b4e28580cc1fe43f4ddfca43104033c78e5d44b1` (draft PR #1).
 
 ## Reproducible local checks

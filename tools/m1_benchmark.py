@@ -20,6 +20,7 @@ from navipro_rallyos.rally.constraints import evaluate_roadbook, assess_candidat
 from navipro_rallyos.route.osrm_adapter import OSRMAdapter, RouteAnchor, RouteCandidateError
 from navipro_rallyos.route.valhalla_adapter import ValhallaAdapter
 from navipro_rallyos.route.provider_comparison import compare_provider_candidates
+from navipro_rallyos.timing.core import draft_schedule
 
 
 def sha256(path):
@@ -78,7 +79,7 @@ def recording_transport(output, section_id, provider):
     return transport
 
 
-def run(fixture, output, mode, anchors_file=None, runtime_file=None):
+def run(fixture, output, mode, anchors_file=None, runtime_file=None, start_time=None):
     if mode not in ('PREP', 'REVIEW'):
         raise RoadbookError('M1 accepts PREP/REVIEW only')
     source = json.loads((fixture / 'source.json').read_text(encoding='utf-8'))
@@ -87,6 +88,10 @@ def run(fixture, output, mode, anchors_file=None, runtime_file=None):
     text = (fixture / source['transcription_file']).read_text(encoding='utf-8')
     roadbook = parse_roadbook(text)
     result = evaluate_roadbook(roadbook, source)
+    # Caller-supplied start is diagnostic, not a starting-list confirmation.
+    result['draft_timing_schedule'] = (draft_schedule(roadbook['sections'], start_time=start_time)
+                                       if start_time is not None else None)
+    result['start_time_authority'] = 'CALLER_SUPPLIED_UNVERIFIED' if start_time is not None else 'NOT_PROVIDED'
     result['source_image_sha256'] = source['source_image_sha256']
     result['mode'] = mode
     result['created_at_utc'] = datetime.now(timezone.utc).isoformat()
@@ -156,8 +161,9 @@ def main():
     parser.add_argument('--mode', choices=['PREP', 'REVIEW'], required=True)
     parser.add_argument('--anchors', type=Path)
     parser.add_argument('--runtime-manifest', type=Path)
+    parser.add_argument('--start-time', help='Optional HH:MM:SS[.mmm] for a non-authoritative draft schedule')
     args = parser.parse_args()
-    result = run(args.fixture, args.output, args.mode, args.anchors, args.runtime_manifest)
+    result = run(args.fixture, args.output, args.mode, args.anchors, args.runtime_manifest, args.start_time)
     return 2 if result['arithmetic_status'] != 'ARITHMETIC_VALID' or result['provider_benchmark_status'] == 'INCOMPLETE' else 0
 
 

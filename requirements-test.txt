@@ -1,4 +1,2 @@
-# Contract tests need the optional date-time checker, not just jsonschema core.
-pytest>=8,<10
-PyYAML>=6,<7
-jsonschema[format-nongpl]>=4.18,<5
+# Compatibility entry point: one pinned dependency set for local checks and CI.
+-r requirements-test.lock

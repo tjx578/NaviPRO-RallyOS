@@ -1,5 +1,7 @@
 # NaviPRO RallyOS — Five-Surface Cockpit Architecture SSOT v1
 
+**Platform amendment (2026-10-25):** [ADR-0001](ADR-0001-HYBRID-PLATFORMS.md) selects Navigator Web/PWA and Driver Android Native. The original source digest records the historical design input, not this amended registry. UI and delivery remain DESIGN_ONLY.
+
 **Decision:** 2026-10-20 | **State:** SPECIFIED / DESIGN_ONLY / NOT_RACE_READY.
 
 ## Evidence basis and authority
@@ -13,15 +15,15 @@
 
 ## One navigator app, one driver app — five UI surfaces
 
-| UI surface | Android entry and feature owner | Responsibility | Trust/mode |
+| UI surface | Platform entry and feature owner | Responsibility | Trust/mode |
 |---|---|---|---|
-| **Page 1 — Data Rally** | `android/apps/navigator` → `android/features/data-rally` | Intake photo/text roadbook, OCR review, starting list, briefing evidence, sub timing, numeric speed and schedule; send plan to external TSD Cadencer with ACK | Navigator PREP/REVIEW, guarded CONFIRMED start override; LIVE read-only |
-| **Page 2 — Offline Map & Route Editor** | Navigator → `android/features/offline-map-editor` | Per-sub source-order list + offline map + evidence, create reviewed draft edits, calculate graph/time discrepancies, confirm under gates and send signed NaviPack to Driver | Navigator PREP/REVIEW edit; CONFIRMED locked; LIVE no active route mutation |
-| **Page 3 — NaviPRO Rally Agent** | Navigator → `android/features/rally-agent` | Voice/chat, local/external candidate search, explain evidence, proposal to Page 2 via allowlisted MCP tools | PREP/REVIEW propose-only; generative agent disabled LIVE |
+| **Page 1 — Data Rally** | `apps/navigator-web` → `apps/navigator-web/features/data-rally` | Intake photo/text roadbook, OCR review, starting list, briefing evidence, sub timing, numeric speed and schedule; send plan to external TSD Cadencer with ACK | Navigator PREP/REVIEW, guarded CONFIRMED start override; LIVE read-only |
+| **Page 2 — Offline Map & Route Editor** | Navigator → `apps/navigator-web/features/offline-map-editor` | Per-sub source-order list + offline map + evidence, create reviewed draft edits, calculate graph/time discrepancies, confirm under gates and send signed NaviPack to Driver | Navigator PREP/REVIEW edit; CONFIRMED locked; LIVE no active route mutation |
+| **Page 3 — NaviPRO Rally Agent** | Navigator → `apps/navigator-web/features/rally-agent` | Voice/chat, local/external candidate search, explain evidence, proposal to Page 2 via allowlisted MCP tools | PREP/REVIEW propose-only; generative agent disabled LIVE |
 | **Driver 1 — Overview** | `android/apps/driver` → `android/features/driver-runtime/overview` | Full selected sub, start/finish, primary POIs, ordered cue list, TSD read-only status | Separate Driver role; signed confirmed NaviPack; default overview |
 | **Driver 2 — Driving Mode** | Driver → `android/features/driver-runtime/driving` | Course-up lower-third look-ahead, next turn, cue FSM, building/landmark OSM at high zoom, off-route freeze, read-only TSD | LIVE read-only deterministic runtime |
 
-The Navigator app uses **horizontal swipe with three indicators (1/3, 2/3, 3/3)**; map/marker gestures must not swipe the page. Driver 1/2 use a **mode toggle**, **not** navigator Page 4/5 or independent driver applications. Baseline shell is landscape 16:9, Indonesian UI, official NaviPRO brand, 48 dp minimum touch targets; critical actions 56 dp. No “Muted Cockpit Style” label.
+The Navigator app uses **horizontal swipe with three indicators (1/3, 2/3, 3/3)**; map/marker gestures must not swipe the page. Driver 1/2 use a **mode toggle**, **not** navigator Page 4/5 or independent driver applications. Baseline shell is landscape 16:9, Indonesian UI, official NaviPRO brand, minimum touch targets 48 CSS px (Web) / dp (Android); critical actions 56 CSS px / dp. No “Muted Cockpit Style” label.
 
 ## Source-to-driver data flow and bounded authority
 
@@ -78,7 +80,7 @@ No derived distance or time result becomes official merely because its arithmeti
 
 | Layer/engine | Surface | Authority |
 |---|---|---|
-| PMTiles/MapLibre Native with local style/glyphs | Page 2, Driver 1/2 | Render only; no network in LIVE |
+| PMTiles/MapLibre GL JS (Navigator), MapLibre Native (Driver), local assets | Page 2, Driver 1/2 | Render only; no network in LIVE |
 | OSM/Overpass raw POI, buildings, roads, tags | Page 2 prep/curated DB | Geospatial candidate/evidence; ODbL attribution/derivative data obligations |
 | Humanitarian style (local/self-hosted, rights-reviewed) | Page 2 optional style | Visual prominence, not an independent source or physical truth |
 | OSRM directed graph pinned by version/digest | Page 2 PREP/REVIEW | Candidate graph length/turn topology, not official distance/time |

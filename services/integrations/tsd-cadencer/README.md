@@ -1,3 +1,7 @@
-# External TSD Cadencer gateway — DESIGN_ONLY
+# tsd-cadencer — planned service boundary
 
-This folder defines future service boundary and outbox/ack persistence for Page 1 timing-plan delivery to an **independent Cadencer repository/system**. It does not host or fork Cadencer. Auth, schema negotiation, idempotency, queue retries and exact ACK replay remain to be built/tested.
+Status: NOT_IMPLEMENTED. Navigator Web/PWA uses a versioned delivery envelope through this service/bridge; the Android counterpart remains in `android/integrations/tsd-cadencer`. Transport discovery and offline connectivity must be demonstrated, not inferred from browser capabilities.
+
+Require idempotency, exact revision/hash binding, authorized sender and actual receiver ACK. QUEUED or SENT never means ACKED. No change to an active LIVE package.
+
+Cadencer remains an independent application/repository; this gateway does not host or fork it. Authentication, schema negotiation, durable outbox retries and exact ACK replay remain unimplemented.

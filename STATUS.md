@@ -1,5 +1,18 @@
 # Status
 
+## Audit integration follow-up — 2026-10-25
+
+- PR #1/#2/#3: reconciled in an isolated integration branch; main is unchanged.
+- CI: workflow defined for Python 3.11/3.12, JavaScript, schema, MCP drift and static prompt checks. Hosted run results must be read separately; branch protection is not configured by this patch.
+- Dependencies: requirements-test.txt delegates to the pinned requirements-test.lock.
+- Valhalla: exact polyline6 leg joins and source-anchor endpoint proximity guards added. Directed-edge traversal and physical identity remain NOT_VERIFIED.
+- Platform: Navigator Web/PWA, Driver Android Native (ADR-0001); ownership declarations only, no frontend build.
+- Timing: exact Fraction arithmetic, separate raw/corrected odometer functions and date-less draft schedule implemented. Event-rule engine and TimingCompute API remain NOT_IMPLEMENTED.
+- Current container: Docker executable unavailable; real graph benchmark BLOCKED. The 20 October Docker Desktop OOM below is historical evidence from a different host.
+- Race readiness: NOT_RACE_READY. Authenticated review, all 16 evaluators, location write service, signed packs and device/field tests remain open.
+
+## Component history and remaining gaps
+
 - M1 ROTR Surabaya: PARSER_AND_DIAGNOSTIC_FOUNDATION_TESTED, ROUTE_UNRESOLVED.
 - Original Trayek 2 image preserved; visual transcription PENDING_OPERATOR_REVIEW.
 - B-D 19.60 km and A-E 120 minutes: ARITHMETIC_VALID; not route or timing-rule validation.
@@ -76,7 +89,7 @@
 - Cockpit v3.0 UI architecture: FIVE_SURFACES_CONTRACTED (three Navigator pages, two Driver modes)
 - Cockpit source: NAVIPRO-MAPOS-COCKPIT-UNIFIED-V3.0, external attachment SHA-256 pinned in UI registry
 - Cockpit UI role/action policy: DECLARED_AND_CONTRACT_TESTED; NOT_RUNTIME_AUTH_ENFORCED
-- Navigator/Driver Android features: README_MODULE_SCAFFOLDS_ONLY, NO_ANDROID_BUILD
+- Navigator Web/PWA and Driver Android features: README_MODULE_SCAFFOLDS_ONLY, NO_FRONTEND_BUILD
 - TSD Cadencer/Driver ACK adapters: DESIGN_ONLY, NOT_INTEGRATED
 - Driver overview/driving mode and cue FSM: NOT_BUILT
 

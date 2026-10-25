@@ -7,7 +7,7 @@ No live routing service or routing graph is shipped by this adapter.
 from __future__ import annotations
 
 from decimal import Decimal, ROUND_HALF_UP
-from math import isfinite
+from math import asin, cos, isfinite, radians, sin, sqrt
 from typing import Any, Callable, Mapping, Sequence
 from urllib.parse import urlsplit
 
@@ -104,11 +104,28 @@ def _decode_polyline6(shape: str) -> list[list[float]]:
     return result
 
 
+def _snap_limit(value: float) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not isfinite(value) or value < 0:
+        raise ValhallaCandidateError('max_anchor_snap_m must be finite and nonnegative')
+    return float(value)
+
+
+def _endpoint_distance_m(point: list[float], anchor: RouteAnchor) -> float:
+    """Spherical proximity diagnostic only; never a road distance or verification."""
+    lon, lat = map(radians, point)
+    target_lat = radians(anchor.lat_e7 / 10_000_000)
+    target_lon = radians(anchor.lon_e7 / 10_000_000)
+    h = sin((lat - target_lat) / 2) ** 2 + cos(lat) * cos(target_lat) * sin((lon - target_lon) / 2) ** 2
+    return 2 * 6_371_008.8 * asin(sqrt(min(1.0, max(0.0, h))))
+
+
 def normalize_valhalla_route(
     response: Mapping[str, Any], anchors: Sequence[RouteAnchor], *,
     graph_dataset_id: str, profile_digest: str, valhalla_build: str,
+    max_anchor_snap_m: float = 50.0,
 ) -> dict[str, Any]:
     ordered = validate_anchors(anchors)
+    snap_limit = _snap_limit(max_anchor_snap_m)
     _validate_provenance(graph_dataset_id, profile_digest, valhalla_build)
     if not isinstance(response, Mapping):
         raise ValhallaCandidateError('Valhalla returned an invalid response')
@@ -144,12 +161,22 @@ def normalize_valhalla_route(
     seconds = _nonnegative_number(summary.get('time'), 'travel seconds')
     lines: list[list[float]] = []
     maneuvers: list[dict[str, Any]] = []
+    endpoint_residuals: list[dict[str, float | int]] = []
     for i, leg in enumerate(legs):
         if not isinstance(leg, Mapping):
             raise ValhallaCandidateError('route leg invalid')
         pts = _decode_polyline6(leg.get('shape'))
-        # Preserve every leg, including adjacent duplicate transition points.
-        lines.extend(pts if not lines else pts[1:] if pts[0] == lines[-1] else pts)
+        # A LineString must not invent an unmeasured bridge between separate legs.
+        # Require an identical shared polyline6 point, not an event tolerance.
+        if lines and pts[0] != lines[-1]:
+            raise ValhallaCandidateError(f'leg {i}: disconnected geometry')
+        start_error = _endpoint_distance_m(pts[0], ordered[i])
+        end_error = _endpoint_distance_m(pts[-1], ordered[i + 1])
+        if start_error > snap_limit or end_error > snap_limit:
+            raise ValhallaCandidateError(f'leg {i}: geometry endpoints do not match ordered anchors within snap policy')
+        endpoint_residuals.append({'leg_index': i, 'start_m': start_error, 'end_m': end_error})
+        # Remove only the duplicate join; preserve loops and repeated coordinates.
+        lines.extend(pts if not lines else pts[1:])
         ms = leg.get('maneuvers')
         if not isinstance(ms, list):
             raise ValhallaCandidateError('route maneuvers missing')
@@ -173,6 +200,12 @@ def normalize_valhalla_route(
             'graph_distance_mm_candidate': length_mm,
             'estimated_travel_seconds': float(seconds), 'legs_count': len(legs),
             'geometry': {'type': 'LineString', 'coordinates': lines},
+            'geometry_diagnostics': {
+                'leg_continuity': 'EXACT_POLYLINE6_JOIN',
+                'max_anchor_snap_m': snap_limit,
+                'endpoint_residuals_m': endpoint_residuals,
+                'directed_traversal_status': 'NOT_VERIFIED',
+            },
             'provider_maneuvers_proposal': maneuvers,
         }],
         'provider_warnings': _provider_warnings(trip),
@@ -249,15 +282,18 @@ class ValhallaAdapter:
         self.transport = transport or OSRMAdapter._http_transport
 
     def route(self, anchors: Sequence[RouteAnchor], *, graph_dataset_id: str,
-              profile_digest: str, valhalla_build: str, mode: str, alternates: int = 0) -> dict[str, Any]:
+              profile_digest: str, valhalla_build: str, mode: str, alternates: int = 0,
+              max_anchor_snap_m: float = 50.0) -> dict[str, Any]:
         require_routing_mode(mode)
+        _snap_limit(max_anchor_snap_m)
         if alternates:
             raise ValhallaCandidateError('alternate native trip normalization not enabled: review contract first')
         _validate_provenance(graph_dataset_id, profile_digest, valhalla_build)
         payload = build_valhalla_route_request(anchors, alternates=alternates)
         response = self.transport(self.base_url + '/route', payload)
         result = normalize_valhalla_route(response, anchors, graph_dataset_id=graph_dataset_id,
-                                         profile_digest=profile_digest, valhalla_build=valhalla_build)
+                                         profile_digest=profile_digest, valhalla_build=valhalla_build,
+                                         max_anchor_snap_m=max_anchor_snap_m)
         result['mode'] = mode
         return result
 

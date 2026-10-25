@@ -10,8 +10,21 @@ from navipro_rallyos.route.valhalla_adapter import (
 
 
 ANCHORS = [RouteAnchor('A', -86749800, 1152041800), RouteAnchor('B', -86739900, 1152055000), RouteAnchor('C', -86722200, 1152110000)]
-# Encoded polyline6 for two coordinates: (0,0) -> (0.001,0.001).
-SHAPE = '??o}@o}@'
+def encode_shape(anchors):
+    """Fixture encoder with real ordered coordinates (not provider evidence)."""
+    out = []
+    previous = [0, 0]
+    for anchor in anchors:
+        point = [round(anchor.lat_e7 / 10), round(anchor.lon_e7 / 10)]
+        for axis, value in enumerate(point):
+            delta = value - previous[axis]
+            encoded = ~(delta << 1) if delta < 0 else delta << 1
+            while encoded >= 32:
+                out.append(chr((32 | (encoded & 31)) + 63))
+                encoded >>= 5
+            out.append(chr(encoded + 63))
+        previous = point
+    return ''.join(out)
 PROVENANCE = {
     'graph_dataset_id': 'osm-test',
     'profile_digest': 'auto-test',
@@ -24,7 +37,7 @@ def route_result(n=3):
                      'locations': [{'lat': a.lat_e7/1e7, 'lon': a.lon_e7/1e7,
                                     'original_index': i} for i, a in enumerate(ANCHORS[:n])],
                      'summary': {'length': 1.2, 'time': 120},
-                     'legs': [{'shape': SHAPE, 'maneuvers': [{'type': 1, 'street_names': ['Jl. Jawa']}]} for _ in range(n-1)]}}
+                     'legs': [{'shape': encode_shape(ANCHORS[i:i+2]), 'maneuvers': [{'type': 1, 'street_names': ['Jl. Jawa']}]} for i in range(n-1)]}}
 
 
 def matrix_result(n=3):
@@ -53,8 +66,7 @@ def test_route_provenance_units_geometry_and_maneuvers():
     assert c['graph_distance_mm_candidate'] == 1_200_000
     assert c['source_anchor_order'] == ['A', 'B', 'C']
     assert c['legs_count'] == 2
-    assert c['geometry']['coordinates'][0] == [0.0, 0.0]
-    assert c['geometry']['coordinates'][1] == [0.001, 0.001]
+    assert c['geometry']['coordinates'] == [[a.lon_e7/1e7, a.lat_e7/1e7] for a in ANCHORS]
     assert c['provider_maneuvers_proposal'][0]['street_names'] == ['Jl. Jawa']
     assert not c['route_authority'] and r['graph_dataset_id'] == 'osm-bali-20261020'
 
