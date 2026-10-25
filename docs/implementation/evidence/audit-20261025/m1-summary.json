@@ -1,0 +1,75 @@
+{
+  "status": "ROUTE_UNRESOLVED",
+  "arithmetic_status": "ARITHMETIC_VALID",
+  "total_declared_leg_distance_mm": 19600000,
+  "total_duration_ms": 7200000,
+  "provider_benchmark_status": "NOT_EXECUTED",
+  "source_image_sha256": "e51ca2d91c7cf7c8c1e0c668b65b114f0a42d08efd0ff819d191de53b929124c",
+  "source_text_sha256": "6a528900ae5d60601ec99d53aac88c6153907a2e2e754dbb6fb9a54520cdb7c3",
+  "start_time_authority": "CALLER_SUPPLIED_UNVERIFIED",
+  "draft_timing_schedule": {
+    "status": "DRAFT",
+    "release_status": "HOLD",
+    "route_authority": false,
+    "timing_rule_status": "NOT_VERIFIED",
+    "start_time": "10:00:00.000",
+    "arrival_time": "12:00:00.000",
+    "total_duration_ms": 7200000,
+    "sections": [
+      {
+        "section_id": "A",
+        "start_time": "10:00:00.000",
+        "arrival_time": "10:02:00.000",
+        "duration_ms": 120000,
+        "d_auth_mm": null,
+        "timing_mode": "UNSPECIFIED",
+        "speed_kmh_ratio": null
+      },
+      {
+        "section_id": "B",
+        "start_time": "10:02:00.000",
+        "arrival_time": "10:27:00.000",
+        "duration_ms": 1500000,
+        "d_auth_mm": 7570000,
+        "timing_mode": "TETAP_DETIK",
+        "speed_kmh_ratio": {
+          "num": 2271,
+          "den": 125
+        }
+      },
+      {
+        "section_id": "C",
+        "start_time": "10:27:00.000",
+        "arrival_time": "10:47:00.000",
+        "duration_ms": 1200000,
+        "d_auth_mm": 5750000,
+        "timing_mode": "TETAP_MENIT",
+        "speed_kmh_ratio": {
+          "num": 69,
+          "den": 4
+        }
+      },
+      {
+        "section_id": "D",
+        "start_time": "10:47:00.000",
+        "arrival_time": "11:09:00.000",
+        "duration_ms": 1320000,
+        "d_auth_mm": 6280000,
+        "timing_mode": "RATA_RATA",
+        "speed_kmh_ratio": {
+          "num": 942,
+          "den": 55
+        }
+      },
+      {
+        "section_id": "E",
+        "start_time": "11:09:00.000",
+        "arrival_time": "12:00:00.000",
+        "duration_ms": 3060000,
+        "d_auth_mm": null,
+        "timing_mode": "BEBAS_ORDERED_VISITS",
+        "speed_kmh_ratio": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "status": "BLOCKED",
+  "reason": "DOCKER_PREFLIGHT_FAILED",
+  "detail": "[Errno 2] No such file or directory: 'docker'"
+}

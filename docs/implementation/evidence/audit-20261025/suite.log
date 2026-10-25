@@ -1,0 +1,36 @@
+python -m pytest -q
+........................................................................ [ 26%]
+........................................................................ [ 52%]
+........................................................................ [ 79%]
+........................................................                 [100%]
+272 passed in 4.17s
+python tools/validate_openapi.py
+OpenAPI OK: 82 operations, 110 schemas
+python tools/validate_spatial_rea.py
+Spatial REA OK: 75 capabilities; LIVE exposure=0; layers=21
+python tools/validate_cesium_rea.py
+Cesium REA OK: 69 capabilities; 9 OpenAPI ops; PREP/REVIEW only, authority=FALSE
+python tools/build_mcp_registry.py --check
+generated 71 MCP tools; blocked 11 operations
+python tools/validate_prompt_pack.py
+PASS: 9 prompt roles; 16 behavioral cases structurally checked, behavior NOT_EXECUTED
+node --test apps/routing-lab-web/test/*.test.mjs
+✔ immutable source ordered anchors and bound provenance (2.51721ms)
+✔ strict block LIVE, invalid E7, duplicates, missing graph or route revision (1.060342ms)
+✔ routing control automatically disables unsafe editing and auto routing (0.218152ms)
+✔ display coordinates lat lng fresh and cannot mutate source (0.286852ms)
+✔ alternative selection only changes preview not source or authority (0.436223ms)
+✔ new shaping point proposal keeps official ordered source immutable (0.43389ms)
+✔ shaping point rejects finish anchor, invalid reason or coordinates (0.455832ms)
+✔ UI event rejects all official mutations and accepts preview only (0.738559ms)
+✔ request export does not contain authority mutation/reordering (0.51581ms)
+✔ review session readonly order and disabled trip/approval (1.486961ms)
+✔ LIVE, duplicate anchors, unknown candidates blocked (0.383495ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119.827138

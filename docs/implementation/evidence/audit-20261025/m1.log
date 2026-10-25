@@ -1,0 +1,7 @@
+{
+  "status": "ROUTE_UNRESOLVED",
+  "arithmetic_status": "ARITHMETIC_VALID",
+  "total_declared_leg_distance_mm": 19600000,
+  "total_duration_ms": 7200000,
+  "provider_benchmark_status": "NOT_EXECUTED"
+}

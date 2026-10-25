@@ -1,0 +1,20 @@
+{
+  "repository": "tjx578/NaviPRO-RallyOS",
+  "publication_channel": "GitHub connector Git objects API",
+  "reason": "HTTPS Git push has no credentials in this container",
+  "bindings": [
+    {
+      "stage": "integration",
+      "tested_local_commit": "2b6be4f3c6c7ddc7ec37d2bbe31d07ad7439dc67",
+      "remote_commit": "87b1a46cae944dbede3eedd73c3322a758f8efc6",
+      "identical_tree": "7268f5609f8e20f72323d66b82ca8fac9811fc4c"
+    },
+    {
+      "stage": "implementation",
+      "tested_local_commit": "7f38984245e58d838af36ac9e5ad3817db154036",
+      "remote_commit": "7dacaab32ea04bf8cd78ba7bd37964478b96e610",
+      "identical_tree": "c3242ebe25818477ddb5b581ccec525f5c910ca3"
+    }
+  ],
+  "meaning": "Each remote Git tree SHA equals the corresponding local tree SHA; commit metadata differs. Verification receipt remains bound to the actual local execution commit. Subsequent changes only add report and evidence files."
+}

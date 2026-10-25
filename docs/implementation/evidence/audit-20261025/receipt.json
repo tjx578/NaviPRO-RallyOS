@@ -1,0 +1,97 @@
+{
+  "repository": "tjx578/NaviPRO-RallyOS",
+  "commit": "7f38984245e58d838af36ac9e5ad3817db154036",
+  "tree": "c3242ebe25818477ddb5b581ccec525f5c910ca3",
+  "initial_worktree": "CLEAN",
+  "source_inputs": {
+    "main": "af0f4e5292af388489a0514865e8b59cfd49b721",
+    "pr1": "ca2290741fc5d7747fab84ed0d5f30b75fd758b7",
+    "pr2": "d3d92933747cbd150d6283f6defd84e342169f09",
+    "pr3": "20bed1114ca0e051dc6b948d885f805d74c1940a"
+  },
+  "environment": {
+    "python": "Python 3.12.14",
+    "node": "v24.22.1"
+  },
+  "checks": [
+    {
+      "name": "suite",
+      "argv": [
+        "make",
+        "verify"
+      ],
+      "cwd": "/workspace/scratch/b288608dfb1d/navipro-rallyos",
+      "started_at_utc": "2026-10-25T14:05:26.966207+00:00",
+      "exit_code": 0,
+      "log_sha256": "58198f22fadf00a305f3b5cbb7e81452abbb5830e02e434bbdde386c9f9a7963",
+      "log_file": "suite.log",
+      "status": "EXECUTED_PASS"
+    },
+    {
+      "name": "dependencies",
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "cwd": "/workspace/scratch/b288608dfb1d/navipro-rallyos",
+      "started_at_utc": "2026-10-25T14:05:32.525209+00:00",
+      "exit_code": 0,
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+      "log_file": "dependencies.log",
+      "status": "EXECUTED_PASS"
+    },
+    {
+      "name": "diff",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/workspace/scratch/b288608dfb1d/navipro-rallyos",
+      "started_at_utc": "2026-10-25T14:05:32.752490+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_file": "diff.log",
+      "status": "EXECUTED_PASS"
+    },
+    {
+      "name": "m1",
+      "argv": [
+        ".venv/bin/python",
+        "tools/m1_benchmark.py",
+        "--mode",
+        "REVIEW",
+        "--start-time",
+        "10:00:00",
+        "--output",
+        ".local/audit-verification/m1"
+      ],
+      "cwd": "/workspace/scratch/b288608dfb1d/navipro-rallyos",
+      "started_at_utc": "2026-10-25T14:05:32.755006+00:00",
+      "exit_code": 0,
+      "log_sha256": "8550bd6160e7e39367186cd095cb422d69e823322daa789578d84be31ea23229",
+      "log_file": "m1.log",
+      "status": "EXECUTED_PASS"
+    },
+    {
+      "name": "routing-preflight",
+      "argv": [
+        ".venv/bin/python",
+        "tools/routing_runtime.py",
+        "preflight",
+        "--output",
+        ".local/audit-verification/runtime"
+      ],
+      "cwd": "/workspace/scratch/b288608dfb1d/navipro-rallyos",
+      "started_at_utc": "2026-10-25T14:05:32.817924+00:00",
+      "exit_code": 2,
+      "log_sha256": "53c61b6254181d1d4d2bcc8b5e11435e5120e02afc68ce1b113edd2b97879ec4",
+      "log_file": "routing-preflight.log",
+      "status": "BLOCKED"
+    }
+  ],
+  "race_ready": false,
+  "outcome": "LOCAL_REGRESSION_PASS_REAL_ENGINE_BLOCKED"
+}
