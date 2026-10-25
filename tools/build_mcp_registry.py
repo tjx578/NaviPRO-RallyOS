@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import argparse
 import yaml, sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--check', action='store_true', help='Fail on generated drift without writing files')
+args = parser.parse_args()
 
 repo = Path(__file__).resolve().parents[1]
 spec_path = repo / "contracts/openapi/navipro-rallyos.openapi.yaml"
@@ -29,5 +34,10 @@ for path, item in spec.get("paths", {}).items():
             blocked.append(rec)
 
 payload = {"generated_from": str(spec_path.relative_to(repo)), "tools": tools, "blocked_operations": blocked}
-out_path.write_text(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8")
+rendered = yaml.safe_dump(payload, sort_keys=False, allow_unicode=True)
+if args.check:
+    if not out_path.is_file() or out_path.read_text(encoding='utf-8') != rendered:
+        sys.exit('MCP registry drift: run python tools/build_mcp_registry.py and review the diff')
+else:
+    out_path.write_text(rendered, encoding="utf-8")
 print(f"generated {len(tools)} MCP tools; blocked {len(blocked)} operations")

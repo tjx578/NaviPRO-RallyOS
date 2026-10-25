@@ -1,5 +1,27 @@
 # Status
 
+## Audit integration follow-up — 2026-10-25
+
+- PR #1/#2/#3: reconciled in an isolated integration branch; main is unchanged.
+- CI: workflow defined for Python 3.11/3.12, JavaScript, schema, MCP drift and static prompt checks. Hosted run results must be read separately; branch protection is not configured by this patch.
+- Dependencies: requirements-test.txt delegates to the pinned requirements-test.lock.
+- Valhalla: exact polyline6 leg joins and source-anchor endpoint proximity guards added. Directed-edge traversal and physical identity remain NOT_VERIFIED.
+- Platform: Navigator Web/PWA, Driver Android Native (ADR-0001); ownership declarations only, no frontend build.
+- Timing: exact Fraction arithmetic, separate raw/corrected odometer functions and date-less draft schedule implemented. Event-rule engine and TimingCompute API remain NOT_IMPLEMENTED.
+- Current container: Docker executable unavailable; real graph benchmark BLOCKED. The 20 October Docker Desktop OOM below is historical evidence from a different host.
+- Race readiness: NOT_RACE_READY. Authenticated review, all 16 evaluators, location write service, signed packs and device/field tests remain open.
+
+## Component history and remaining gaps
+
+- M1 ROTR Surabaya: PARSER_AND_DIAGNOSTIC_FOUNDATION_TESTED, ROUTE_UNRESOLVED.
+- Original Trayek 2 image preserved; visual transcription PENDING_OPERATOR_REVIEW.
+- B-D 19.60 km and A-E 120 minutes: ARITHMETIC_VALID; not route or timing-rule validation.
+- OSRM/Valhalla build recipes and pinned image manifests: PRESENT, REAL_BUILD_NOT_EXECUTED.
+- Local Docker engine: BLOCKED (backend memory failure observed 2026-10-20).
+- Exploratory Surabaya OSM extract: PREPARED; administrative/driving-side coverage NOT_VERIFIED.
+- M1 real provider comparison, directed-edge solver and Page 2 evidence GUI: NOT_EXECUTED / NOT_IMPLEMENTED.
+- M1 implementation and reproducible commands: `docs/implementation/M1-ROTR-SURABAYA.md`.
+
 - Repository skeleton: PRESENT
 - Git repository: LOCAL INITIALIZED
 - Unified OpenAPI vNext: DRAFT GENERATED
@@ -9,6 +31,14 @@
 - MCP runtime server: NOT_IMPLEMENTED (generated registry only)
 - Android runtime: NOT_BUILT
 - Race readiness: NOT_RACE_READY
+
+- Canonical 16 gate identities: PRESENT_IN_OPENAPI
+- Gate-to-eight-division mapping and operation allowlists: CONTRACT_ONLY, governance registries added
+- ValidationReport schema: EXACTLY_ONE_OF_EACH_GATE; FAIL/NOT_RUN cannot claim PASS
+- Deterministic 16-gate evaluators / compiler: NOT_IMPLEMENTED
+- Eight specialist agents and revision-bound handoff: DECLARED_ONLY, NO_AGENT_RUNTIME
+- Agent permissions / reviewer authentication / release enforcement: NOT_RUNTIME_ENFORCED
+- Gate assessment: docs/architecture/QUALITY-GATES-EIGHT-DIVISIONS-v1.md
 
 - Kepler capability REA: SCAFFOLDED (capability registry + Map Lab web adapter)
 - Spatial PREP/REVIEW capability policy: PRESENT
@@ -59,6 +89,13 @@
 - Cockpit v3.0 UI architecture: FIVE_SURFACES_CONTRACTED (three Navigator pages, two Driver modes)
 - Cockpit source: NAVIPRO-MAPOS-COCKPIT-UNIFIED-V3.0, external attachment SHA-256 pinned in UI registry
 - Cockpit UI role/action policy: DECLARED_AND_CONTRACT_TESTED; NOT_RUNTIME_AUTH_ENFORCED
-- Navigator/Driver Android features: README_MODULE_SCAFFOLDS_ONLY, NO_ANDROID_BUILD
+- Navigator Web/PWA and Driver Android features: README_MODULE_SCAFFOLDS_ONLY, NO_FRONTEND_BUILD
 - TSD Cadencer/Driver ACK adapters: DESIGN_ONLY, NOT_INTEGRATED
 - Driver overview/driving mode and cue FSM: NOT_BUILT
+
+### Valhalla REA scope (2026-10-20)
+
+- Source: `tjx578/valhalla-navipro@618cad5`, upstream-identical MIT fork.
+- Added: clean-room Valhalla native candidate/matrix adapter, provider-distance diagnostics, REA source manifest, governance and fixture tests.
+- **Not built/deployed:** Valhalla graph tiles, live HTTP integration, Page 2 route workbench, comparative performance benchmark, live Driver runtime, production release. No replacement of OSRM. `NOT_RACE_READY` remains.
+- Integration response guards: native source indices validated, missing matrix values rejected, provider warnings preserved, and route/matrix provenance required before transport; fixture-only regression coverage.

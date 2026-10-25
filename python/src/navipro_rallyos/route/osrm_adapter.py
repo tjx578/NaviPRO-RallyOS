@@ -11,12 +11,21 @@ import ipaddress
 import json
 import math
 from typing import Any, Callable, Mapping, Sequence
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlencode
 from urllib.request import Request, build_opener, HTTPRedirectHandler
 
 
 class RouteCandidateError(ValueError):
     """Input, graph, or provider result not suitable even for a route candidate."""
+
+
+def require_routing_mode(mode: str) -> None:
+    """Reject untrusted/missing execution modes before any provider IO.
+
+    This enforces the adapter API boundary, not caller authentication.
+    """
+    if not isinstance(mode, str) or mode not in ('PREP', 'REVIEW'):
+        raise RouteCandidateError('routing providers accept PREP or REVIEW only')
 
 
 @dataclass(frozen=True)
@@ -180,39 +189,73 @@ class OSRMAdapter:
     """
     def __init__(self, base_url: str='http://127.0.0.1:5000', *, allowed_hosts: frozenset[str]=frozenset({'127.0.0.1','localhost','::1'}), transport: Callable|None=None):
         self.base_url=validate_osrm_base_url(base_url,allowed_hosts)
-        self.transport=transport or self._http_transport
+        self.transport=transport or self._native_http_transport
+
+    @staticmethod
+    def _read_response(req: Request) -> dict[str, Any]:
+        class NoRedirects(HTTPRedirectHandler):
+            def redirect_request(self, req, fp, code, msg, headers, newurl):
+                raise RouteCandidateError('provider redirect denied; only configured origin is allowed')
+        opener=build_opener(NoRedirects)
+        with opener.open(req, timeout=8) as resp:
+            if resp.status != 200:
+                raise RouteCandidateError('routing service returned non-200')
+            body=resp.read(8_000_001)
+            if len(body) > 8_000_000:
+                raise RouteCandidateError('response too large')
+            return json.loads(body)
+
+    @staticmethod
+    def _native_http_transport(url: str, payload: dict[str, Any]) -> dict[str, Any]:
+        """OSRM native API uses GET /service/v1/profile/lon,lat;lon,lat."""
+        coordinates = payload['coordinates']
+        encoded_coordinates = ';'.join(','.join(format(v, '.7f') for v in point) for point in coordinates)
+        options = {}
+        for key, value in payload.items():
+            if key == 'coordinates':
+                continue
+            if isinstance(value, bool):
+                options[key] = str(value).lower()
+            elif isinstance(value, list):
+                separator = ',' if key == 'annotations' else ';'
+                options[key] = separator.join(str(v) for v in value)
+            else:
+                options[key] = value
+        request = Request(url + '/' + encoded_coordinates + '?' + urlencode(options), method='GET')
+        return OSRMAdapter._read_response(request)
 
     @staticmethod
     def _http_transport(url:str,payload:dict[str,Any]) -> dict[str,Any]:
         data=json.dumps(payload,separators=(',',':')).encode()
         req=Request(url,data=data,headers={'Content-Type':'application/json'},method='POST')
-        class NoRedirects(HTTPRedirectHandler):
-            def redirect_request(self, req, fp, code, msg, headers, newurl):
-                raise RouteCandidateError('provider redirect denied; only configured origin is allowed')
-        opener=build_opener(NoRedirects)
-        with opener.open(req,timeout=8) as resp:
-            if resp.status!=200: raise RouteCandidateError('routing service returned non-200')
-            body=resp.read(8_000_001)
-            if len(body)>8_000_000: raise RouteCandidateError('response too large')
-            return json.loads(body)
+        return OSRMAdapter._read_response(req)
 
-    def route(self, anchors:Sequence[RouteAnchor],graph_dataset_id:str,profile_digest:str)->dict[str,Any]:
+    def route(self, anchors:Sequence[RouteAnchor],graph_dataset_id:str,profile_digest:str, *, mode: str)->dict[str,Any]:
+        require_routing_mode(mode)
+        if not all(isinstance(v, str) and v.strip() for v in (graph_dataset_id, profile_digest)):
+            raise RouteCandidateError('graph manifest identity + profile digest required')
         # Fixed trusted target and fixed profile; separate instances for other profiles.
         data=self.transport(self.base_url+'/route/v1/driving',build_route_payload(anchors))
-        return route_candidates(data,anchors,graph_dataset_id=graph_dataset_id,profile_digest=profile_digest)
+        result = route_candidates(data,anchors,graph_dataset_id=graph_dataset_id,profile_digest=profile_digest)
+        result['mode'] = mode
+        return result
 
-    def table(self, anchors:Sequence[RouteAnchor])->dict[str,Any]:
+    def table(self, anchors:Sequence[RouteAnchor], *, mode: str)->dict[str,Any]:
+        require_routing_mode(mode)
         data=self.transport(self.base_url+'/table/v1/driving',build_matrix_payload(anchors))
-        return normalize_matrix(data,anchors)
+        result = normalize_matrix(data,anchors)
+        result['mode'] = mode
+        return result
 
-    def match(self, anchors:Sequence[RouteAnchor],timestamps:Sequence[int],accuracies_m:Sequence[float])->dict[str,Any]:
+    def match(self, anchors:Sequence[RouteAnchor],timestamps:Sequence[int],accuracies_m:Sequence[float], *, mode: str)->dict[str,Any]:
+        require_routing_mode(mode)
         result=self.transport(self.base_url+'/match/v1/driving',build_match_payload(anchors,timestamps,accuracies_m))
         if not isinstance(result,Mapping) or result.get('code')!='Ok':raise RouteCandidateError('OSRM Match failed')
         matched=result.get('matchings')
         tp=result.get('tracepoints')
         if not isinstance(matched,list) or not isinstance(tp,list) or len(tp)!=len(anchors):
             raise RouteCandidateError('OSRM matching geometry / tracepoint result mismatch')
-        return {'mode':'REVIEW','route_authority':False,'status':'MATCH_PROPOSAL_ONLY',
+        return {'mode':mode,'route_authority':False,'status':'MATCH_PROPOSAL_ONLY',
                 'input_anchor_order':[a.anchor_id for a in anchors],
                 'matched_segments':len(matched),
                 'outlier_indices':[i for i,x in enumerate(tp) if x is None],

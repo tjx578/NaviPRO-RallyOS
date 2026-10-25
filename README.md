@@ -4,12 +4,18 @@
 
 **Status:** WORKING_REPOSITORY_SKELETON / OPENAPI_VNEXT_DRAFT / NOT_RACE_READY
 
+## Audit consolidation — 2026-10-25
+
+The integration branch reconciles PR #1 routing, PR #2 ROTR and PR #3 gate/agent contracts. It adds continuity/anchor guards for Valhalla, pinned-dependency CI, static prompt assembly checks, a hybrid platform ADR and exact draft timing/calibration primitives. No PR has been merged to main by this work.
+
+Run `python -m pip install -r requirements-test.lock` in a virtual environment, then `make verify`. CI checks contracts and prototypes; it does not deploy services or certify a real routing engine. See [continuation assessment](docs/implementation/AUDIT-CONTINUATION-2026-10-25.md) for evidence and remaining work.
+
 This repository continues the earlier NaviPRO RallyOS monorepo design and adds a concrete **Unified OpenAPI vNext** plus an **OpenAPI → MCP tool registry generator**.
 
 
 ## Cockpit architecture: Page 1/2/3 + Driver 1/2 (2026-10-20)
 
-The canonical UI design now follows the user-approved v3.0 specification: **one Navigator app with three swipe pages** and **one separate Driver app with two switchable read-only modes**. This is a **design and contract alignment**, not a working Android build.
+The canonical UI design now follows the user-approved v3.0 specification: **one Navigator Web/PWA with three swipe pages** and **one separate Android Native Driver app with two switchable read-only modes**. Platform amendment: [ADR-0001](docs/architecture/ADR-0001-HYBRID-PLATFORMS.md). This is design and contract alignment, not a working browser/PWA or Android build.
 
 - **Page 1 Data Rally:** source/OCR review, start & starting list, sub timing and numeric speeds, external TSD Cadencer with real ACK.
 - **Page 2 Offline Map & Route Editor:** selected-sub immutable source steps, map/evidence and draft-only route changes, human confirmation gates, driver NaviPack send.
@@ -37,6 +43,19 @@ Existing Kepler/Cesium/Routing Lab web scaffolds remain **supporting Page 2 PREP
 ## Important
 
 This is not yet a production implementation. The contract exists; endpoint business logic, real authentication, road graph resolver, reviewer service, Android build, NaviPack publication, and field validation still require implementation and evidence.
+
+## 16 quality gates and eight specialist divisions (2026-10-22)
+
+The [gate assessment and division mapping](docs/architecture/QUALITY-GATES-EIGHT-DIVISIONS-v1.md) binds the existing 16 OpenAPI gate names to [eight evidence-producing specialist divisions](governance/agent-divisions.yaml), coordinated by role 1. The [gate registry](governance/release-gates.yaml) keeps authoritative evaluation with the deterministic validator and human authorization with the existing review/release roles.
+
+`ValidationReport` now requires each canonical gate exactly once and rejects `PASS` if any gate is `FAIL` or `NOT_RUN`. Missing profiles and stale revisions remain HOLD requirements; neither ±2% nor 20 m is introduced as a universal tolerance. These are **contracts and schema tests**, not an implemented 16-gate compiler or eight-agent service.
+
+The [Time Rally Navigator prompt pack](knowledge/prompts/time-rally-navigator-v1/README.md) provides shared Indonesian instructions, an orchestrator prompt, eight specialist prompts, a corrected proposal example and behavioral evaluation scenarios. It follows these division/gate boundaries and the current cockpit policy. **TEMPLATE_ONLY**: no agent loader or model/field evaluation is included.
+
+```bash
+python -m pip install -r requirements-test.lock
+make verify-gates
+```
 
 ## Verify
 
@@ -114,4 +133,8 @@ The project decisions from the latest navigator review are now recorded in the [
 
 The previously standalone [React Native Maps audit](docs/rea/REACT-NATIVE-MAPS-REA-v1.md) is now included **as documentation**, not as a mobile build or installed adapter.
 
-**Status:** governance + draft schema + schema unit tests only; no satellite POI matcher, time solver, REST/MCP endpoints or live Driver integration. `NOT_RACE_READY`.
+**Status:** governance + draft schema + schema unit tests; exact timing arithmetic now exists as a diagnostic kernel, but the event-rule solver, satellite POI matcher, REST/MCP endpoints and live Driver integration are not implemented. `NOT_RACE_READY`.
+
+## Valhalla routing provider REA (2026-10-20)
+
+Valhalla (`tjx578/valhalla-navipro@618cad5`) has been source-audited as a ninth routing/spatial donor, and a **PREP/REVIEW only** clean-room Python `ValhallaAdapter` prototype plus OSRM/Valhalla residual comparison were added. `POST /route` and `/sources_to_targets` request/response normalization and fixture tests are implemented, including response-order, explicit-null, warning preservation and provenance regressions; **no Valhalla graph or HTTP service has been deployed**. Valhalla `optimized_route` is forbidden for official roadbook anchors, and neither graph estimated times nor provider distances override source rules. See [Valhalla REA](docs/rea/VALHALLA-NAVIPRO-REA-v1.md), [governance](governance/valhalla-routing-policy.yaml), and [capabilities](contracts/routing/valhalla-capability-registry.yaml).

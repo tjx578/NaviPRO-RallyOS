@@ -1,5 +1,7 @@
 # NaviPRO RallyOS — 3 Navigator Pages + 2 Driver Modes: Implementation Plan
 
+**Platform amendment (2026-10-25):** [ADR-0001](../architecture/ADR-0001-HYBRID-PLATFORMS.md) selects Navigator Web/PWA and Driver Android Native. The original source digest records the historical design input, not this amended registry. UI and delivery remain DESIGN_ONLY.
+
 **State:** Proposed roadmap, not a schedule commitment and not yet built. Follows `docs/architecture/COCKPIT-FIVE-SURFACE-SSOT-v1.md` and the source v3.0 specification.
 
 ## Dependency-first incremental build
@@ -7,13 +9,13 @@
 | Slice | Implemented when | Owner/source tree | Primary demonstration | Exit / negative test |
 |---|---|---|---|---|
 | **F0 Contract baseline** | First | `contracts/ui`, `governance`, `tests/contracts` | Reproducible five-surface registry + permissions | Forbidden Driver/agent actions blocked by policy validator; source/mode traceable |
-| **F1 Page 1 deterministic** | Second | `python/.../rally`, `python/.../timing`, `android/features/data-rally` | ROTR Surabaya A–E fixture → timing & distance table | 19.60km B–D / 120min A–E; no inferred route, modes distinct; preserve source; OCR-review gate |
-| **F2 Page 2 map & route review** | Third | `android/features/offline-map-editor`, `python/.../route`, `.../locations` | Selected-sub list ↔ route candidates + spatial evidence | Zero reorder; graph vs official distance separate; revision diff/confirm gate; no public tile reliance offline |
+| **F1 Page 1 deterministic** | Second | `python/.../rally`, `python/.../timing`, `apps/navigator-web/features/data-rally` | ROTR Surabaya A–E fixture → timing & distance table | 19.60km B–D / 120min A–E; no inferred route, modes distinct; preserve source; OCR-review gate |
+| **F2 Page 2 map & route review** | Third | `apps/navigator-web/features/offline-map-editor`, `python/.../route`, `.../locations` | Selected-sub list ↔ route candidates + spatial evidence | Zero reorder; graph vs official distance separate; revision diff/confirm gate; no public tile reliance offline |
 | **F3 Driver 1/2 deterministic preview** | In parallel after F1/F2 contracts | `android/apps/driver`, `android/features/driver-runtime` | Same confirmed test NaviPack displayed in Overview and Driving | No editing/agent/send controls; shared immutable revision; pack check; mode toggle and cue-frozen test |
-| **F4 Page 3 proposal integration** | After F1/F2 API and read-only evidence | `android/features/rally-agent`, `services/mcp`, `services/api` | Candidate location with physical evidence → Page 2 proposal | Tool denylist; never automatically verify, mutate/approve/publish; offline no hallucinated success |
+| **F4 Page 3 proposal integration** | After F1/F2 API and read-only evidence | `apps/navigator-web/features/rally-agent`, `services/mcp`, `services/api` | Candidate location with physical evidence → Page 2 proposal | Tool denylist; never automatically verify, mutate/approve/publish; offline no hallucinated success |
 | **F5 Device/system integration** | Only when real integrations are available | `android/integrations`, `services/integrations`, `release`, `tests` | Page1 plan → TSD ACK; Page2 signed pack → Driver ACK; recorded sensor replay | Cold-start offline, real hardware performance, reproducible release receipts and human sign-off |
 
-**Do not infer progress from scaffolding:** existing `android/apps/navigator` and `android/apps/driver` have no validated Gradle app or screens. Existing JS map labs are PREP/REVIEW prototypes; registry contains no deployed API/MCP server. F0 is the only slice implemented by this architecture change.
+**Do not infer progress from scaffolding:** existing `apps/navigator-web` and `android/apps/driver` are design ownership only; no validated Navigator browser/PWA build or Driver Gradle build. Existing JS map labs are PREP/REVIEW prototypes; registry contains no deployed API/MCP server. F0 is the only slice implemented by this architecture change.
 
 ## First concrete deterministic benchmark — ROTR Surabaya image
 
@@ -36,8 +38,8 @@
 | Artifact | Now | Production goal |
 |---|---|---|
 | UI surface registry and role policy | PRESENT (design declarations) | Runtime enforced policy + UI tests |
-| Android Page 1/2/3 and Driver 1/2 | README scaffolds only | Running Kotlin/Compose app with five tested surfaces |
-| Page 1 parser/time core | NOT BUILT | Deterministic corpus with timing acceptance |
+| Web/PWA Page 1/2/3 and Android Driver 1/2 | README scaffolds only | Navigator Web/PWA and Driver Kotlin/Compose with five tested surfaces |
+| Page 1 parser/time core | ROTR parser + exact draft arithmetic; event rules NOT IMPLEMENTED | Deterministic corpus with timing acceptance |
 | Graph-backed route review | Candidate state prototypes only | Pinned OSRM graph, real Page 2 map/editor and review gates |
 | Humanitarian & satellite validation | Design only | Rights-reviewed ingest + dated imagery review/evidence |
 | Driver NaviPack and cue FSM | NOT BUILT | Signed local package + offline replay on real tablet |

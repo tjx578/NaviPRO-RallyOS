@@ -1,4 +1,4 @@
-"""Five cockpit *declaration* and governance tests (not Android UI tests)."""
+"""Five cockpit *declaration* and governance tests (not browser/Android UI tests)."""
 from pathlib import Path
 import re
 
@@ -23,7 +23,7 @@ def test_exact_three_navigator_pages_two_driver_modes():
     assert REGISTRY['roles']['driver']['surfaces'] == ['DRIVER_1', 'DRIVER_2']
     assert REGISTRY['roles']['navigator']['navigation'] == 'SWIPE'
     assert REGISTRY['roles']['driver']['navigation'] == 'MODE_TOGGLE'
-    assert REGISTRY['layout']['target'] == 'ANDROID_TABLET_LANDSCAPE_16_9'
+    assert REGISTRY['layout']['target'] == 'HYBRID_TABLET_LANDSCAPE_16_9'
 
 
 def test_registry_is_source_traceable_and_honest():
@@ -127,3 +127,18 @@ def test_page_2_has_no_direct_source_order_mutation():
     assert 'ORIGINAL_ROADBOOK_TEXT_AND_SEQUENCE_IMMUTABLE' in spec['required_rules']
     assert 'SILENT_DELETE_OFFICIAL_STEP' in spec['forbidden']
     assert POLICY['actions']['edit_route_draft']['mutates'] == 'DRAFT_REVISION_ONLY'
+
+
+def test_hybrid_ownership_and_renderers_have_one_target_per_role():
+    assert REGISTRY['roles']['navigator']['app'] == 'apps/navigator-web'
+    assert REGISTRY['roles']['navigator']['platform'] == 'WEB_PWA'
+    assert REGISTRY['roles']['driver']['platform'] == 'ANDROID_NATIVE'
+    assert (ROOT / REGISTRY['platform_decision']).is_file()
+    assert REGISTRY['integration_boundaries']['offline_map']['renderer_targets'] == {
+        'navigator': 'MAPLIBRE_GL_JS', 'driver': 'MAPLIBRE_NATIVE'}
+    for key in ('PAGE_1', 'PAGE_2', 'PAGE_3'):
+        assert REGISTRY['surfaces'][key]['owner'].startswith('apps/navigator-web/features/')
+    for name in ('tsd_cadencer', 'driver_navipack'):
+        boundary = REGISTRY['integration_boundaries'][name]
+        assert (ROOT / boundary['adapter'] / 'README.md').is_file()
+        assert (ROOT / boundary['device_adapter'] / 'README.md').is_file()

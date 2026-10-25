@@ -1,0 +1,82 @@
+prompt_pack: navipro-time-rally-navigator
+version: 1.0.0
+language: id
+status: TEMPLATE_ONLY
+source_binding:
+  repository: tjx578/NaviPRO-RallyOS
+  base_commit: 66128fdf67b6d75b942293c60ef0ff84197acc3e
+  role_skill: navipro-orchestrator@1.2.0
+  division_registry: governance/agent-divisions.yaml
+  gate_registry: governance/release-gates.yaml
+  cockpit_policy: governance/cockpit-role-action-policy.yaml
+  route_time_policy: governance/route-distance-time-location-policy.yaml
+  api_contract: contracts/openapi/navipro-rallyos.openapi.yaml
+assembly:
+  shared_prompt: shared.md
+  order: [shared_prompt, selected_role_prompt, task_scoped_context]
+  allowed_workspace_modes: [PREP, REVIEW]
+  operation_authority: HOST_POLICY_INTERSECTION_WITH_ROLE_ALLOWLIST_AND_TASK_SCOPE
+  missing_agent_runtime: SINGLE_ASSISTANT_CHECKLIST_WITHOUT_DELEGATION_CLAIM
+  live_control: DETERMINISTIC_DEVICE_SERVICES_ONLY
+  custom_output: ANALYSIS_PROPOSAL_REQUIRES_CANONICAL_ADAPTER
+  loader_status: NOT_IMPLEMENTED
+roles:
+  - role_id: 1
+    division_id: null
+    name: Orchestrator & Navigator Companion
+    file: orchestrator.md
+  - role_id: 2
+    division_id: 1
+    name: Roadbook Interpretation
+    file: specialists/01-roadbook.md
+  - role_id: 3
+    division_id: 2
+    name: TSD, Distance & Calibration
+    file: specialists/02-tsd.md
+  - role_id: 4
+    division_id: 3
+    name: Route Puzzle & Geometry Solver
+    file: specialists/03-route.md
+  - role_id: 5
+    division_id: 4
+    name: Location & Geospatial Evidence
+    file: specialists/04-location.md
+  - role_id: 6
+    division_id: 5
+    name: Live Position & Rally Progress
+    file: specialists/05-progress.md
+  - role_id: 7
+    division_id: 6
+    name: Navigation Guidance & Voice
+    file: specialists/06-guidance.md
+  - role_id: 8
+    division_id: 7
+    name: Road Legality, Access & Quality
+    file: specialists/07-quality.md
+  - role_id: 9
+    division_id: 8
+    name: Session, Evidence & Rally Journal
+    file: specialists/08-journal.md
+examples:
+  - examples/subtrayek-a.analysis.yaml
+evaluation:
+  cases: eval-cases.yaml
+  behavior_evaluation: NOT_EXECUTED
+  field_evaluation: NOT_EXECUTED
+external_sources_reviewed:
+  - filename: navipro-advanced-mindmap-reasoning-framework.md
+    sha256: 1719b327681052e9dcc13deaa303ba2562877fe071cbcb3513feb682ec91b8cb
+    scope: Bagian AMRA, contoh output, kalibrasi dan gate terkait
+    treatment: ADOPT_FIVE_STAGE_STRUCTURE_CORRECT_CF_AND_UNSUPPORTED_VERIFICATION
+  - filename: sistem-analitis-time-rally.md
+    sha256: 90bfa3ee741695ab7e180994d26995dfaa7f0678f6ccbf49f80eba11e5006438
+    scope: Validasi JWK, jadwal kumulatif dan struktur analisis
+    treatment: ADOPT_DEPENDENCIES_REJECT_UNIVERSAL_ROUNDING_AND_ZERO_POINT_EXCLUSION
+  - filename: 02-ARCHITECTURE-SSOT.md
+    sha256: abd7f0327b8a65da5f4a8ec48af2c9071dad822c0a3c3677a5a9231f78e49200
+    scope: Hierarki otoritas, boundary, invariant dan model domain
+    treatment: DESIGN_REFERENCE_NOT_CURRENT_RUNTIME_EVIDENCE
+  - filename: navipro-chunked-mindmap-framework.md
+    sha256: a96ad408b917f7d2a636ee97b06b516a7edaaa1b721868f242ae2fa2de3ee400
+    scope: AMRA, pemisahan chunk dan batas readiness
+    treatment: ADOPT_MODULAR_STRUCTURE_NO_TRANSFER_OF_OLD_TEST_COUNTS
