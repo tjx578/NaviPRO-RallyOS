@@ -11,3 +11,5 @@ Lessons are generic: do not conflate START/zero-trip pins; preserve multiple phy
 
 ## Agent 1-9 effects
 Agent 1 mode gate/revision DAG; Agent 2 source coverage; Agent 3 official distance + per-second cadence after legitimate chainage; Agent 4 directed route search; Agent 5 physical evidence; Agent 6 local telemetry and post-event replay; Agent 7 cue proposal; Agent 8 requests independent quality gates; Agent 9 genuine journal receipts. When Agent 5 review changes, recompute Agent4 edge binding, Agent3 CP target, Agent7 cues, and validator/review snapshots. Driver LIVE remains deterministic and offline.
+
+Leaflet Routing Machine remains UI-policy prototype only; React Native Maps is source-audited without a built Android runtime. They assist viewing/reviewing proposals but are not autonomous evidence sources.
