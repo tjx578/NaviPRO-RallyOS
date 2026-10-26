@@ -1,6 +1,6 @@
 """TRAINING_POST_EVENT-only authoritative Master Pos -> observed KML geo matching.
 
-Pure Python, no private coordinates; proximity and time DO NOT validate a legal turn or roadbook route.
+Pure Python, no private coordinates; proximity and time DO NOT validate a legal turn or roadbook route.\nA caller must explicitly supply historical mode and a nonempty finish receipt; only the external orchestrator can authenticate that receipt.
 """
 from bisect import bisect_right
 from math import atan2, cos, radians, sin, sqrt
@@ -14,14 +14,14 @@ def haversine_m(lat1, lon1, lat2, lon2):
     v = sin(dp/2)**2 + cos(p1)*cos(p2)*sin(dl/2)**2
     return 2*6371008.8*atan2(sqrt(v), sqrt(max(0, 1-v)))
 
-def match_master_anchors(masters, trace, mode="TRAINING_POST_EVENT", radius_m=30.0):
+def match_master_anchors(masters, trace, mode=None, radius_m=30.0, finish_receipt=None):
     """Min-cost monotonic match of EVERY master anchor to one chrono GPS sample.
 
     masters: [{id,lat,lon},...] in official order
     trace: [{lat,lon,time},...] in strictly increasing time.
     radius_m: only a search diagnostic, NEVER a QG pass/review threshold.
     """
-    if mode != "TRAINING_POST_EVENT":
+    if mode != "TRAINING_POST_EVENT" or not finish_receipt:
         raise AnchorError("MASTER_POS_LEAKAGE_FORBIDDEN")
     if not masters or len(trace) < len(masters):
         raise AnchorError("MISSING_ANCHOR_OR_TRACE")
@@ -69,7 +69,9 @@ def match_master_anchors(masters, trace, mode="TRAINING_POST_EVENT", radius_m=30
              "match_status": "GEO_PROXIMITY_POST_EVENT_ONLY"}
             for master, match in zip(masters, chain)]
 
-def master_bracket(matches, trace_index):
+def master_bracket(matches, trace_index, mode=None):
+    if mode != "TRAINING_POST_EVENT":
+        raise AnchorError("MASTER_POS_LEAKAGE_FORBIDDEN")
     indices = [m["trace_index"] for m in matches]
     if indices != sorted(indices) or len(indices) != len(set(indices)):
         raise AnchorError("MASTER_MATCH_CHAIN_NOT_MONOTONE")
@@ -86,8 +88,10 @@ def master_bracket(matches, trace_index):
     return {"anchor_id":None, "before":matches[pos-1]["id"],
             "after":matches[pos]["id"], "status":"BETWEEN_OFFICIAL_MASTER_ANCHORS"}
 
-def bind_cue_to_master(cue, master, allow_historical_alias=False):
+def bind_cue_to_master(cue, master, allow_historical_alias=False, mode=None, finish_receipt=None):
     """Historical candidate identity association; not a reviewed graph/turn binding."""
+    if mode != "TRAINING_POST_EVENT" or not finish_receipt:
+        raise AnchorError("MASTER_POS_LEAKAGE_FORBIDDEN")
     kind = cue.get("CueType", "").upper()
     label = (cue.get("LandmarkName") or "").casefold()
     description = (master.get("description") or "").casefold()
