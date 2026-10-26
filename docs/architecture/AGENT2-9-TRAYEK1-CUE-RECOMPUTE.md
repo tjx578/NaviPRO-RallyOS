@@ -1,22 +1,23 @@
-# Cross-agent cue-chain policy (DRAFT, no runtime deployment)
+# NaviPRO RallyOS — PREP-first solving / POST_EVENT-only ground truth
+Revision 2026-10-26. This policy **supersedes prior wording "MASTER-ANCHOR-FIRST" as a route solving method**.
 
-Agent 1 orchestrates dependency versions and mode separation. Agent 2 provides complete ordered source ledger with two distinct Gilimanuk sign occurrences. Agent 3 preserves D_authority and all timing rules, emits integer-minute sub profiles plus optional second-level CP targets only when official-distance chainage can be established. Agent 4 proposes sub -> CP -> directed graph route sequence. Agent 5 supplies verified physical road-sign/access evidence with source, date, orientation and review. Agent 6 provides retrospective chrono GPS replay separately from PREP. Agent 7 proposes turn-by-turn cue only from Agent 4 reviewed edges + Agent 3 plan. Agent 8 requests independent QG-01..16 checks and cannot assert PASS. Agent 9 records source versions, decisions and real receipts.
+## Timeline (event-specific ground truth)
+1. **BEFORE START (PREP)**: source roadbook + official competition instructions, starting list, digital road graph, prior independently proven geographic knowledge. Agent 2 extracts full ledger; Agent 3 produces sub schedule and per-second Cadencer timing; Agent 4 solves source-constrained directed routes by sub then CP; Agent 5 reviews location candidates; Agent 7 prepares cues; Agent 8 checks only validated evidence. NO organizer Master Pos locations, zero-car Master Pos times, post-event KML or result cards.
+2. **BEFORE RELEASE (REVIEW)**: navigator edits/approves exact revisions; independent deterministic validator must run QG-01..16. Missing providers or evidence => HOLD; no fake verified coordinates or invented signs.
+3. **DURING EVENT**: deterministic offline Driver and time/cue services only. This is not a generative-agent routing phase, and current repository still lacks a complete release runtime.
+4. **AFTER FINISH (POST_EVENT)**: organizer releases Master Pos, zero-car Master Pos targets and results; historical KML can be reconciled to those locations. Evaluate immutable frozen pre-event route/cues against ground truth. This is the ONLY role of master_anchor_reconcile.py.
+5. **LEARNING**: taxonomy of errors and evidence receipts produce reviewer-approved general rules and unit tests, not explicit copied Master coordinates or KML polylines. Validate on separate historical cases and a sealed Trayek 2 blind benchmark; never access its Master before evaluation.
 
-Critical historical regressions: 18 Master Pos were geographically approached by KML, but this does NOT establish every legal/roadbook turn. Historic 8 CSVs contain 60 rows, missing turn coords and a single false STRAIGHT for two Gilimanuk signs. A START and Zero-trip share false coords; G boundary Perbekel Banjar mismatches trip chronology; one Sulanyah candidate coordinate identifies two different named places. These require HOLD, not automatic GPS snapping.
+## Cross-agent knowledge flow
+Agent 1 orchestrates mode-locked dependency graph and source access; Agent 2 fully enumerates steps, distinct START/Zero Trip and repeated sign decisions; Agent 3 preserves official distance, time version and CP seconds; Agent 4 searches legal directed graph in sub->CP order without Master; Agent 5 resolves independently available POI/sign/access evidence; Agent 6 replay is available for post-event error diagnosis; Agent 7 proposes cue only from source-linked graph and evidence; Agent 8 provides legal/quality diagnostics and invokes the independent validator; Agent 9 journals authenticated source versions and real receipts. Any revision triggers downstream invalidation.
 
-Change DAG:
-- ROADBOOK_REVISED -> Agent 4 route stale -> Agent 3 CP timing stale -> Agent 7 cue stale -> QG review invalid.
-- PHYSICAL_EVIDENCE_REVIEWED -> Agent 5 location snapshot -> Agent 4 edge rebind -> Agent 3 targets recompute -> Agent 7 new preview.
-- TIMING_PLAN_REVISED -> Agent 7 cue stale and TSD Cadencer re-ACK required.
-- POST_EVENT_KML_MASTER_ATTACHED -> isolated Trayek 1 evaluator training only; never inserts master labels into PREP or blind Trayek 2.
+## Durable lessons extracted from Trayek 1
+- Two Gilimanuk directional sign occurrences must not collapse to one STRAIGHT cue; they can be nonconsecutive intersections.
+- POI names/coordinates are not graph access edges; start != zero-trip; sub boundary identities require independent source and directed graph checks.
+- Per-sub authority distance, dense graph and raw GPS observed distance are separate measurement domains. Agent 3 derives CP seconds only after sufficient binding evidence.
+- Chronological GPS closest-approach vs unrestricted geometric nearest prevents falsely attaching wrong revisits, but **only POST_EVENT**.
+- Master Pos are ground truth for assessment, NOT graph waypoints during pre-event route solving; 18/18 near GPS is not evidence of correct all turns.
+- Historical F/G PR8, named finish, timing penalties and user-reported second Gilimanuk right turn are event-specific *examples*, never coordinates or signs to hardcode as a new blind solution.
 
-Hard boundaries: no fictional locations, no invented Master time, no official residual from KML GPS, no universal invented graph tolerance, no Driver release from synthetic tests. PREP source, route and cue remain independent from POST_EVENT held-out labels. Full independent validator gates and authenticated navigator release are required.
-
-
-## MASTER POS as location authority in POST_EVENT training
-
-Organizer Master Pos coordinates now provide FIRST-PRIORITY location anchors for Trayek 1 retrospective training. They form 17 chronological corridors for the participant KML and do not replace the roadbook as authority for maneuver order or exact legal road route.
-
-Role dependencies: Agent 1 isolates PREP and POST_EVENT inputs; Agent 2 keeps complete official instruction occurrences; Agent 4 matches Master anchors and candidate graph routes; Agent 5 checks named landmark access and street signs; Agent 3 computes only supported per-CP second targets; Agent 6 supplies timed KML observations; Agent 7 creates non-actionable cue proposals until graph and physical evidence clears; Agent 8 invokes independent validator; Agent 9 records authentic provenance and revision receipts.
-
-Diagnostic training baseline: 18 Master matches, 17 Master-to-Master KML corridors, 4 Master-referenced cue identities (A-01 F-11 G-01 H-03), 7 position/time linked GPS corridor cues, 50 cues still lacking enough location evidence. Driver release is HOLD; Master/KML private reference remains excluded from PREP and blind Trayek 2.
+## Quality gates and completion
+Pre-event candidates remain PROPOSAL_PENDING_VALIDATION; independent QG gates must use truthful sources and receipt-bound decisions. Real graph execution, sign imaging verification, learned rule calibration and LIVE driver readiness are NOT established by draft skills or synthetic tests.
