@@ -14,6 +14,8 @@ STATUS: SPEC AND CLEAN-ROOM TESTS ONLY. No live production providers or field DB
 - OSRM: adapter mock-tested; no real routing graph. Valhalla: assessed separately, no runtime parity.
 - God's Eye: registry and context prototype; live imagery integration absent. Street View provider: not connected.
 - Kepler Map Lab / Cesium Terrain Lab: visual scaffolds, not verified live.
+- Leaflet Routing Machine: read-only route-review policy prototype, no working browser UI.
+- React Native Maps: source audit only; Android renderer not integrated.
 - StreetComplete-inspired survey: prototype planner/outbox only, no Android APK or production secure server; GPL source not copied.
 - Private location database: local SQLite v2 proposal not deployed.
 - MCP: generated registry, not running server. Independent validator and receipt-issuing persistence runtime: not implemented.
