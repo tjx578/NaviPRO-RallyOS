@@ -13,3 +13,14 @@ Agent 7 does NOT independently choose routing. It transforms version-locked Agen
 Historical regression: original 60 cue rows need 61 review occurrences because Gilimanuk must split into two signed decisions; F/G candidate endpoint fails time-aware GPS inspection; two G POIs share one unreviewed coordinate; Master overlay is separate from source instructions and is NEVER part of PREP or Trayek 2 benchmark inputs.
 
 Update dependencies: source/graph/location/time revision changes invalidate old cue and any previously bound review/delivery acknowledgment. Only a real journal/transport receipt proves persistence or delivery.
+
+
+## Amendment v1.1 — Master-anchored historical cue review
+
+Agent 7 reads Agent 4 historical corridors with MASTER_LOCATION_REFERENCE, GPS_CORRIDOR_OBSERVATION, and VERIFIED_ROADBOOK_MANEUVER as THREE distinct evidence classes. The first two do not authorize a turn cue by geographic proximity.
+
+Render 18 Master markers and 17 observed corridors only on TRAINING_POST_EVENT Page 2; these are not newly invented roadbook cues. Keep the 61 original source-linked cue occurrences and two separate Gilimanuk sign decisions.
+
+A-01 START references official START; A-02 Zero Trip has a separate unknown/verified physical identity. F-11 and G-01 may share the historical PR8 location but cannot acquire RIGHT/LEFT solely from this mapping; H-03 reference FINISH Master. When graph/physical turn proof is absent, return turn UNKNOWN and Driver HOLD. Timestamps on official Master Pos cannot be reused as the times of other landmarks. Agent 3 adds computed cue seconds only after binding valid CP chainage and event timing authority.
+
+Any revision to roadbook, graph, physical evidence, master anchor snapshot or Cadencer TimingPlan invalidates dependent cue previews and requires independent gate and navigator review.
