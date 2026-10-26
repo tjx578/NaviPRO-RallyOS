@@ -18,3 +18,19 @@ Scope: PREP/REVIEW only. Agent 4 makes route revision proposals. Agent 8 cannot 
 Actual KML participant #35 has 14,535 points (~69.242km raw polyline); historic KML approaches 18/18 Master Pos within 30m. This proves neither roadbook turn compliance nor organizer intended route. Source CSV had 60 cues including one oversimplified Gilimanuk STRAIGHT instruction, identical false START/Zero Trip location, disputed F/G boundary Perbekel Banjar, and conflated Sulanyah coordinates. Strict chronological matching, not global nearest point, is necessary.
 
 Master Pos and KML are permitted in Trayek 1 training evaluation only, not PREP and not Trayek 2 blind benchmark. Never auto-promote legacy VERIFIED labels to physical VERIFIED or publish unapproved Driver cues.
+
+
+## Amendment v4.7.1 — MASTER-ANCHOR-FIRST in TRAINING_POST_EVENT
+
+Trayek 1 official Master Pos locations are first-priority geographic anchors during retrospective training. They are NOT only optional score checkpoints. KML from participant 35 is observed travel and cannot by itself validate every roadbook maneuver.
+
+Procedure:
+1. Read all 18 ordered organizer Master Pos coordinates and timed KML in POST_EVENT mode only, with authoritative source provenance and strict revision isolation from PREP and Trayek 2.
+2. Run minimum-cost monotone alignment of all 18 Master anchors to KML samples by time and location (implementation: master_anchor_reconcile.py). Missing anchor or impossible order means HOLD. The 30-meter match radius is a diagnostic search limit, not a universal validation tolerance.
+3. Partition the observation into 17 Master-to-Master corridors. Keep observed GPS polylines and distances separate from official distance, graph distance, and odometer.
+4. Search for each ordered roadbook occurrence, signed direction and CP INSIDE its correct corridor with directed legal graph edges, inbound/outbound heading, landmark identity and official per-sub constraints. No invented intersection turns.
+5. Rebind source events with historical identity evidence: A-01 to START Master, F-11 and G-01 to PR8 Perbekel Banjar as ONE boundary location but TWO source instructions, H-03 to FINISH Master. They remain REVIEW_REQUIRED pending graph/physical evidence. A-02 Polres Zero Trip remains separate.
+6. Preserve Master times only for their actual organizer Master event IDs. No Master time for unobserved/intermediate roadbook cue. Derived CP time belongs to Agent 3, not Agent 4.
+7. Recompute all dependent chainage, sub residuals, CP time and Agent 7 cue previews after re-binding. All route proposals remain proposed, never released to Driver without independent gates and authenticated review.
+
+Acceptance: all official anchors accounted for in order; all source instructions preserved; every unproven turn labelled UNKNOWN; missing real graph validation = HOLD.
