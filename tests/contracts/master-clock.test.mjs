@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {RallyMasterClock,formatMasterClock,makeSubSchedule,scheduledSub,activationDecision,cpTargetSecond} from '../services/integrations/tsd-cadencer/master-clock.mjs';
+import {RallyMasterClock,formatMasterClock,makeSubSchedule,scheduledSub,activationDecision,cpTargetSecond} from '../../services/integrations/tsd-cadencer/master-clock.mjs';
 
 test('HH:mm:ss.cc appearance is WITA-explicit, not inherited browser zone',()=>{
   const e=Date.parse('2026-10-26T10:03:27.449+08:00');
