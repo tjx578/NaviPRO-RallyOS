@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="navipro-master-clock-endpoint" content=""/>
+<title>NaviPRO Page 1 — Master Clock Preview</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,Segoe UI,sans-serif}
+body{background:#090d11;color:#f5f6f8;margin:0;padding:30px;display:grid;place-items:center;min-height:85vh}
+main{max-width:960px;width:100%}.card{padding:28px;border:1px solid #303942;border-radius:16px;background:#111820}
+.tag{color:#df3244;font-weight:700}h1{font-size:24px}
+.clock{font-size:clamp(36px,8vw,82px);font-weight:750;letter-spacing:1px;font-variant-numeric:tabular-nums}
+.info{color:#aab3bd}small{color:#e5a460}
+table{width:100%;border-collapse:collapse;margin-top:18px}
+td,th{padding:11px;border-bottom:1px solid #27313b;text-align:left}
+strong{color:#ed4457}code{color:#b8c3d0}
+</style>
+</head><body><main class="card">
+<div class="tag">NaviPRO RallyOS · Navigator Page 1</div>
+<h1>Master Clock — WITA</h1>
+<div id="master" class="clock">--:--:--.--</div>
+<small id="status">UNSYNCED — bukan waktu resmi</small>
+<p class="info">Referensi tampilan: IndoRallyHub. Waktu ini memerlukan server sinkron NaviPRO; jam perangkat tidak otomatis menjadi sumber resmi.</p>
+<h2>TimingPlan — Contoh Trayek 1 (PREP)</h2>
+<p class="info">Start 07:59 WITA · 240 menit · waktu per sub hasil soal/perhitungan, bukan Master Pos.</p>
+<table><thead><tr><th>Sub</th><th>Durasi</th><th>Jam awal</th><th>Status jadwal</th></tr></thead>
+<tbody id="subs"></tbody></table>
+<p class="info">Waktu Master Pos zero car disimpan hanya pada ruang evaluasi POST-EVENT. Jadwal otomatis tidak mengesahkan checkpoint fisik.</p>
+</main>
+<script type="module">
+import {RallyMasterClock,makeSubSchedule,scheduledSub} from '../../services/integrations/tsd-cadencer/master-clock.mjs';
+const clock=new RallyMasterClock();
+const plan=makeSubSchedule({eventDate:'2026-08-29',startTime:'07:59',offsetsMinutes:
+ [{id:'A',minutes:5},{id:'B',minutes:22},{id:'C',minutes:46},{id:'D',minutes:10},
+ {id:'E',minutes:24},{id:'F',minutes:77},{id:'G',minutes:50},{id:'H',minutes:6}]});
+const rows=plan.map(p=>{
+ const tr=document.createElement('tr');
+ const time=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Makassar'}).format(p.startEpochMs);
+ tr.innerHTML='<td>'+p.id+'</td><td>'+p.durationMinutes+' menit</td><td>'+time+'</td><td data-sub="'+p.id+'">—</td>';
+ document.getElementById('subs').append(tr);return tr;
+});
+const endpoint=document.querySelector('meta[name="navipro-master-clock-endpoint"]').content.trim();
+async function sync(){
+ if(!endpoint)return;
+ const start=performance.now();
+ try {
+  const r=await fetch(endpoint,{cache:'no-store',credentials:'include'});
+  const end=performance.now();
+  if(!r.ok||r.headers.get('X-NaviPRO-Clock-Verified')!=='1')throw new Error('Clock is not verified');
+  const v=await r.json();
+  clock.sync({...v,clientStartMonoMs:start,clientEndMonoMs:end,authenticated:true});
+ }catch{ /* remains unsynced or stale */ }
+}
+function render(){
+ const c=clock.snapshot();
+ document.getElementById('master').textContent=c.display;
+ document.getElementById('status').textContent=c.quality+' · '+c.sourceId+' · Asia/Makassar';
+ const ss=scheduledSub(plan,c);
+ document.querySelectorAll('[data-sub]').forEach(node=>
+  node.textContent=ss.scheduled===node.dataset.sub?'TERJADWAL · belum aktif':'—');
+ requestAnimationFrame(render);
+}
+sync();setInterval(sync,10000);render();
+</script></body></html>
