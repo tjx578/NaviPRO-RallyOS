@@ -1,36 +1,35 @@
-# Agent 4 Divisi 3 — Route Puzzle & Geometry v4.7 (PROPOSED)
+# Agent 4 / Division 3 — Blind Roadbook Route Solver (proposed v4.8)
+STATUS: SPECIFICATION + contract prototype only; NOT an OSRM/Valhalla deployment.
 
-Scope: PREP/REVIEW only. Agent 4 makes route revision proposals. Agent 8 cannot self-authorize; independent deterministic validator and human reviewer are required.
+## Correct authority and modes
+- **PREP** (before start): no Master Pos, organizer post-event results, historical KML, or secretly injected answer. Sources: Agent 2 reviewed roadbook ledger, Agent 3 official distances and timing constraints, Agent 5 prior location database and public/approved spatial evidence, versioned directed-graph and vehicle/access profile.
+- **REVIEW**: inspect route proposals with navigator, retaining unknowns; same no-ground-truth rule for a blind event.
+- **POST_EVENT** (only after finish and authorized release of ground truth): use organizer Master Pos, official zero-car timing, participant KML and result card **only to evaluate frozen earlier predictions**. The evaluation utility may use Master anchors to segment actual historical KML into corridors, but this is NOT the algorithm for producing route candidates.
+- **LEARNING**: promote approved and documented *generalizable rules* into source interpretation, candidate search, location retrieval, graph evaluation and cue checks. Never hardcode learned Master coordinates, shortcut through historical trip lines, reveal future Master, or assume a case-specific turn in new stages.
+- **BLIND_TEST**: new roadbook (Trayek 2) and pre-event published data only; freeze output before opening any post-event labels.
 
-## Execution pipeline
-1. Read reviewed verbatim roadbook source ledger from Agent 2; preserve every instruction ID and chronological occurrence. Start and Zero Trip are different source events.
-2. Read versioned Agent 3 TSD constraints and source-authoritative distances. Never overwrite D_authority with D_graph or raw KML GPS.
-3. Resolve directed legal graph paths one sub at a time, beginning Sub A. Within a sub, attach source CP/landmark/instruction occurrences by order. Only chain to the next sub after source endpoint identities and traversable edges are checked.
-4. State is (sub_id, ordered_instruction_index, incoming_edge_occurrence, visit_index, sign_occurrences, accumulated_D_graph, physical_evidence_state). Repeated coordinates do not imply the same visit.
-5. Arah Gilimanuk 2 kali: two physically distinct directional-sign decision events, possibly separated by other intersections. Never compress to STRAIGHT or assume both turns identical. The reported second sign RIGHT at LR is user-reported context until externally checked; the subsequent BKN di LR arah Pantai remains an independent instruction until a shared location is demonstrated.
-6. Location proposals from Agent 5 need physical access-edge, date, orientation, and genuine reviewer receipt. Globe/satellite/3D assists geometric layout; street-level views may read signs. KML nearest-point alone does not verify road sign text or a legal turn.
-7. For missing CP, preserve unresolved corridors and bounded route candidates. Monte Carlo checks uncertainty/robustness only after hard roadbook constraints; record seed, assumptions, distributions, N and surviving alternatives. Never convert a score into physical certification.
-8. Per sub track D_authority, D_graph, D_odo, D_geo as different domains. Do not cancel residuals across subs and do not assume universal 20m/50m/2pct thresholds.
-9. Output complete RouteRevisionProposal: roadbook revision, graph release, directed edge sequence, source-to-occurrence bindings, ordered chainage by CP, unresolved constraints, distance residual per sub, evidence refs, source & method versions, PROPOSAL_PENDING_VALIDATION and gate_results NOT_RUN.
-10. Agent 4 supports QG-09 route continuity, QG-10 landmark road access binding, QG-11 dense geometry, QG-12 monotonic sequence, QG-14 inter-sub chaining, QG-15 reviewed endpoints. Agent 3 leads QG-13/16; Agent 2 leads QG-05/06. The independent validator computes gate results.
+## Agent 4 independent problem solving
+1. Agent 2 delivers ordered source instruction occurrences with true source IDs and mandatory flags. START and Zero Trip are different events; repeated signs are separate physical decisions, even when separated by unnamed junctions. One "Arah Gilimanuk 2 kali" source token expands to **two** occurrences; never compress to STRAIGHT.
+2. Agent 3 delivers D_authority, per-sub integer-minute schedule and second-resolution TSD constraints separately; Master Pos time and sample GPS must not be sources in PREP.
+3. Beginning at Sub A, build bounded **directed graph** alternatives with OSRM/Valhalla / offline graph. State: (sub, required source occurrence index, physical edge occurrence, visit index, seen sign decisions, graph cumulative offset, location-evidence state). Honor vehicle access, mandatory maneuver order, road topology, source end points. No artificial detours to match distance; reject prohibited paths.
+4. For each sub, divide candidate search by required CP/landmark/decision events, not arbitrary equal pieces. Resolve named landmarks using Agent 5 identities AND roadside access; use street-level evidence where authorized. A graph proximity to a POI center does not establish physical visit, legal entry or a signed turn.
+5. For unknown CPs retain constraints and candidate graph corridors. Apply distance residual per sub and per CP where authority measurements are available. Monte Carlo may test stated uncertainties but survival frequency is NOT true route probability. Never invent missing CP coordinates or signage.
+6. Two direction signs for Gilimanuk require two distinct decision nodes (not necessarily consecutive graph nodes) and approach-relative arrows. User-observed second-right-at-LR in Trayek 1 is historical learning feedback, **not** a universal rule and not proof of an unobserved sign in Trayek 2.
+7. Rank candidates lexicographically by legal directed continuity + mandatory instruction coverage + missing evidence, then per-sub distance diagnostics, preserving multiple alternatives. Avoid total-distance-only route optimization and universal invented thresholds. Never cancel errors between B–H.
+8. Emit proposal only: ordered directed-edge occurrences, source-to-edge bindings, chainage per CP, D_graph residual by sub, unresolved list, evidence and versioned graph/time refs. Never emit "QG PASS" based on AI confidence or hardcoded Master locations.
+9. Agent 4 leads evidence for QG-09/10/11/12/14/15; QG-13/16 are Agent 3-led. Gate results are issued only by independent validator, with navigator review and release. Agent 7 consumes a version-matched proposal; Driver LIVE does not accept unverified route proposals.
+10. Any change in source, CP evidence, graph, timing or review state invalidates dependent route, CP time, cue and NAVIPack release snapshots.
 
-## POST_EVENT Trayek 1 regression
-Actual KML participant #35 has 14,535 points (~69.242km raw polyline); historic KML approaches 18/18 Master Pos within 30m. This proves neither roadbook turn compliance nor organizer intended route. Source CSV had 60 cues including one oversimplified Gilimanuk STRAIGHT instruction, identical false START/Zero Trip location, disputed F/G boundary Perbekel Banjar, and conflated Sulanyah coordinates. Strict chronological matching, not global nearest point, is necessary.
+## Post-finish evaluator only (NOT a route solver)
+See master_anchor_reconcile.py: optional minimum-cost chronological matching to 18 Master Pos on completed historical Trayek 1. Those anchors can partition the *recorded* KML into 17 assessment intervals for classifying prior errors. Observed KML 18/18 geographic proximity does NOT prove roadbook maneuver compliance. Any aliases such as F/G at PR8 require independent identity review. This module must never be invoked by the PREP/BLIND route builder.
 
-Master Pos and KML are permitted in Trayek 1 training evaluation only, not PREP and not Trayek 2 blind benchmark. Never auto-promote legacy VERIFIED labels to physical VERIFIED or publish unapproved Driver cues.
+## Transferable Trayek 1 lessons and test criteria
+- Separate START from Polres zero-trip even if old CSV used same coordinates.
+- Split two Gilimanuk signed-direction occurrences; duplicated photo(s) are not two decisions.
+- Check correct edge visit, source order, physical access and sign arrow by approach.
+- Investigate per-CP and F/G chained boundaries; do not hardcode historical Perbekel Banjar positions.
+- Compute CP second targets with Agent 3 only once distance and rule provenance are sufficient; never invent official Master timestamps.
+- Agent 7 holds questionable legacy cue locations and turn instructions, including historical Sulanyah and finish ambiguities.
+- Regression suites use general synthetic cases plus *separate* post-event Trayek 1 fixtures. The completely independent Trayek 2 blind benchmark contains no outcome labels or Master locations.
 
-
-## Amendment v4.7.1 — MASTER-ANCHOR-FIRST in TRAINING_POST_EVENT
-
-Trayek 1 official Master Pos locations are first-priority geographic anchors during retrospective training. They are NOT only optional score checkpoints. KML from participant 35 is observed travel and cannot by itself validate every roadbook maneuver.
-
-Procedure:
-1. Read all 18 ordered organizer Master Pos coordinates and timed KML in POST_EVENT mode only, with authoritative source provenance and strict revision isolation from PREP and Trayek 2.
-2. Run minimum-cost monotone alignment of all 18 Master anchors to KML samples by time and location (implementation: master_anchor_reconcile.py). Missing anchor or impossible order means HOLD. The 30-meter match radius is a diagnostic search limit, not a universal validation tolerance.
-3. Partition the observation into 17 Master-to-Master corridors. Keep observed GPS polylines and distances separate from official distance, graph distance, and odometer.
-4. Search for each ordered roadbook occurrence, signed direction and CP INSIDE its correct corridor with directed legal graph edges, inbound/outbound heading, landmark identity and official per-sub constraints. No invented intersection turns.
-5. Rebind source events with historical identity evidence: A-01 to START Master, F-11 and G-01 to PR8 Perbekel Banjar as ONE boundary location but TWO source instructions, H-03 to FINISH Master. They remain REVIEW_REQUIRED pending graph/physical evidence. A-02 Polres Zero Trip remains separate.
-6. Preserve Master times only for their actual organizer Master event IDs. No Master time for unobserved/intermediate roadbook cue. Derived CP time belongs to Agent 3, not Agent 4.
-7. Recompute all dependent chainage, sub residuals, CP time and Agent 7 cue previews after re-binding. All route proposals remain proposed, never released to Driver without independent gates and authenticated review.
-
-Acceptance: all official anchors accounted for in order; all source instructions preserved; every unproven turn labelled UNKNOWN; missing real graph validation = HOLD.
+REFERENCE IMPLEMENTATION: pre_event_route_workflow.py is a ranking and data-boundary prototype, NOT directed-road candidate generation. master_anchor_reconcile.py is a historical evaluation helper ONLY.
